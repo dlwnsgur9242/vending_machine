@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품을 장바구니에 추가</title>
+</head>
+<body>
+    <h1>상품을 장바구니에 추가</h1>
+    <!-- 상품 추가 폼 -->
+    <form action="{% url 'add_to_cart' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+        <button type="submit">장바구니에 추가</button>
+    </form>
+</body>
+</html>

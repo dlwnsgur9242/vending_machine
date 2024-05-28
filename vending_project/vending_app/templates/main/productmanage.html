@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/productmanage.css' %}" rel="stylesheet">
+    <title>ProductManage</title>
+</head>
+<body>
+    {% block content %}
+        <h2>상품 등록</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">등록</button>
+            <button>
+                <a href="{% url 'vending_app:ProductList' %}" class="ghost-button">홈</a>
+            </button>
+        </form>
+    {% endblock %}
+</body>
+</html>
+

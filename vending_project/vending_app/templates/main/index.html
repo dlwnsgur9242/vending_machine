@@ -1,0 +1,133 @@
+<div class="cartArea">
+   <div class="prodFilter type2">
+       <span class="frmCheck"><input type="checkbox" name="allCheck" id="ALL"><label for="ALL">전체 선택</label></span>
+       <button type="button" class="btnST btnT delete" id="btnAllDelete">선택 삭제</button>
+   </div>
+   <!-- //20201210 수정 -->
+   <div class="cartBoard">
+       <form id="deleteForm" name="frm" method="post" action="">
+           
+           <!-- 모비온 인사이트 마케팅 스크립트  Start -->
+           <input type="hidden" name="totalQtySum" id="totalQtySum" value="1">		<!-- 총수량 -->
+           <input type="hidden" name="totalPriceSum" id="totalPriceSum" value="12430">	<!-- 총 결제금액 -->
+           <!-- 모비온 인사이트 마케팅 스크립트  End -->
+           
+           <input type="hidden" name="totalBuyAmt" id="totalBuyAmt" value="9430">		<!-- 빠른배송 제외 상품금액(온더고100원딜 상품 구매가능조건: 빠른배송 제외 합계금액 2만원 이상) -->
+           
+           <!-- ForEach 배송 타입 - 배송 타입 별 구분 및 상품 리스트 반복 필요 -->
+           <!-- 초기화 -->
+           
+                                                       
+                                                                                                               
+                                                           
+                 
+               <!-- 초기화 -->
+                   <!-- 변경 -->
+                   
+
+                   <h3 class="titDep1 type2">    일반배송 </h3>                                                      
+                   <table class="tblForm">
+                           <caption>장바구니 상품</caption>
+                           <colgroup>
+                               <col style="width:25px">
+                               <col style="width:10%">
+                               <col style="width:auto">
+                               <col style="width:11%">
+                               <col style="width:10%">
+                               <col style="width:11%">
+                               <col style="width:124px">
+                           </colgroup>
+                           <thead>
+                               <tr>
+                                   <th scope="col" class="tdCheck"><span class="hidden">선택</span></th>
+                                   <th scope="col">브랜드</th>
+                                   <th scope="col">상품명</th>
+                                   <th scope="col">구매가</th>
+                                   <th scope="col">수량</th>
+                                   <th scope="col">금액</th>
+                                   <th scope="col">선택</th>
+                               </tr>
+                           </thead>
+                           <tbody> 		                    	
+                               <tr>
+                                   <td class="tdCheck">
+                                       <span class="frmCheck ntxt">
+                                           <input type="checkbox" id="CART0" name="cart_num" data-goods-sales-type="NORMAL" data-delivery-type="Y" value="202419138967" data-goods-id="S000000009332">
+                                           <label for="CART0">선택</label>
+                                       </span>
+                                   </td>
+                                   <td>아워홈</td>
+                                   <td class="itmTarget">
+                                       <a href="/mall/product/detail.do?goods_id=S000000009332">
+                                           <div class="thum">
+                                               
+                                               <img src="https://mall.ourhome.co.kr//attach_file/20240112/F34F854EF2AA4FB98BFE6213819EFEC0.jpg" alt="">
+                                           </div>
+                                           <div class="cont">
+                                               <strong class="tit">아워홈 싱카이 중화풍 매콤간장 치킨볶음밥 840g(4인식)</strong>
+                                           </div>
+                                       </a>
+                                   </td>
+                                   <td class="tdPrice">
+                                       <span class="cost1" title="할인가"><b>9,430</b>원</span><br>
+                                       <del class="cost2" title="판매가"><b>
+                                       
+                                       13,480</b>원</del>
+                                       
+                                   </td>
+                                   <td>
+                                                                                               
+                                             <span class="frmAmount">
+                                               <button type="button" class="minus" onmousedown="javascript:try{cartLog('S000000009332',-1, this);}catch(e){}">수량 감소</button>
+                                               <input type="text" title="수량 직접입력" name="qty" onchange="javascript:try{cartQtyChangeLog('S000000009332',this.value);}catch(e){}" data-sell-mon="9430" data-delivery-type="Y" data-each-delivery="N" value="1" data-delivery-amt="3000" data-delivery-free="30000" data-delivery-gubun="O" class="numeric" data-jirisansoo-yn="N" maxlength="5">
+                                               <button type="button" class="plus" onmousedown="javascript:try{cartLog('S000000009332',1, this);}catch(e){}">수량 증가</button>
+                                           </span>
+
+                                   </td>
+                                   <td class="tdPrice">
+                                       <span class="cost1" title="금액"><b>9,430</b>원</span>
+                                   </td>
+                                   <td class="tdTools">
+                                       <button type="button" class="btnST btnS action" name="btnDirectOrder">바로구매</button>
+                                       <!-- 20201210 수정 -->
+                                       <button type="button" class="btnST btnS" name="btnItemDelete">삭제하기</button>
+                                       <!-- //20201210 수정 -->
+                                   </td>
+                               </tr>
+
+                           </tbody>																			
+                           <tfoot>
+                               <tr>
+                                   <td colspan="8" class="tdTotal">
+                                       <span class="txt">총 금액</span>
+                                       <span class="cost"><b>9,430</b>원</span>
+                                       <span class="symbol plus">+</span>
+                                       <span class="txt">배송비</span>
+                                       <span class="cost"><b>3,000</b>원</span>
+                                       <span class="txt2">(3만원이상 구매 시 무료배송)</span>
+                                       <span class="symbol equal">=</span>
+                                       <span class="txt">결제 금액</span>
+                                       <span class="cost"><b>12,430</b>원</span>
+                                   </td>
+                               </tr>
+                           </tfoot>
+                   </table>
+           
+           
+           <!-- ForEach 배송 타입 - 배송 타입 별 구분 및 상품 리스트 반복 필요 -->	                
+       </form>
+   </div>
+   <!-- //cartBoard -->
+   <ul class="cartTotal">
+       <li><span class="txt">총 금액</span><span class="cost"><b id="totalProductPayment">9,430</b>원</span></li>
+       <li><span class="txt">배송비</span><span class="cost"><b id="totalDeliveryPayment">3,000</b>원</span></li>
+       <li><span class="txt">결제 금액</span><span class="cost"><b id="totalPayment">12,430</b>원</span></li>
+   </ul>
+   <!-- 20201210 수정 -->
+   <div class="cartBtns">
+       <div class="fleft"><a href="/mall/product/list.do" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
+       <a href="javascript:;" id="btnSelectItemGift" role="button" class="btnST btnL btnGift02">선물하기</a>
+       <a href="javascript:;" id="btnSelectItemBuy" role="button" class="btnST btnL other">선택상품 구매</a>
+       <a href="javascript:;" id="btnAllBuy" role="button" class="btnST btnL action">전체상품 구매</a>
+   </div>
+</div>

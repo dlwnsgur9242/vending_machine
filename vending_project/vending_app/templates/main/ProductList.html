@@ -1,0 +1,97 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'css/TopNav.css' %}" rel="stylesheet">
+    <title>Vending Product List</title>
+</head>
+<body>
+    <nav class="Nav">
+        <div class="navbar_logo">
+          <i class="fa-solid fa-dog"></i>
+          <a href="{% url 'vending_app:ProductList' %}"><font size="7">Vending</font>machine</a>
+        </div>
+
+        <ul class="navbar_menu">
+          <li><a href=""></a></li>
+          <li><a href=""></a></li>
+          <li><a href=""></a></li>
+        </ul>
+
+        <ul class="navbar_usermenu">
+            <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button">상품관리</a></li>
+            <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button">상품등록</a></li>
+        </ul>
+
+        <ul class="navbar_icons">
+            <li><i class="fab fa-twitter-square"></i></li>
+            <li><i class="fab fa-facebook-square"></i></li>
+            <li><i class="fab fa-instagram"></i></li>
+        </ul>
+
+        <a href="#" class="navbar_toggleBtn">   
+            <i class="fas fa-bars"></i>
+        </a>
+    </nav>   
+    
+    <script>
+        const toggleBtn = document.querySelector('.navbar_toggleBtn');
+        const menu = document.querySelector('.navbar_menu');
+        const icons = document.querySelector('.navbar_icons');
+    
+        toggleBtn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            icons.classList.toggle('active');
+        });
+    </script>
+
+    <div class="wrap">
+        <div class="container">
+            <div class="contents_product_list" >
+                <div class="prodArea">
+                    <ol id="itemList" class="itemList">
+                        {% for product in products %}
+                            <li>
+                                <span class="item-number">{{ forloop.counter|stringformat:"02d" }}</span>
+                                <a href="{% url 'vending_app:ProductList'%}" class="iLink">
+                                    <div class="thum">
+                                        <img src="{{ product.product_image.url }}" alt="">
+                                    </div>
+                                    <div class="cont">
+                                        <div class="txtFlag">
+                                            {% if  product.product_flag and  product.product_flag != "일반" %}
+                                            <span class=" flag {{product.product_flag}}">{{ product.product_flag }}</span>
+                                            {% endif%}
+                                        </div>
+                                        <strong class="product_name">{{ product.product_name }}</strong>
+                                        <p class="txt">{{ product.description }}</p>
+                                        <div class="txtPrice">
+                                            <del class="cost1" title="판매가"><b>{{ product.product_price|intcomma }}</b>원</del>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="iHover">
+                                    <form action="{% url 'vending_app:add_to_cart' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                        <button type="submit"></button>
+                                    </form>
+                                </div>
+                            </li>
+                            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                                </ol><ol id="itemList" class="itemList">
+                            {% endif %}          
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+</html>
