@@ -1,69 +1,64 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/p_common_2.css' %}" rel="stylesheet">
     <title>장바구니</title>
 </head>
 <body>
-    <table class="tblForm">
-        <caption>장바구니 상품</caption>
-        <thead>
-            <tr>
-                <th scope="col">상품명</th>
-                <th scope="col">구매가</th>
-                <th scope="col">수량</th>
-                <th scope="col">금액</th>
-                <th scope="col">선택</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.product.product_name }}</td>
-                    <td>{{ item.product.product_price }}원</td>
-                    <td>
-                        <span class="frmAmount">
-                            <form action="{% url 'update_cart' item.product.product_id -1 %}" method="post" style="display: inline;">
+    <div class="cartArea">
+        <!-- 장바구니 상품 목록 -->
+        <div class="cartBoard">
+            <table class="tblForm">
+                <thead>
+                    <tr>
+                        <th scope="col">상품명</th>
+                        <th scope="col">가격</th>
+                        <th scope="col">수량</th>
+                        <th scope="col">총 가격</th>
+                        <th scope="col">선택</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 장바구니에 추가된 각 상품을 반복하여 표시 -->
+                    {% for cart_item in cart_items %}
+                    <tr>
+                        <td>{{ cart_item.product.product_name }}</td>
+                        <td>{{ cart_item.product.product_price }}</td>
+                        <td>
+                            <span class="frmAmount">
+                                <form action="{% url 'vending_app:update_cart' cart_item.product.product_id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cart_qty" value="-1">
+                                    <button type="submit" class="minus">수량 감소</button>
+                                </form>
+                                <input type="text" title="수량 직접입력" name="qty" value="{{ cart_item.cart_qty }}" class="numeric" maxlength="5" readonly>
+                                <form action="{% url 'vending_app:update_cart' cart_item.product.product_id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cart_qty" value="1">
+                                    <button type="submit" class="plus">수량 증가</button>
+                                </form>
+                            </span>
+                        </td>
+                        <td>{{ cart_item.total_price }}</td>
+                        <td>
+                            <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="minus">-</button>
+                                <button type="submit">삭제</button>
                             </form>
-                            <input type="text" title="수량 직접입력" name="qty" value="{{ item.cart_qty }}" readonly>
-                            <form action="{% url 'update_cart' item.product.product_id 1 %}" method="post" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="plus">+</button>
-                            </form>
-                        </span>
-                    </td>
-                    <td>{{ item.product.product_price|floatformat }}원</td>
-                    <td>
-                        <form action="{% url 'delete_cart_item' item.product.product_id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btnST">삭제</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="tdTotal">
-                    <span class="txt">총 금액</span>
-                    <span class="txt">+</span>
-                    <span class="txt">배송비</span>
-                    <span class="cost"><b>{{ total_price }}</b>원</span>
-                    <span class="txt">=</span>
-                    <span class="txt">결제금액</span>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-    <div>
-        <h2>Cart Items</h2>
-        <ul>
-            {% for item in cart_items %}
-                <li>{{ item.product.product_name }} - {{ item.product.product_price }}원</li>
-            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- 장바구니 총 금액 -->
+        <ul class="cartTotal">
+            <li><span class="txt">총 금액</span><span class="cost"><b id="totalProductPayment">2,790</b>원</span></li>
+            <li><span class="txt">배송비</span><span class="cost"><b id="totalDeliveryPayment">3,000</b>원</span></li>
+            <li><span class="txt">결제 금액</span><span class="cost"><b id="totalPayment">5,790</b>원</span></li>
         </ul>
     </div>
 </body>

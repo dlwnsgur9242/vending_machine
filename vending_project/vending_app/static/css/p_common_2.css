@@ -238,7 +238,7 @@ textarea.frmText{width:100%;padding:15px;font-size:14px;border:1px solid #e0e0e0
 .btnM{min-width:156px;height:48px;padding:0 28px;font-size:16px;line-height:47px}
 .btnM.btnPlus:after{content:'';display:inline-block;width:13px;height:13px;margin:-3px 0 0 6px;vertical-align:middle;background:url(../images/pc/ico_plus.gif) 0 0 no-repeat}
 .btnM.btnPlus[aria-expanded="true"]:after{background-position:0 -13px}
-.btnMM {min-width:205px; height:57px; line-height:57px; font-size:20px; font-weight:bold;}
+.btnMM {min-width:205px; height:57px; line-height:57px; font-size:20px;}
 .btnS{min-width:91px;height:36px;padding:0 11px;color:#888;font-size:14px;line-height:35px}
 
 .btnSI{position:relative;width:36px;height:36px;overflow:hidden;text-indent:-9999px}
@@ -314,7 +314,7 @@ td.tdPrice .cost1{color:#000;font-size:16px}
 .titArea .side{position:absolute;bottom:0;right:0}
 .titArea .titSub {font-size:15px; color:#888; line-height:25px; font-weight:400; margin-top:10px;}
 .stit{display:block;margin-bottom:18px;color:#000;font-size:20px;font-weight:500}
-.stit2{display:block;margin-bottom:15px;color:#000;font-size:18px;font-weight:500}
+.stit2{display:block;margin-bottom:20px;color:#000;font-size:21px;font-weight:700;font-family:"Noto Sans KR"; line-height:30px;}
 .stit3{display:block;margin:18px 0 8px;color:#000;font-size:14px;font-weight:500}
 .stit3:first-child{margin-top:0}
 .btMore{display:inline-block;padding-right:11px;font-size:14px;background:url(../images/pc/ico_more.gif) 100% 49% no-repeat}
@@ -360,6 +360,9 @@ span.caution{display:inline-block;margin:-5px 0 -5px 26px;vertical-align:middle}
 .layerPop .layTop{position:relative;padding-bottom:18px;margin-bottom:30px;border-bottom:1px solid #000}
 .layerPop .layTop .laytit{font-size:18px}
 .layerPop .layTop .close{position:absolute;top:-6px;right:-6px;width:30px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../images/pc/ico_close.png) 50% 50% no-repeat}
+.layerPop .singlePhotoReviewLayer{display:block;}
+.layerPop .fullPhotoReviewLayer{display:none;}
+.layerPop .fullPhotoReviewLayer .laysubtit{font-family:"Noto Sans KR";font-weight:700; font-size:18px;line-height:26px;color:#666666;}
 .layerPop .layCon{position:relative}
 .layerPop .txtAlert{display:table-cell;width:1%;height:60px;text-align:center;vertical-align:middle}
 .layerPop .txtAlert .txt1{color:#000}
@@ -457,7 +460,7 @@ span.caution{display:inline-block;margin:-5px 0 -5px 26px;vertical-align:middle}
 .txtPrice .costs .reg em {color:#ff6500; font-size:14px;}
 .txtPrice .costs .reg em strong {font-size:16px; margin-left:-5px;}
 
-.soldout-wrapper {cursor:pointer; position:absolute;width:50%;height:50%;text-align:center;background:rgba(0,0,0,.35);z-index:2;display:flex;justify-content:center;align-items:center;border-radius:100%;transform:translate(50%,50%);} /* 2024-05-20 수정 */
+.soldout-wrapper {cursor:pointer; position:absolute;width:50%;height:50%;text-align:center;background:rgba(0,0,0,.35);z-index:2;display:flex;justify-content:center;align-items:center;border-radius:100%;transform:translate(50%,50%);} /* 2024-05-29 수정 */
 .restock {position:absolute; z-index:2; bottom:0; height:50px; line-height:50px; border-top:1px solid #fff; width:100%; text-align:center;} /* 2024-01-02 추가 */
 .restock span {color:#fff; font-size:17px; position:relative; margin-left:18px;} /* 2024-01-02 추가 */
 .restock span:before {content:''; position:absolute; width:19px; height:20px; z-index:2; bottom:0px; left:-23px; display:block; background:url('../images/pc/emoji_restock.svg'); background-size:19px 20px;} /* 2024-01-02 추가 */
@@ -985,7 +988,7 @@ td.noData{margin:0;background:none}
 .prImage{float:left;width:580px;}
 .prImage .photo{position:relative;height:580px}
 .prImage .photo img{width:100%}
-.prImage .photo .soldout-wrapper {position:absolute;top:50%;left:50%;text-align:center;border-radius:100%;background:rgba(0,0,0,.35);z-index:2;display:flex;justify-content:center;align-items:center;transform:translate(-50%,-50%);} /* 2024-05-20 수정 */
+.prImage .photo .soldout-wrapper {position:absolute;top:50%;left:50%;text-align:center;border-radius:100%;background:rgba(0,0,0,.35);z-index:2;display:flex;justify-content:center;align-items:center;transform:translate(-50%,-50%);} /* 2024-05-29 수정 */
 .prImage .photo .soldout{font-size:25px;} /* 2023-10-30 수정*/
 .prImage .thumb{margin-top:20px;text-align:center}
 .prImage .thumb>li{display:inline-block;width:80px;height:80px;margin:0 8px;border:1px solid #eee}
@@ -1131,19 +1134,26 @@ td.noData{margin:0;background:none}
 .photoList>li a.photoMore:after{content:'더보기';position:absolute;top:50%;left:0;width:100%;margin-top:-25px;padding-top:30px;color:#fff;font-size:18px;text-align:center;background:url(../images/pc/ico_more02.png) 50% 0 no-repeat}
 .photoList>li img{width:100%;height:100%}
 .itmReview{position:relative}
-.itmReview .rvInfo{color:#888;font-size:14px}
+.itmReview .rvInfo{color:#888;font-size:14px;}
+.itmReview .rvInfo2{border-bottom:2px solid black;padding-bottom:20px;}
 .itmReview .rvInfo .user{display:inline-block;margin-left:12px}
 .itmReview .rvInfo .date{display:inline-block;margin-left:4px}
+.itmReview .rvInfo .user2{display:inline-block;margin-left:20px!important;font-family:"Roboto";font-weight:500;font-size:17px;line-height:20px;color:#868686;}
+.itmReview .rvInfo .date2{display:inline-block;margin-left:4px!important;font-family:"Roboto";font-weight:500;font-size:17px;line-height:20px;color:#868686;float:right;}
 .itmReview .rvInfo .option{display:block;margin-top:10px}
-.itmReview .rvInfo .tit{display:block;margin-top:28px;color:#000;font-size:18px;font-weight:400;line-height:1.2}
+.itmReview .rvInfo .tit{margin-top:20px;color:#000;font-size:21px;font-weight:700;line-height:30px;width:416px;max-height:60px;text-overflow: ellipsis;overflow: hidden;word-break: break-word;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical}
+#rvCont2{margin-top:20px!important;padding:0!important;}
 .itmReview .rvCont{margin-top:8px}
 .itmReview .rvCont .option{display:block;margin-bottom:18px;color:#888;font-size:14px}
 .itmReview .rvCont .tit{display:block;color:#000}
 .itmReview .rvCont .txt{color:#666}
-.itmReview .rvCont .txt2{color:#000}
+.itmReview .rvCont .txt2{border:0px;width:100%;font-family:"Noto Sans KR";font-weight:500;font-size:16px;line-height:22px;color:#666;height:203px;border:none;outline:none;resize:none;}
 .itmReview .rvCont .like{margin-top:6px;color:#888;font-size:14px}
 .itmReview .rvCont .photoList{margin:20px -260px 0 0}
 .itmReview .rvLike{position:absolute;top:70px;right:0}
+.itmReview .rvLike2{margin-top:0!important;padding-top:0!important;display:flex;gap:4px;}
+.itmReview .rvLike2 #pop_like, #pop_bad{width:60px!important;margin-left:0!important;}
+.itmReview .rvLike2 .report{width:30px!important;margin-left:11px;}
 .itmReview .rvLike .ctrl{width:84px;height:36px;margin-left:4px;color:#000;font-weight:500;border:1px solid #d9d9d9;border-radius:36px}
 .itmReview .rvLike .ctrl i{display:inline-block;width:18px;height:18px;margin:-2px 8px 0 0;overflow:hidden;text-indent:-9999px;vertical-align:middle;background:url(../images/pc/ico_like.png) 0 0 no-repeat}
 .itmReview .rvLike .ctrl.like i{background-position:0 0}
@@ -1174,15 +1184,15 @@ td.noData{margin:0;background:none}
 .reviewList>li{position:relative;padding:30px 260px 30px 0;border-bottom:1px solid #eee}
 
 .photoSwiper .swiper-slide img{width:100%}
-.photoSwiper .swiper-arrow{position:absolute;top:50%;width:40px;height:40px;margin-top:-20px;font-size:0;background:url(../images/pc/ico_swiper_arr02.png) 0 0 no-repeat}
-.photoSwiper .swiper-arrow.prev{left:0;background-position:0 0}
-.photoSwiper .swiper-arrow.next{right:0;background-position:0 -40px}
-.photoSwiper .swiper-indicator{margin-top:10px}
-.photoSwiper .swiper-indicator:after{content:'';display:block;clear:both}
-.photoSwiper .swiper-indicator .thum{display:block;float:left;width:80px;height:80px;margin-left:10px;border:1px solid #eee}
-.photoSwiper .swiper-indicator .thum:first-child{margin-left:0}
-.photoSwiper .swiper-indicator .thum img{width:100%;height:100%;opacity:.5}
-.photoSwiper .swiper-indicator .thum[aria-selected="true"] img{opacity:1}
+.photoSwiper .swiper-arrow{position:absolute;top:50%;width: 23px;height: 42px;margin-top:-20px;font-size:0;}
+.photoSwiper .swiper-arrow.prev{left:0;background-position:0 0;background:url(../images/pc/ico-swiper-left-arrow.png) 0 0 no-repeat}
+.photoSwiper .swiper-arrow.next{right: 0;background-position:0 0;background:url(../images/pc/ico-swiper-right-arrow.png) 0 0 no-repeat}
+.itmReview .swiper-indicator{display:flex;gap:4px;} 
+.itmReview .swiper-indicator:after{content:'';display:block;clear:both}
+.itmReview .swiper-indicator .thum{display:block;float:left;width:38px;height:38px;}
+.itmReview .swiper-indicator .thum:first-child{margin-left:0}
+.itmReview .swiper-indicator .thum img{width:100%; height:100%;display: flex;object-fit: cover;}
+.itmReview .swiper-indicator .thum[aria-selected="true"] img{opacity:1}
 
 /* 재입고 알림 신청 layerpopup 2023-01-09 추가 */
 .layerRestock {width:800px; margin-left:-400px; /*display:block;*/ top:494px; padding:30px 30px 44px;}
@@ -1213,22 +1223,48 @@ td.noData{margin:0;background:none}
 .layerPop .tableWrap {margin-top:40px;}
 /* //재입고 알림 신청 layerpopup 2023-01-09 추가 */
 
-.layerReview{width:940px;margin-left:-470px}
+.layerReview{width:945px;margin-left:-470px;padding:47px 47px 56px 45px;}
+@media(max-width:1920px){
+.layerReview{max-height: calc(100% - 32px);overflow-y:scroll;}
+}
+
+.layReviewTop{
+    display:flex;margin-bottom:35px;justify-content: space-between;align-items: center;flex-wrap: wrap;
+}
+.layReviewTop .layReviewTopLeft{
+    display:flex; gap:15px;align-items:center;
+}
+
+.layerReview .layReviewTop .laytit{
+    font-family:'Noto Sans KR'; font-size:31px;font-weight:700;line-height:45px;
+}
+.layerReview .layReviewTop .showAllPhotoReviews{color:#868686;padding:7px 14px; border-radius:12px;border:1px solid #868686;font-family:"Noto Sans KR";font-size:18px;font-weight:700;line-height:26px;height: 36px;display: flex;align-items: center;justify-content: center;}
+.layerReview .layReviewTop button:disabled,button[disabled]{color:#D7D7D7;border:1px solid #D7D7D7;background-color:white}
+.layerReview .layReviewTop .close{width:26px;height:26px;overflow:hidden;text-indent:-9999px;background:url(../images/pc/ico_close.png) 50% 50% no-repeat}
+#layerReviewFull{display:none;z-index:100}
 .photoReview:after{content:'';display:block;clear:both}
-.photoReview .photoSwiper{float:left;width:440px}
-.photoReview .photoSwiper .swiper-slide{width:440px;height:440px}
-.photoReview .photoSwiper .swiper-slide img{width:100%;height:100%}
-.photoReview .itmReview{overflow:hidden;padding-left:35px}
-.photoReview .itmReview .rvInfo{height:94px;margin-bottom:10px;padding-bottom:18px;border-bottom:1px solid #eee}
-.photoReview .itmReview .rvCont{height:325px;margin-top:0;padding:18px 0;overflow-y:auto}
-.photoReview .itmReview .rvLike{position:static;margin-top:10px;padding-top:54px;text-align:right;border-top:1px solid #eee}
-.photoOther{margin-top:30px;}
+.photoReview .photoSwiper{float:left;width:400px}
+.photoReview .photoSwiper .swiper-slide{width:400px;height:400px}
+.photoReview .photoSwiper .swiper-slide img{width:100%;height:100%;display:flex;object-fit: cover;}
+.photoReview .itmReview{overflow:hidden;padding-left:25px;display:flex;flex-direction:column;justify-content:space-between;}
+.photoReview .itmReview .itemReviewRight{height: 400px;display: flex;flex-direction: column;justify-content: space-between;}
+.photoReview .itmReview .itemReviewRight .itemReviewRightBottom{display:flex;justify-content:space-between;align-items: flex-end;}
+.photoReview .itmReview .rvInfo{
+/*height:94px;margin-bottom:10px;padding-bottom:18px;border-bottom:1px solid #eee*/
+}
+.photoReview .itmReview .rvCont{margin-top:0;padding:10px 0;overflow-y:auto}
+.photoReview .itmReview .rvLike{position:static;margin-top:10px;padding-top:54px;text-align:right;}
+.photoOther{margin-top:35px;}
 .photoOther .photoSwiper{margin:0 1px}
+.photoOther .photoMoreSwiper{height:140px!important;display:flex;justify-content:center;}
+
 /* .photoOther .photoSwiper .swiper-slide img{width:100%;height:100%} */
 .photoOther .swiperArea.photoSwiper .swiper-container .swiper-wrapper{overflow: hidden !important; width: max-content !important;}
-.photoOther .swiperArea.photoSwiper .swiper-slide{width:128px;height:128px;margin-right:22px}
+.photoOther .swiperArea.photoSwiper .swiper-slide{width:140px!important;height:140px!important;}
+.photoOther .swiperArea.photoSwiper .swiper-slide + .swiper-slide{margin-right:14px;}
 .photoOther .swiperArea.photoSwiper .swiper-slide > a{position: relative;width: 100%;height: 100%;padding-top: 100%;font-size: 0px;overflow: hidden;}
-.photoOther .swiperArea.photoSwiper .swiper-slide img{max-height: 100%;height: 100%;margin: auto 0;cursor: pointer;position: absolute;top: 50%;left: 0px;transform: translateY(-50%);}
+.photoOther .swiperArea.photoSwiper .swiper-slide img{max-height: 100%;height: 100%;margin: auto 0;cursor: pointer;position: absolute;top: 50%;left: 0px;transform: translateY(-50%);display:flex;object-fit: cover;}
+.swiperArea .swiper-box{width:756px;overflow:hidden;margin-left:14px;}
 
 .boardFilter{margin:40px 0 10px}
 .qnaList{border-top:1px solid #000}

@@ -214,15 +214,16 @@ button {
     cursor: pointer;
     border-radius: 0;
 }
+/* 카트버튼 */
 .itemList li:hover .iHover {
     display: block;
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: calc(100% - 63px) 0 21px 0;
+    top: 50%; /* 부모 요소의 50% 위치에서 시작 */
+    left: 50%; /*부모 요소의 50% 위치에서 시작 */
+    transform: translate(-50%, -50%); /* 중앙으로 이동 */
+    background-color: rgba(215, 212, 39, 0.9);
     text-align: center;
+    padding: 0px; /* 필요한 경우 패딩 추가 */
 }
 
 .item-number {

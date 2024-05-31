@@ -56,21 +56,21 @@
                     <ol id="itemList" class="itemList">
                         {% for product in products %}
                             <li>
-                                <span class="item-number">{{ forloop.counter|stringformat:"02d" }}</span>
-                                <a href="{% url 'vending_app:ProductList'%}" class="iLink">
+                                <a href="{% url 'vending_app:product_detail' product.product_id %}" class="iLink">
+                                    <span class="item-number">{{ forloop.counter|stringformat:"02d" }}</span>
                                     <div class="thum">
-                                        <img src="{{ product.product_image.url }}" alt="">
+                                        <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
                                     </div>
                                     <div class="cont">
                                         <div class="txtFlag">
-                                            {% if  product.product_flag and  product.product_flag != "일반" %}
-                                            <span class=" flag {{product.product_flag}}">{{ product.product_flag }}</span>
-                                            {% endif%}
+                                            {% if product.product_flag and product.product_flag != "일반" %}
+                                                <span class="flag {{ product.product_flag }}">{{ product.product_flag }}</span>
+                                            {% endif %}
                                         </div>
                                         <strong class="product_name">{{ product.product_name }}</strong>
                                         <p class="txt">{{ product.description }}</p>
                                         <div class="txtPrice">
-                                            <del class="cost1" title="판매가"><b>{{ product.product_price|intcomma }}</b>원</del>
+                                            <del class="cost1" title="판매가"><b>{{ product.product_price|floatformat:"0" }}</b>원</del>
                                         </div>
                                     </div>
                                 </a>
