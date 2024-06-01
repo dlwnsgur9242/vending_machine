@@ -45,7 +45,7 @@
                         <td>{{ cart_item.total_price|floatformat:"0" }}</td>
                         <td class="tdTools">
                             <button type="button" class="btnST btnS action" name="btnDirectOrder">바로구매</button>
-                            <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post" style="display:inline;">
+                            <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="btnST btnS" name="btnItemDelete">삭제하기</button>
                             </form>
