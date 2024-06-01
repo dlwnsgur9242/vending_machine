@@ -26,27 +26,28 @@
                     {% for cart_item in cart_items %}
                     <tr>
                         <td>{{ cart_item.product.product_name }}</td>
-                        <td>{{ cart_item.product.product_price }}</td>
+                        <td>{{ cart_item.product.product_price|floatformat:"0" }}</td>
                         <td>
                             <span class="frmAmount">
-                                <form action="{% url 'vending_app:update_cart' cart_item.product.product_id %}" method="post" style="display:inline;">
+                                <form action="{% url 'vending_app:update_cart' cart_item.product.product_id -1 %}" method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <input type="hidden" name="cart_qty" value="-1">
                                     <button type="submit" class="minus">수량 감소</button>
                                 </form>
                                 <input type="text" title="수량 직접입력" name="qty" value="{{ cart_item.cart_qty }}" class="numeric" maxlength="5" readonly>
-                                <form action="{% url 'vending_app:update_cart' cart_item.product.product_id %}" method="post" style="display:inline;">
+                                <form action="{% url 'vending_app:update_cart' cart_item.product.product_id 1 %}" method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <input type="hidden" name="cart_qty" value="1">
                                     <button type="submit" class="plus">수량 증가</button>
                                 </form>
                             </span>
                         </td>
-                        <td>{{ cart_item.total_price }}</td>
-                        <td>
-                            <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post">
+                        <td>{{ cart_item.total_price|floatformat:"0" }}</td>
+                        <td class="tdTools">
+                            <button type="button" class="btnST btnS action" name="btnDirectOrder">바로구매</button>
+                            <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
-                                <button type="submit">삭제</button>
+                                <button type="submit" class="btnST btnS" name="btnItemDelete">삭제하기</button>
                             </form>
                         </td>
                     </tr>
@@ -56,9 +57,18 @@
         </div>
         <!-- 장바구니 총 금액 -->
         <ul class="cartTotal">
-            <li><span class="txt">총 금액</span><span class="cost"><b id="totalProductPayment">2,790</b>원</span></li>
-            <li><span class="txt">배송비</span><span class="cost"><b id="totalDeliveryPayment">3,000</b>원</span></li>
-            <li><span class="txt">결제 금액</span><span class="cost"><b id="totalPayment">5,790</b>원</span></li>
+            <li>
+                <span class="txt">총 금액</span>
+                <span class="cost"><b id="totalProductPayment">{{ total_product_payment|floatformat:"0" }}</b>원</span>
+            </li>
+            <li>
+                <span class="txt">배송비</span>
+                <span class="cost"><b id="totalDeliveryPayment">{{ delivery_fee }}</b>원</span>
+            </li>
+            <li>
+                <span class="txt">결제 금액</span>
+                <span class="cost"><b id="totalPayment">{{ total_payment|floatformat:"0" }}</b>원</span>
+            </li>
         </ul>
     </div>
 </body>

@@ -60,14 +60,20 @@ def view_cart(request):
     # 현재 사용자의 장바구니에 있는 상품들을 가져옴
     cart_session_id = request.session.get('cart_session_id')
     cart_items = Cart.objects.filter(cart_session_id= cart_session_id, user=None)
-
+    total_product_payment = sum(item.total_price() for item in cart_items)
+    delivery_fee = 3000  # 배송비
+    total_payment = total_product_payment + delivery_fee
+    
     for cart_item in cart_items:
         cart_item.total_price = cart_item.cart_qty * cart_item.product.product_price
     
     print(cart_item.product.product_id)
 
     context = {
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'total_product_payment': total_product_payment,
+        'delivery_fee': delivery_fee,
+        'total_payment': total_payment,
     }
     return render(request, 'main/view_cart.html', context)
 
@@ -96,12 +102,17 @@ def add_to_cart(request):
 
 # 장바구니 상품 업데이트
 def update_cart(request, product_id, change):
+    try:
+        change = int(change)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid change value'}, status=400)
+    
     # 세션 ID 가져오기
     cart_session_id = request.session.get('cart_session_id')
     if not cart_session_id:
         return JsonResponse({'error': 'No cart session'}, status=400)
     
-    cart_item = get_object_or_404(Cart, session_id=cart_session_id, product_id=product_id, user=None)
+    cart_item = get_object_or_404(Cart, cart_session_id=cart_session_id, product_id=product_id, user=None)
     cart_item.cart_qty += change
     if cart_item.cart_qty <= 0:
         cart_item.delete()
@@ -117,7 +128,7 @@ def delete_cart_item(request, product_id):
     if not cart_session_id:
         return JsonResponse({'error': 'No cart session'}, status=400)
     
-    cart_item = get_object_or_404(Cart, session_id=cart_session_id, product_id=product_id, user=None)
+    cart_item = get_object_or_404(Cart, cart_session_id=cart_session_id, product_id=product_id, user=None)
     cart_item.delete()
 
     return redirect('vending_app:view_cart')
