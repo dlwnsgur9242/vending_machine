@@ -125,7 +125,7 @@ input::-ms-clear{display:none}
 .frmCheck input[type="checkbox"]{position:absolute;top:0;left:0;width:25px;height:25px;-webkit-appearance:none;appearance:none;border:0;border-radius:0;background:0;box-shadow:none;opacity:0}
 .frmCheck input[type="checkbox"]+label{display:block;min-height:25px;padding:2px 0 0 35px;font-size:14px}
 .frmCheck input[type="checkbox"]+label:before{content:'';position:absolute;top:0;left:0;width:25px;height:25px;border:1px solid #b4b4b4;background:#fff}
-.frmCheck input[type="checkbox"]:checked+label:before{background:#fb6c19 url(../images/pc/ico_form.png) 0 0 no-repeat;border-color:#fb6c19}
+.frmCheck input[type="checkbox"]:checked+label:before{background:#fb6c19 url(../icon/ico_form.png) 0 0 no-repeat;border-color:#fb6c19}
 .frmCheck input[type="radio"]{position:absolute;top:2px;left:0;width:20px;height:20px;-webkit-appearance:none;appearance:none;border:0;border-radius:0;background:0;box-shadow:none;opacity:0}
 .frmCheck input[type="radio"]+label{display:block;min-height:20px;padding:2px 0 2px 30px;font-size:14px;line-height:20px}
 .frmCheck input[type="radio"]+label:before{content:'';position:absolute;top:2px;left:0;width:20px;height:20px;border:1px solid #b4b4b4;border-radius:100%;background:#fff}
@@ -1661,7 +1661,7 @@ td.noData{margin:0;background:none}
 .relay4thArea .giftArea ul li .frmCheck input[type="checkbox"] {width:25px; height:25px;}
 .relay4thArea .giftArea ul li .frmCheck input[type="checkbox"]+label {padding:0;}
 .relay4thArea .giftArea ul li .frmCheck input[type="checkbox"]+label:before {top:-1px; left:-1px; width:25px; height:25px; border-color:#eee;}
-.relay4thArea .giftArea ul li .frmCheck input[type="checkbox"]:checked+label:before {background:#fb6c19 url(../images/pc/ico_form.png) 0 0 no-repeat; border-color:#fb6c19;}
+.relay4thArea .giftArea ul li .frmCheck input[type="checkbox"]:checked+label:before {background:#fb6c19 url(../icon/ico_form.png) 0 0 no-repeat; border-color:#fb6c19;}
 .relay4thArea .giftArea ul li .img {display:block; padding:51px 13px 50px; border-bottom:1px solid #eee;}
 .relay4thArea .giftArea ul li .txt {display:table-cell; height:102px; width:196px; padding:12px 0; vertical-align:middle; font-size:17px; color:#000; font-family:'Noto Sans KR';}
 .relay4thArea .giftArea ul li .price {display:inline-block; font-size:18px; color:#8c8c8c; text-decoration:line-through; vertical-align:middle; padding-top:3px;}

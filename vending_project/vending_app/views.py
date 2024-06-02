@@ -55,19 +55,37 @@ def product_detail(request, product_id):
 
 #     return render(request, 'main/view_cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
-# 장바구니
+# # 장바구니
+# def view_cart(request):
+#     # 현재 사용자의 장바구니에 있는 상품들을 가져옴
+#     cart_session_id = request.session.get('cart_session_id')
+#     cart_items = Cart.objects.filter(cart_session_id= cart_session_id, user=None)
+#     total_product_payment = sum(item.total_price() for item in cart_items)
+#     delivery_fee = 3000  # 배송비
+#     total_payment = total_product_payment + delivery_fee
+    
+#     for cart_item in cart_items:
+#         cart_item.total_price = cart_item.cart_qty * cart_item.product.product_price
+    
+#     print(cart_item.product.product_id)
+
+#     context = {
+#         'cart_items': cart_items,
+#         'total_product_payment': total_product_payment,
+#         'delivery_fee': delivery_fee,
+#         'total_payment': total_payment,
+#     }
+#     return render(request, 'main/view_cart.html', context)
+
+# 장바구니 보기
 def view_cart(request):
-    # 현재 사용자의 장바구니에 있는 상품들을 가져옴
     cart_session_id = request.session.get('cart_session_id')
-    cart_items = Cart.objects.filter(cart_session_id= cart_session_id, user=None)
-    total_product_payment = sum(item.total_price() for item in cart_items)
-    delivery_fee = 3000  # 배송비
-    total_payment = total_product_payment + delivery_fee
-    
-    for cart_item in cart_items:
-        cart_item.total_price = cart_item.cart_qty * cart_item.product.product_price
-    
-    print(cart_item.product.product_id)
+    cart_items, total_product_payment, delivery_fee, total_payment = get_cart_items(cart_session_id)
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        handle_cart_post_action(action, request, cart_items)
+        return redirect('vending_app:view_cart')
 
     context = {
         'cart_items': cart_items,
@@ -76,6 +94,36 @@ def view_cart(request):
         'total_payment': total_payment,
     }
     return render(request, 'main/view_cart.html', context)
+
+# 장바구니 항목 가져오기 및 계산
+def get_cart_items(cart_session_id):
+    cart_items = Cart.objects.filter(cart_session_id=cart_session_id, user=None)
+    total_product_payment = sum(item.total_price() for item in cart_items)
+    delivery_fee = 3000  # 배송비
+    total_payment = total_product_payment + delivery_fee
+
+    for cart_item in cart_items:
+        cart_item.total_price = cart_item.cart_qty * cart_item.product.product_price
+
+    return cart_items, total_product_payment, delivery_fee, total_payment
+
+# 장바구니 POST 요청 처리
+def handle_cart_post_action(action, request, cart_items):
+    if action == 'delete_selected':
+        selected_items = request.POST.getlist('cart_num')
+        Cart.objects.filter(id__in=selected_items).delete()
+    elif action == 'delete_all':
+        cart_items.delete()
+    elif action == 'select_buy':
+        selected_items = request.POST.getlist('cart_num')
+        # 선택 상품 구매 처리 로직 (구현 필요)
+        # 예: selected_cart_items = Cart.objects.filter(id__in=selected_items)
+    elif action == 'all_buy':
+        print("로직구현중")
+        # 전체 상품 구매 처리 로직 (구현 필요)
+        # 예: all_cart_items = cart_items
+    else :
+        return 9;
 
 # 장바구니 상품 추가
 def add_to_cart(request):
@@ -132,3 +180,22 @@ def delete_cart_item(request, product_id):
     cart_item.delete()
 
     return redirect('vending_app:view_cart')
+
+
+# 주문 결제
+def orderPatment(request):
+    cart_session_id = request.session.get('cart_session_id')
+    cart_items, total_product_payment, delivery_fee, total_payment = get_cart_items(cart_session_id)
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        handle_cart_post_action(action, request, cart_items)
+        return redirect('vending_app:view_cart')
+
+    context = {
+        'cart_items': cart_items,
+        'total_product_payment': total_product_payment,
+        'delivery_fee': delivery_fee,
+        'total_payment': total_payment,
+    }
+    return render(request, 'main/orderPayment.html', context)
