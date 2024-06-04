@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Cart, User
+from .models import Product, Cart, User, Order
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from .forms import ProductRegisterForm, AddToCartForm
@@ -87,7 +87,7 @@ def view_cart(request):
         select_all = 'select_all' in request.POST
         selected_items = request.POST.getlist('cart_num')
 
-         # 디버깅용 출력
+        # 디버깅용 출력
         print("Action:", action)
         print("Select all:", select_all)
         print("Selected items:", selected_items)
@@ -113,6 +113,7 @@ def get_cart_items(cart_session_id):
     delivery_fee = 3000  # 배송비
     total_payment = total_product_payment + delivery_fee
 
+    #total_price를 계산하는 로직
     for cart_item in cart_items:
         cart_item.total_price = cart_item.cart_qty * cart_item.product.product_price
 
@@ -127,10 +128,34 @@ def handle_cart_post_action(action, request, selected_items):
             Cart.objects.all().delete()
         elif action == 'select_buy':
             # 선택 상품 구매 처리 로직 (구현 필요)
-            pass
+            handle_select_buy(request, selected_items)
         elif action == 'all_buy':
             # 전체 상품 구매 처리 로직 (구현 필요)
-            pass
+            handle_all_buy(request)
+
+# 선택한 상품 구매 처리
+def handle_select_buy(request, selected_items):
+    # 선택한 상품들을 가져옵니다.
+    cart_items = Cart.objects.filter(cart_id__in=selected_items)
+
+    # 각 상품에 대한 주문을 생성합니다.
+    for cart_item in cart_items:
+        order = Order.objects.create(
+            product=cart_item.product,
+            order_qty=cart_item.cart_qty,
+            order_amount=cart_item.total_price(),  # 주문 총액을 입력합니다.
+        )
+        order.save()
+        # 만약 주문 처리 이후에 장바구니에서 해당 상품을 삭제해야 한다면 아래 코드를 추가합니다.
+        cart_item.delete()
+
+    # 주문 처리가 완료되면 주문 완료 페이지로 리디렉션합니다.
+    return redirect('vending_app:orderPayment')
+
+# 전체 상품 구매 처리
+def handle_all_buy(request):
+    # 장바구니에 있는 모든 상품에 대한 주문 처리 등을 여기에 구현합니다.
+    pass
 
 # 장바구니 상품 추가
 def add_to_cart(request):
@@ -190,17 +215,10 @@ def delete_cart_item(request, product_id):
 
 # 주문 결제
 def orderPayment(request):
-    selected_items = request.GET.getlist('selected_items')
-    if not selected_items:
-        return HttpResponse("No items selected")
-
-    # 선택된 아이템들을 필터링합니다.
-    cart_items = Cart.objects.filter(cart_id__in=selected_items)
-
-    total_payment = sum(item.total_price() for item in cart_items)  # total_price를 호출합니다.
-
-    context = {
-        'cart_items': cart_items,
-        'total_payment': total_payment,
-    }
-    return render(request, 'vending_app/order_payment.html', context)
+    orders = Order.objects.all()  # 모든 주문을 가져옵니다.
+    count = len(orders)  # 주문의 개수를 계산합니다
+    
+    #total_price를 계산하는 로직
+    for order in orders:
+        order.total_price = order.order_qty * order.product.product_price
+    return render(request, 'main/orderPayment.html', {'orders': orders, 'count': count})

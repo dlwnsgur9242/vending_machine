@@ -9,195 +9,120 @@
     <title>주문 결제</title>
 </head>
 <body>
-    <nav class="Nav">
-        <div class="navbar_logo">
-          <i class="fa-solid fa-dog"></i>
-          <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
-        </div>
-
-        <ul class="navbar_menu">
-          <li><a href=""></a></li>
-          <li><a href=""></a></li>
-          <li><a href=""></a></li>
-        </ul>
-
-        <ul class="navbar_usermenu">
-        </ul>
-
-        <ul class="navbar_icons">
-            <li><i class="fab fa-twitter-square"></i></li>
-            <li><i class="fab fa-facebook-square"></i></li>
-            <li><i class="fab fa-instagram"></i></li>
-        </ul>
-
-        <a href="#" class="navbar_toggleBtn">   
-            <i class="fas fa-bars"></i>
-        </a>
-    </nav>  
-    <div class="cartArea">
-        <!-- 장바구니 상품 목록 -->
-        <div class="cartBoard">
-            <table class="tblForm">
-                <thead>
-                    <tr>
-                        <th scope="col">카테고리</th>
-                        <th scope="col">상품명</th>
-                        <th scope="col">구매가</th>
-                        <th scope="col">수량</th>
-                        <th scope="col">금액</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 장바구니에 추가된 각 상품을 반복하여 표시 -->
-                    {% for cart_item in cart_items %}
-                    <tr>
-                        <td>{{ cart_item.product.product_flag }}</td>
-                        <td class="itmTarget">
-                            <a href="{% url 'vending_app:product_detail' cart_item.product.product_id %}" class="iLink">
-                                <div class="thum"><img src="{{ cart_item.product.product_image.url }}" alt="{{ cart_item.product.product_name }}" style="width: 100px; height: 100px;"></div>
-                                <div class="cont"><strong class="tit">{{ cart_item.product.product_name }}</strong></div>
-                            </a>
-                        </td>
-                        <!-- <td><img src="{{ cart_item.product.product_image.url }}" alt="{{ cart_item.product.product_name }}" style="width: 100px; height: 100px;">
-                            {{ cart_item.product.product_name }}
-                        </td> -->
-                        <td>{{ cart_item.product.product_price|floatformat:"0" }}원</td>
-                        <td>{{ cart_item.cart_qty }}</td>
-                        <td>{{ cart_item.total_price|floatformat:"0" }}원</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <!-- 장바구니 총 금액 -->
-        <div class="orderPayment">
-            <div class="payWay">
-                <h3 class="titDep1">결제 수단 </h3>
-                <div class="lineBox">
-                    <span class="checkMulti">                        
-                        <span class="frmCheck"><input type="radio" id="ord_type1" name="ord_type" value="card" checked="checked"><label for="ord_type1">신용카드</label></span>
-                                <span class="frmCheck"><input type="radio" id="ord_type2" name="ord_type" value="vbank"><label for="ord_type2">계좌이체</label></span>
-                                    <span id="ord_type3_line" class="frmCheck"><input type="radio" id="ord_type3" name="ord_type" value="vank"><label for="ord_type3">무통장 입금</label></span>		                        
-                                <span class="frmCheck"><input type="radio" id="ord_type9" name="ord_type" value="kakao"><label for="ord_type9"><img src="/res_new/images/pc/lg_payment_kakaopay_new.png" style="height: 22px; margin-top: -1px;" alt="카카오페이"></label></span>
-                            <span class="frmCheck"><input type="radio" id="ord_type10" name="ord_type" value="payco"><label for="ord_type10"><img src="/res_new/images/pc/lg_payment_payco.png" alt="페이코"></label></span>
-                            <span class="frmCheck"><input type="radio" id="ord_type12" name="ord_type" value="samsungpay"><label for="ord_type12"><img src="/res_new/images/pc/lg_payment_sspay.png" alt="삼성페이"></label></span>         
-                                <span class="frmCheck"><input type="radio" id="ord_type13" name="ord_type" value="npay"><label for="ord_type13"><img src="/res_new/images/pc/lg_payment_naverpay_new.png" style="height: 22px; margin-top: -1px;" alt="네이버페이"></label></span>
-                    </span>
+    <div class="headerArea">
+        <div class="inner">
+            <nav class="Nav">
+                <div class="navbar_logo">
+                    <i class="fa-solid fa-dog"></i>
+                    <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
                 </div>
-                <div class="wayTax paymenttype_vank paymenttype_vbank paymenttype" style="display: none;">
-                    <div class="check"><span class="frmCheck"><input type="checkbox" id="tax" name="tax_gubun" value="tax"><label for="tax">세금계산서 발행 요청</label></span></div>
-                    <table id="taxInputForm" class="tblForm" style="display: none;">
-                        <caption>세금계산서 발행 정보</caption>
-                        <colgroup><col style="width:212px"><col style="width:auto"></colgroup>
+
+                <ul class="navbar_menu">
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
+
+                <ul class="navbar_usermenu">
+                </ul>
+
+            <ul class="navbar_icons">
+                <li><i class="fab fa-twitter-square"></i></li>
+                <li><i class="fab fa-facebook-square"></i></li>
+                <li><i class="fab fa-instagram"></i></li>
+            </ul>
+
+            <a href="#" class="navbar_toggleBtn">   
+                <i class="fas fa-bars"></i>
+            </a>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="contents">
+            <div class="cartArea">
+                <h3 class="titDep1 mt0">결제 예정 상품 <span class="count color01">(<em>{{ count }}</em>)</span>
+                    <span id="fast_text_line" class="sub" style="float: right; display: none;"></span></h3>
+                <!-- 주문 결제 상품 목록 -->
+                <div class="cartBoard">
+                    <table class="tblForm">
+                        <thead>
+                            <tr>
+                                <th scope="col">카테고리</th>
+                                <th scope="col">상품명</th>
+                                <th scope="col">구매가</th>
+                                <th scope="col">수량</th>
+                                <th scope="col">금액</th>
+                            </tr>
+                        </thead>
                         <tbody>
+                            <!-- 주문 결제 추가된 각 상품을 반복하여 표시 -->
+                            {% for order in orders %}
                             <tr>
-                                <th scope="row">사업자등록번호</th>
-                                <td>
-                                    <input type="tel" name="com_no" class="frmText" title="사업자등록번호" placeholder="[-] 없이 숫자만 입력하세요." style="width:280px">
-                                    <button type="button" id="btnTextAuth" class="btnST btnS other">인증</button>
+                                <td>{{ order.product.product_flag }}</td>
+                                <td class="itmTarget">
+                                    <a href="{% url 'vending_app:product_detail' order.product.product_id %}" class="iLink">
+                                        <div class="thum"><img src="{{ order.product.product_image.url }}" alt="{{ order.product.product_name }}" style="width: 100px; height: 100px;"></div>
+                                        <div class="cont"><strong class="tit">{{ order.product.product_name }}</strong></div>
+                                    </a>
                                 </td>
+                                <td>{{ order.product.product_price|floatformat:"0" }}원</td>
+                                <td>{{ order.order_qty }}</td>
+                                <td>{{ order.total_price|floatformat:"0" }}원</td>
                             </tr>
-                            <tr>
-                                <th scope="row">파일첨부(선택)</th>
-                                <td>
-                                    <span class="frmFileBtn"><input type="hidden" name="com_img" value=""><a href="javascript:;" class="btnST btnS other btn-file-search">사업자등록증업로드</a></span>
-                                    <div class="uplist" style="display:none;">
-                                        <span><font id="com_img_name">file.jpg</font><a href="javascript:;" class="delete"></a></span>
-                                    </div>
-                                    <span class="caution">세금계산서 인증이 안될 경우<br> 세금계산서를 스캔하여 직접 업로드해주세요.</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">담당자 정보</th>
-                                <td>
-                                    <input type="text" name="chrg_nm" class="frmText" title="성함" placeholder="성함">
-                                    <span class="frmPhone gapT">
-                                        <span class="selectWrap CP-selectWrap" first="true">
-                                            <input type="hidden" class="ctp100" name="chrg_phone">
-                                            <select name="chrg_phone_1" title="전화번호 앞자리" id="ui-id-3" style="display: none;">
-                                                <option value="010">010</option>
-                                                <option value="011">011</option>
-                                                <option value="017">017</option>
-                                                <option value="019">019</option>
-                                            </select><button tabindex="0" id="ui-id-3-button" type="button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="ui-id-3-menu" aria-haspopup="true" title="전화번호 앞자리" class="ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget"><span class="ui-selectmenu-text">010</span></button>
-                                        <div class="ui-selectmenu-menu ui-front"><ul aria-hidden="true" aria-labelledby="ui-id-3-button" id="ui-id-3-menu" role="listbox" tabindex="0" class="ui-menu ui-corner-bottom ui-widget ui-widget-content" style="max-height: 190px;"></ul></div></span>
-                                        <input type="text" name="chrg_phone_2" class="frmText numeric" title="전화번호 중간자리" placeholder="번호입력" maxlength="4">
-                                        <input type="text" name="chrg_phone_3" class="frmText numeric" title="전화번호 끝자리" placeholder="번호입력" maxlength="4">
-                                    </span>
-                                    <span class="frmEmail gapT">
-                                        <input type="hidden" class="ctp100" name="chrg_email" maxlength="50">
-                                        <input type="text" name="chrg_email_1" class="frmText" placeholder="이메일">
-                                        <span class="symbol">@</span>
-                                        <span class="selectWrap" first="true">
-                                            <input type="text" name="chrg_email_2" class="mailSrcInput" title="직접입력" placeholder="직접입력" style="display: inline-block;"><!-- 직접입력 선택 시 노출 -->
-                                            <select name="chrg_email_select_1" title="이메일 주소" id="ui-id-4" style="display: none;">
-                                                <option selected="selected" value="">직접입력</option>
-                                                <option value="naver.com">naver.com</option>
-                                                <option value="nate.com">nate.com</option>
-                                                <option value="daum.net">daum.net</option>
-                                                <option value="hanmail.net">hanmail.net</option>
-                                                <option value="gmail.com">gmail.com</option>
-                                            </select><button tabindex="0" id="ui-id-4-button" type="button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="ui-id-4-menu" aria-haspopup="true" title="이메일 주소" class="ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget"><span class="ui-selectmenu-text">직접입력</span></button>
-                                        <div class="ui-selectmenu-menu ui-front"><ul aria-hidden="true" aria-labelledby="ui-id-4-button" id="ui-id-4-menu" role="listbox" tabindex="0" class="ui-menu ui-corner-bottom ui-widget ui-widget-content" style="max-height: 190px;"></ul></div></span>
-                                    </span>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <!-- //세금계산서 발행 -->
-                <!-- 신용카드 안내 -->
-                <div class="guideArea paymenttype_card paymenttype" style="display: block;">
-                    <strong class="stit3">[확인사항]</strong>
-                    <ul class="blType1">
-                        <li>무이자 할부 개월수가 다른 상품들을 동시에 주문하시면, <em class="color01">낮은 무이자 할부 개월수</em>로 함께 적용됩니다.<br>예시) 무이자 할부 개월수가 10개월인 상품과 6개월인 상품을 함께 주문하실 경우 6개월로 적용됩니다.</li>
-                        <li><em class="color01">상품별로 무이자 할부 개월 수를 유지</em>하고 싶으신 경우엔 주문을 따로 해 주셔야 합니다.</li>
-                    </ul>
+                <!-- 주문 결제 총 금액 -->
+                <div class="orderPayment">
+                    <div class="payWay">
+                        <h3 class="titDep1">결제 수단 </h3>
+                        <div class="lineBox">
+                            <span class="checkMulti">                        
+                                <span class="frmCheck"><input type="radio" id="ord_type1" name="ord_type" value="card" checked="checked"><label for="ord_type1">현금</label></span>
+                                <span class="frmCheck"><input type="radio" id="ord_type2" name="ord_type" value="vbank"><label for="ord_type2">카드</label></span>
+                            </span>
+                        </div>
+                        <!-- 카드 안내 -->
+                        <div class="guideArea paymenttype_card paymenttype" style="display: block;">
+                            <strong class="stit3">[확인사항]</strong>
+                            <ul class="blType1">
+                                <li>천원, 오천원, 만원 가능</li>
+                                <li><em class="color01"> 오만원 불가능</em></li>
+                            </ul>
+                        </div>
+                        <!-- 현금 안내 -->
+                        <div class="guideArea paymenttype_vank paymenttype" style="display: none;">
+                            <strong class="stit3">[확인사항]</strong>
+                            <ul class="blType1">
+                                <li>100<br>이 경우는 고객의 책임이므로 사용에 주의하시기 바랍니다.</li>
+                                <li class="color01">가상계좌의 경우 CD기에서 현금입금 하실 수 없습니다. CD기에서 이체는 가능합니다.<br> 환불정보는 취소/반품 시 필요할 경우 환불이 진행되는 정보입니다. 정보가 불확실한 경우 전화문의로 다시 진행 합니다. 정확히 입력해주세요.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="payTotal">
+                        <h3 class="titDep1">결제 금액</h3>
+                        <div class="totalBox">
+                            <ul class="bInfo">
+                                <li><span class="head">총 주문 금액</span><span class="data"><b class="totalPayment">{{ cart_item.total_price|floatformat:"0" }}</b>원</span></li>
+                                <li><span class="head">쿠폰</span><span class="data"><b class="couponPoint">0</b>원</span></li>
+                                <li><span class="head">포인트</span><span class="data"><b class="finishPoint">0</b>원</span></li>
+                                <li><span class="head">배송비</span><span class="data"><b class="deliveryPayment">0</b>원</span></li>
+                                <li><span class="head">배송비 할인</span><span class="data"><b class="deliveryPaymentDc">0</b>원</span></li>
+                                <li><span class="head">포장비</span><span class="data"><b class="packingPayment">0</b>원</span></li>
+                            </ul>
+                            <div class="bTotal">
+                                <strong class="tit">최종 결제금액</strong>
+                                <span class="total"><b class="finishPayment">30,590</b>원</span>
+                            </div>	
+                        </div>
+                    </div>
+                </div><div class="btnArea">
+                    <button type="button" class="btnST btnL action" onclick="fnOrderSubmit();">결제하기</button>
+                        <a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other">장바구니로 가기</a>  
                 </div>
-                <!-- //신용카드 안내 -->
-                <!-- 무통장 입금 안내 -->
-                <div class="guideArea paymenttype_vank paymenttype" style="display: none;">
-                    <strong class="stit3">[확인사항]</strong>
-                    <ul class="blType1">
-                        <li>가상계좌는 일회성 계좌이므로 재사용 시 (다시 그 계좌로 입금하시는 경우) 타인의 계좌로 입금될 가능성이 있습니다.<br>이 경우는 고객의 책임이므로 사용에 주의하시기 바랍니다.</li>
-                        <li class="color01">가상계좌의 경우 CD기에서 현금입금 하실 수 없습니다. CD기에서 이체는 가능합니다.<br> 환불정보는 취소/반품 시 필요할 경우 환불이 진행되는 정보입니다. 정보가 불확실한 경우 전화문의로 다시 진행 합니다. 정확히 입력해주세요.</li>
-                    </ul>
-                </div>
-                <!-- //무통장 입금 안내 -->
-                <!-- 상품권 안내 -->
-                <div class="guideArea paymenttype_giftCard paymenttype" style="display: none;">
-                    <strong class="stit3">[확인사항]</strong>
-                    <ul class="blType1">
-                        <li>결제방법에서 "아워홈 상품권 결제" 선택 후 결제하기를 완료합니다.</li>
-                        <li>아워홈 상품권과 주문번호, 주문자성함, 아이디, 연락처를 기입하여 유가증권 등기로 발송합니다.</li>
-                        <li>(보내실곳 : 서울특별시 강서구 마곡중앙10로 91 B1 문서수발실 / 아워홈Mall 담당자앞)</li>
-                        <li>확인 된 상품권은 접수 후 주문완료 처리됩니다. (등기발송 후 2~3일내 처리되며, 처리 이후 상품발송이 됩니다.)</li>
-                        <li>상품권 사용 후 남은 금액과 등기우편료는 상품권포인트로 지급 됩니다.</li>
-                        <li class="color01">비회원 또는 (페이스북 / 카카오톡 회원) 주문 시 상품권 및 등기발송 비용 잔액 사용이 불가합니다. (상품권포인트 : 상품권 사용 후 잔액+등기발송 비용)</li>
-                    </ul>
-                </div>
-                <!-- //상품권 안내 -->
             </div>
-            <div class="payTotal">
-                <h3 class="titDep1">결제 금액</h3>
-                <div class="totalBox">
-                    <ul class="bInfo">
-                        <li><span class="head">총 주문 금액</span><span class="data"><b class="totalPayment">{{ cart_item.total_price|floatformat:"0" }}</b>원</span></li>
-                        <li><span class="head">쿠폰</span><span class="data"><b class="couponPoint">0</b>원</span></li>
-                        <li><span class="head">포인트</span><span class="data"><b class="finishPoint">0</b>원</span></li>
-                        <li><span class="head">배송비</span><span class="data"><b class="deliveryPayment">0</b>원</span></li>
-                        <li><span class="head">배송비 할인</span><span class="data"><b class="deliveryPaymentDc">0</b>원</span></li>
-                        <li><span class="head">포장비</span><span class="data"><b class="packingPayment">0</b>원</span></li>
-                    </ul>
-                    <div class="bTotal">
-                        <strong class="tit">최종 결제금액</strong>
-                        <span class="total"><b class="finishPayment">30,590</b>원</span>
-                    </div>	
-                </div>
-            </div>
-        </div><div class="btnArea">
-            <button type="button" class="btnST btnL action" onclick="fnOrderSubmit();">결제하기</button>
-                <a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other">장바구니로 가기</a>  
         </div>
     </div>
 </body>

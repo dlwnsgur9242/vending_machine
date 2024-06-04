@@ -89,3 +89,63 @@ def orderPayment(request):
         'total_payment': total_payment,
     }
     return render(request, 'main/orderPayment.html', context)
+
+
+
+ #주문 결제 페이지DB
+
+# order 테이블
+
+주문 번호,
+주문한 상품,
+주문 수량,
+결제 종류(카드, 현금),
+결제 금액,
+주문 날짜 및 시간,
+
+
+
+# OrderItem 테이블
+
+order table
+주문 번호,
+주문한 상품,
+주문 수량,
+결제 종류(카드, 현금),
+결제 금액,
+주문 날짜 및 시간,
+
+
+
+class Order(models.Model):
+    PAYMENT_CHOICES = [
+        ('card', '카드'),
+        ('cash', '현금'),
+    ]
+
+    order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order_qty = models.PositiveIntegerField()
+    payment_type = models.CharField(max_length=10, choices=PAYMENT_CHOICES)
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    order_datetime = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # 결제 금액 계산: 주문 수량 * 상품 가격
+        self.payment_amount = self.order_qty * self.product.product_price
+        super().save(*args, **kwargs)
+
+
+
+## 결제
+# 현금 선택시 (제한조건 - 천원, 오천원, 만원 가능, 오만원 불가)
+# 100, 500, 1000, 5000, 10000 넣는 수량을 각각 입력 시킨다.(총 입금 금액 계산 로직 필요.)
+# 현금 선택시 / 거스름돈 / (제한조건 - 거스룸돈은 100원, 500원, 1000원 가능)
+# 1000원>500원>100원 순서로 거스름 돈을 출력한다.
+#( ex)거스름돈 5700원 = 1000원 5장, 500원 1개, 100원 2개 )
+
+
+#필요한 것
+#결제 선택
+#현금 결제/카드 결제를
