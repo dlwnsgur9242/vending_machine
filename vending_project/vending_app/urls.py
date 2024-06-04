@@ -20,5 +20,5 @@ urlpatterns = [
     path('delete_cart_item/<uuid:product_id>/', views.delete_cart_item, name='delete_cart_item'),
 
     #주문 결제
-    path('orderPatment', views.orderPatment, name="orderPatment"),
+    path('orderPayment', views.orderPayment, name="orderPayment"),
 ]

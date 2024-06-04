@@ -42,9 +42,9 @@
                     <tr>
                         <th scope="col">카테고리</th>
                         <th scope="col">상품명</th>
-                        <th scope="col">가격</th>
+                        <th scope="col">구매가</th>
                         <th scope="col">수량</th>
-                        <th scope="col">선택</th>
+                        <th scope="col">금액</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,15 +61,9 @@
                         <!-- <td><img src="{{ cart_item.product.product_image.url }}" alt="{{ cart_item.product.product_name }}" style="width: 100px; height: 100px;">
                             {{ cart_item.product.product_name }}
                         </td> -->
-                        <td>{{ cart_item.total_price|floatformat:"0" }}</td>
+                        <td>{{ cart_item.product.product_price|floatformat:"0" }}원</td>
                         <td>{{ cart_item.cart_qty }}</td>
-                        <td class="tdTools">
-                            <button type="button" class="btnST btnS action" name="btnDirectOrder">바로구매</button>
-                            <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btnST btnS" name="btnItemDelete">삭제하기</button>
-                            </form>
-                        </td>
+                        <td>{{ cart_item.total_price|floatformat:"0" }}원</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -188,7 +182,7 @@
                 <h3 class="titDep1">결제 금액</h3>
                 <div class="totalBox">
                     <ul class="bInfo">
-                        <li><span class="head">총 주문 금액</span><span class="data"><b class="totalPayment">30,590</b>원</span></li>
+                        <li><span class="head">총 주문 금액</span><span class="data"><b class="totalPayment">{{ cart_item.total_price|floatformat:"0" }}</b>원</span></li>
                         <li><span class="head">쿠폰</span><span class="data"><b class="couponPoint">0</b>원</span></li>
                         <li><span class="head">포인트</span><span class="data"><b class="finishPoint">0</b>원</span></li>
                         <li><span class="head">배송비</span><span class="data"><b class="deliveryPayment">0</b>원</span></li>

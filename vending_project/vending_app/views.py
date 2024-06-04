@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Cart, User
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .forms import ProductRegisterForm, AddToCartForm
 from .forms import AddToCartForm
 from django.utils.crypto import get_random_string
@@ -77,14 +77,25 @@ def product_detail(request, product_id):
 #     }
 #     return render(request, 'main/view_cart.html', context)
 
-# 장바구니 보기
+# 장바구니 view
 def view_cart(request):
     cart_session_id = request.session.get('cart_session_id')
     cart_items, total_product_payment, delivery_fee, total_payment = get_cart_items(cart_session_id)
 
     if request.method == 'POST':
         action = request.POST.get('action')
-        handle_cart_post_action(action, request, cart_items)
+        select_all = 'select_all' in request.POST
+        selected_items = request.POST.getlist('cart_num')
+
+         # 디버깅용 출력
+        print("Action:", action)
+        print("Select all:", select_all)
+        print("Selected items:", selected_items)
+        
+        if select_all:
+            selected_items = [str(item.id) for item in cart_items]
+
+        handle_cart_post_action(action, request, selected_items)
         return redirect('vending_app:view_cart')
 
     context = {
@@ -108,22 +119,18 @@ def get_cart_items(cart_session_id):
     return cart_items, total_product_payment, delivery_fee, total_payment
 
 # 장바구니 POST 요청 처리
-def handle_cart_post_action(action, request, cart_items):
-    if action == 'delete_selected':
-        selected_items = request.POST.getlist('cart_num')
-        Cart.objects.filter(id__in=selected_items).delete()
-    elif action == 'delete_all':
-        cart_items.delete()
-    elif action == 'select_buy':
-        selected_items = request.POST.getlist('cart_num')
-        # 선택 상품 구매 처리 로직 (구현 필요)
-        # 예: selected_cart_items = Cart.objects.filter(id__in=selected_items)
-    elif action == 'all_buy':
-        print("로직구현중")
-        # 전체 상품 구매 처리 로직 (구현 필요)
-        # 예: all_cart_items = cart_items
-    else :
-        return 9;
+def handle_cart_post_action(action, request, selected_items):
+    if selected_items and all(selected_items):  # 선택된 항목이 비어있지 않은지 확인
+        if action == 'delete_selected':
+            Cart.objects.filter(cart_id__in=selected_items).delete()
+        elif action == 'delete_all':
+            Cart.objects.all().delete()
+        elif action == 'select_buy':
+            # 선택 상품 구매 처리 로직 (구현 필요)
+            pass
+        elif action == 'all_buy':
+            # 전체 상품 구매 처리 로직 (구현 필요)
+            pass
 
 # 장바구니 상품 추가
 def add_to_cart(request):
@@ -181,21 +188,19 @@ def delete_cart_item(request, product_id):
 
     return redirect('vending_app:view_cart')
 
-
 # 주문 결제
-def orderPatment(request):
-    cart_session_id = request.session.get('cart_session_id')
-    cart_items, total_product_payment, delivery_fee, total_payment = get_cart_items(cart_session_id)
+def orderPayment(request):
+    selected_items = request.GET.getlist('selected_items')
+    if not selected_items:
+        return HttpResponse("No items selected")
 
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        handle_cart_post_action(action, request, cart_items)
-        return redirect('vending_app:view_cart')
+    # 선택된 아이템들을 필터링합니다.
+    cart_items = Cart.objects.filter(cart_id__in=selected_items)
+
+    total_payment = sum(item.total_price() for item in cart_items)  # total_price를 호출합니다.
 
     context = {
         'cart_items': cart_items,
-        'total_product_payment': total_product_payment,
-        'delivery_fee': delivery_fee,
         'total_payment': total_payment,
     }
-    return render(request, 'main/orderPayment.html', context)
+    return render(request, 'vending_app/order_payment.html', context)

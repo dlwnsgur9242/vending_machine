@@ -35,12 +35,12 @@
         </a>
     </nav>  
     <div class="cartArea">
-        <form method="post" action="{% url 'vending_app:view_cart' %}">
+        <form method="post">
             {% csrf_token %}
             <div class="prodFilter type2">
                 <span class="frmCheck">
-                    <input type="checkbox" id="ALL" onclick="toggleAll(this)">
-                    <label for="ALL">전체 선택</label>
+                    <input type="checkbox" id="selectAllCheckbox" name="select_all" value="1" {% if select_all %}checked{% endif %}>
+                    <label for="selectAllCheckbox">전체 선택</label>
                 </span>
                 <button type="submit" class="btnST btnT delete" name="action" value="delete_selected">선택 삭제</button>
                 <button type="submit" class="btnST btnT delete" name="action" value="delete_all">전체 삭제</button>
@@ -64,12 +64,12 @@
                         <tr>
                             <td class="tdCheck">
                                 <span class="frmCheck ntxt">
-                                    <input type="checkbox" id="CART0" name="cart_num" data-goods-sales-type="ONEDAY" data-delivery-type="N" value="202419147915" data-goods-id="S000000010459">
-                                    <label for="CART0">선택</label>
+                                    <input type="checkbox" id="CART{{ forloop.counter0 }}" name="cart_num" value="{{ cart_item.cart_id }}" {% if select_all or cart_item.id|stringformat:"s" in selected_items %}checked{% endif %}>
+                                    <label for="CART{{ forloop.counter0 }}">선택</label>
                                 </span>
                             </td>
                             <td>{{ cart_item.product.product_name }}</td>
-                            <td>{{ cart_item.product.product_price|floatformat:"0" }}</td>
+                            <td>{{ cart_item.product.product_price|floatformat:"0" }}원</td>
                             <td>
                                 <span class="frmAmount">
                                     <form action="{% url 'vending_app:update_cart' cart_item.product.product_id -1 %}" method="post" style="display:inline;">
@@ -85,7 +85,7 @@
                                     </form>
                                 </span>
                             </td>
-                            <td>{{ cart_item.total_price|floatformat:"0" }}</td>
+                            <td>{{ cart_item.total_price|floatformat:"0" }}원</td>
                             <td class="tdTools">
                                 <button type="button" class="btnST btnS action" name="btnDirectOrder">바로구매</button>
                                 <form action="{% url 'vending_app:delete_cart_item' cart_item.product.product_id %}" method="post">
@@ -120,5 +120,14 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.getElementById('selectAllCheckbox').addEventListener('change', function(e) {
+            var checkboxes = document.querySelectorAll('input[name="cart_num"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = e.target.checked;
+            }
+        });
+    </script>
 </body>
 </html>
