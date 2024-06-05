@@ -1,231 +1,41 @@
-<div class="prodSpot">
-    <div class="prImage">
-        <div class="photo">
-            <div class="cloud-zoom-wrap"><a href="https://mall.ourhome.co.kr//attach_file/20240418/C784A69E0C284606A1490532C4B39C2C.jpg" class="cloud-zoom" style="position: relative; display: block;">
-                
-                <img id="mainGoodsImg" src="https://mall.ourhome.co.kr//attach_file/20240418/E092E8BC9F9947A3A3F8638DE27CFF78.jpg" alt="대표이미지" style="display: block;">
-            </a><div class="mousetrap" style="background-image: url(&quot;&quot;); z-index: 999; position: absolute; width: 580px; height: 580px; left: 0px; top: 0px; cursor: crosshair;"></div></div>                            
+    <!-- 모달 창
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>결제 확인</h2>
+            <p>총 주문 금액: {{ order_total_payment }}원</p>
+            <p>총 입금 금액: {{ total_deposit }}원</p>
+            <p>결제하시겠습니까?</p>
+            <form method="post" action="{% url 'vending_app:ProductList' %}">
+                {% csrf_token %}
+                <button type="submit">결제하기</button>
+            </form>
         </div>
-        <ul class="thumb">
-            
-                <li>
-                    <input type="hidden" id="inpDetailThumBig1" value="https://mall.ourhome.co.kr//attach_file/20240418/C784A69E0C284606A1490532C4B39C2C.jpg">
-                    <a href="javascript:;" onclick="$('.cloud-zoom').attr('href',$('#inpDetailThumBig1').val());commonJs.zoomUpdate($('.cloud-zoom'));" id="goodsImg01" class="active">
-                        <img src="https://mall.ourhome.co.kr//attach_file/20240418/E092E8BC9F9947A3A3F8638DE27CFF78.jpg" alt="대표이미지">
-                    </a>
-                </li>
-            
-            
-            <li>
-                <input type="hidden" id="inpDetailThumBig2" value="https://mall.ourhome.co.kr//attach_file/20230802/E9A9093C9BAE4250AB5212C00D06206A.jpg">
-                <a href="javascript:;" onclick="$('.cloud-zoom').attr('href',$('#inpDetailThumBig2').val());commonJs.zoomUpdate($('.cloud-zoom'));" id="goodsImg02">
-                    <img src="https://mall.ourhome.co.kr//attach_file/20230802/DB5A55D5DC66458EB04DF3DA1BB85EEA.jpg" alt="상품이미지">
-                </a>
-            </li>
-            
-                                    
-        </ul>
-    </div>
-        <div class="prInfor">
-            <div class="pBase">
-                <!-- s: 181129 추가 :: 반짝할인, 남은시간 -->
-                
-                    
-                        <div class="status">
-                            <em class="timer" id="timerTIMESALE0">남은 시간 : <b>0일 06:28:40</b></em>
-                            <input type="hidden" id="hidTIMESALE0" name="timer" value="23319000">                                
-                        </div>
-                    
-                
-                <!-- e: 181129 추가 :: 반짝할인, 남은시간 -->                        
-                
-                <!-- 2021.06.25 김성민 -->
-                
-                
-                <!-- 픽업배송상품일경우 노출   2022-06-02 채우식 -->
-                
-                <!-- 픽업배송상품일경우 노출 -->
-                
-                <!-- // 20230110 픽업명칭변경,클래스추가 -->
-                
-                <div class="title">
-                    <h2>김치세끼 볶은김치 80g * 3입</h2>
-                    <p class="txt">아삭아삭 맛있는 볶은김치를 원한다면!</p>
-                    
-                </div>
-                <!-- // 20230725 가격변수 위치이동 -->                            
-                
-                    
-                        
-                        
-                        
-                    
-                    
-                
-                <!-- // 20230725 가격변수 위치이동-->                            
-                
-                <div class="txtPrice detailPrice main">
-                    
-                        
-                        
-                            
-                                
-                                    
-                                    <em class="rate big" title="할인율"><b>54</b>%</em>
-                                    
-                                
-                                                         
-                            
-                                <span class="cost1" title="판매가"><b>2,200</b>원</span>
-                            
-                            
-                            
-                                
-                                    <del class="cost2" title="판매가"><b>4,800</b>원</del>
-                                                                     
-                             
-                        
-                             
-                </div>
-              
-                
-                    <div class="tool">
-                    
-                        
-                            <button type="button" onclick="fnGoodsAddLike('S000000010197');" class="cart">쇼핑찜</button>
-                        
-                        
-                            <button type="button" onclick="fnGoodsAddCompare('S000000010197');" class="compare">상품비교</button>
-                        
-                        
-                        
-                    
-                        <button type="button" onclick="javascript:pc_share();" class="share">공유하기</button>
-                    </div>
-                
-            </div>
-            <div class="pOption">
-             <!-- 2021.06.24 김성민
-                    정기배송 상품 여부 <- 구매방법 radio 표출 
-              -->
-            
-                
-                
-                <ul class="itmInfo">
-                    <li>
-                        <strong class="head" style="font-size: 28px;font-weight: 600;line-height: 1.3;color: #000;">원산지</strong> 
-                        <span class="data" style="font-size: 28px;font-weight: 600;line-height: 1.3;color: #000;">
-                        상품상세정보 참조
-                        </span>
-                    </li>
-                    <li>
-                        <strong class="head">배송정보</strong>
-                        <span class="data">
-                        
-                        
-                        
-                            
-                            
-                            배송비 : 3,000원(3만원이상 구매 시 무료배송)
-                                                         
-                        
-                        
-                        </span>
-                    </li>
-                    
-                    
-                        <li><strong class="head">판매단위</strong><span class="data">1개</span></li>                              
-                                                    
-                    <li><strong class="head">중량/용량</strong><span class="data">80g*3</span></li>
-                    <li><strong class="head">보관</strong><span class="data">실온</span></li>
-                    
-                    
-                    
+    </div> -->
 
-                    
-                    <li class="option">
-                        <strong class="head">상품선택</strong>
-                        <div class="data itmOption">
-                            
-                            
-                                <div class="optionBox" id="S000000010197">
-                                    <strong class="name">김치세끼 볶은김치 80g * 3입</strong>
-                                    <div class="amount">
-                                    
-                                    
-                                        
-                                        <span class="frmAmount">
-                                            <button type="button" class="minus" onclick="fnOptionQty(this)">수량 감소</button>
-                                            <input type="text" name="inpGoodCnt" value="1" title="수량 직접입력" data-key="994" onchange="fnOptionInput(this)">
-                                            <button type="button" class="plus" onclick="fnOptionQty(this)">수량 증가</button>
-                                        </span>
-                                        
-                                        
-                                                                                 
-                                    
-                                    
-                                        
-                                            
-                                                <span class="stock">남은 수량 994개</span>
-                                            
-                                        
-                                    </div>
-                                    <div class="txtPrice">
-                                        <span class="cost1" title="할인가" data-key="2200"><b>2,200</b>원</span>
-                                    </div>
-                                </div>                                            
-                            
-                        </div>
-                    </li>
-                    
-                </ul>
-                                                
-                <div class="itmTotal">
-                    <div class="txtPrice">
-                        <span class="total">총</span>
-                        <span class="cost1" id="spanTotalPrice"><b>2,200</b>원</span>
-                    </div>
-                </div>
-                
-            
-            </div>
-            
-            
-                                       
-            
-            
-                
-                    <div class="pBtns">
-                        
-                         
-                        
-                            
-                                <span class="gift">
-                                    <button type="button" onclick="fnDetailBuyGoods('Y','N', '');" class="btnST btnL btnGift">선물하기</button>
-                                </span>
-                            
-                            
-                        
-                        
-                        
-                        
-                        
-                            
-                            
-                                <span><button type="button" onclick="fnDetailGoodsAddCart();" class="btnST btnL other" id="addCart">장바구니</button></span>
-                                 
-                                <span><button type="button" onclick="fnDetailBuyGoods('N','N', 'TIMESALE');" class="btnST btnL action" id="buyButton">바로구매</button></span>
-                                
-                                   
-                                   
-                            
-                        
-                    </div>
-                
-                                        
-            
-            
-            
-            
-        </div>
+
+    <div class="lineBox">
+        <span class="checkMulti">                        
+            <span class="frmCheck"><input type="radio" id="card" name="payment_type" value="card" checked="checked"><label for="card">카드</label></span>
+            <span class="frmCheck"><input type="radio" id="cash" name="payment_type" value="cash"><label for="cash">현금</label></span>
+        </span>
     </div>
+    <form id="paymentForm" method="post" action="{% url 'vending_app:process_payment' %}">
+        {% csrf_token %}
+        <div class="lineBox">
+            <label for="cash_input_1000">1000원</label>
+            <input type="number" id="cash_input_1000" name="cash_input_1000" min="0">
+        </div>
+        <div class="lineBox">
+            <label for="cash_input_5000">5000원</label>
+            <input type="number" id="cash_input_5000" name="cash_input_5000" min="0">
+        </div>
+        <div class="lineBox">
+            <label for="cash_input_10000">10000원</label>
+            <input type="number" id="cash_input_10000" name="cash_input_10000" min="0">
+        </div>
+        <div class="btnArea">
+            <button type="submit" class="btnST btnL action">결제하기</button>
+            <a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other">장바구니로 가기</a>  
+        </div>
+    </form>

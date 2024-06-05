@@ -21,4 +21,12 @@ urlpatterns = [
 
     #주문 결제
     path('orderPayment', views.orderPayment, name="orderPayment"),
+
+    #현금 입금을 위한 URL 패턴
+    #결제 처리를 위한 URL
+    path('process_payment', views.process_payment, name='process_payment'),
+    
+    #주문결제 초기화
+    path('process_order_reset', views.process_order_reset, name='process_order_reset'),
+
 ]

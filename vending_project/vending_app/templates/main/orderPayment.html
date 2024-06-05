@@ -16,34 +16,29 @@
                     <i class="fa-solid fa-dog"></i>
                     <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
                 </div>
-
                 <ul class="navbar_menu">
                     <li><a href=""></a></li>
                     <li><a href=""></a></li>
                     <li><a href=""></a></li>
                 </ul>
-
-                <ul class="navbar_usermenu">
+                <ul class="navbar_usermenu"></ul>
+                <ul class="navbar_icons">
+                    <li><i class="fab fa-twitter-square"></i></li>
+                    <li><i class="fab fa-facebook-square"></i></li>
+                    <li><i class="fab fa-instagram"></i></li>
                 </ul>
-
-            <ul class="navbar_icons">
-                <li><i class="fab fa-twitter-square"></i></li>
-                <li><i class="fab fa-facebook-square"></i></li>
-                <li><i class="fab fa-instagram"></i></li>
-            </ul>
-
-            <a href="#" class="navbar_toggleBtn">   
-                <i class="fas fa-bars"></i>
-            </a>
+                <a href="#" class="navbar_toggleBtn"><i class="fas fa-bars"></i></a>
             </nav>
         </div>
     </div>
     <div class="container">
         <div class="contents">
             <div class="cartArea">
-                <h3 class="titDep1 mt0">결제 예정 상품 <span class="count color01">(<em>{{ count }}</em>)</span>
-                    <span id="fast_text_line" class="sub" style="float: right; display: none;"></span></h3>
-                <!-- 주문 결제 상품 목록 -->
+                <h3 class="titDep1 mt0" style="margin-top: 40px; display: inline-block;">결제 예정 상품 <span class="count color01">(<em>{{ count }}</em>)</span></h3>
+                <form method="post" action="{% url 'vending_app:process_order_reset' %}" id="order_reset_form" style="display: inline-block; vertical-align: middle;">
+                    {% csrf_token %}
+                    <button type="submit" form="order_reset_form" style="font-size: 12px; border: 1px solid #ccc; padding: 5px 10px;">초기화</button>
+                </form>
                 <div class="cartBoard">
                     <table class="tblForm">
                         <thead>
@@ -56,7 +51,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- 주문 결제 추가된 각 상품을 반복하여 표시 -->
                             {% for order in orders %}
                             <tr>
                                 <td>{{ order.product.product_flag }}</td>
@@ -68,62 +62,107 @@
                                 </td>
                                 <td>{{ order.product.product_price|floatformat:"0" }}원</td>
                                 <td>{{ order.order_qty }}</td>
-                                <td>{{ order.total_price|floatformat:"0" }}원</td>
+                                <td>{{ order.order_total_price|floatformat:"0" }}원</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <!-- 주문 결제 총 금액 -->
                 <div class="orderPayment">
                     <div class="payWay">
-                        <h3 class="titDep1">결제 수단 </h3>
+                        <h3 class="titDep1">결제 수단</h3>
                         <div class="lineBox">
+                        <form id="paymentForm" method="post" action="{% url 'vending_app:process_payment' %}">
+                            {% csrf_token %}
                             <span class="checkMulti">                        
-                                <span class="frmCheck"><input type="radio" id="ord_type1" name="ord_type" value="card" checked="checked"><label for="ord_type1">현금</label></span>
-                                <span class="frmCheck"><input type="radio" id="ord_type2" name="ord_type" value="vbank"><label for="ord_type2">카드</label></span>
+                                <span class="frmCheck">
+                                    <input type="radio" id="card" name="payment_type" value="card" checked="checked">
+                                    <label for="card">카드</label>
+                                </span>
+                                <span class="frmCheck">
+                                    <input type="radio" id="cash" name="payment_type" value="cash">
+                                    <label for="cash">현금</label>
+                                </span>
                             </span>
-                        </div>
-                        <!-- 카드 안내 -->
-                        <div class="guideArea paymenttype_card paymenttype" style="display: block;">
-                            <strong class="stit3">[확인사항]</strong>
-                            <ul class="blType1">
-                                <li>천원, 오천원, 만원 가능</li>
-                                <li><em class="color01"> 오만원 불가능</em></li>
-                            </ul>
-                        </div>
-                        <!-- 현금 안내 -->
-                        <div class="guideArea paymenttype_vank paymenttype" style="display: none;">
-                            <strong class="stit3">[확인사항]</strong>
-                            <ul class="blType1">
-                                <li>100<br>이 경우는 고객의 책임이므로 사용에 주의하시기 바랍니다.</li>
-                                <li class="color01">가상계좌의 경우 CD기에서 현금입금 하실 수 없습니다. CD기에서 이체는 가능합니다.<br> 환불정보는 취소/반품 시 필요할 경우 환불이 진행되는 정보입니다. 정보가 불확실한 경우 전화문의로 다시 진행 합니다. 정확히 입력해주세요.</li>
-                            </ul>
+                            <div id="cardGuide" class="guideArea paymenttype_card paymenttype" style="display: block;">
+                                <strong class="stit3">[카드 결제 안내]</strong>
+                                <ul class="blType1">
+                                    <li>신용카드, 체크카드 가능</li>
+                                    <li class="color01">정확히 입력해주세요.</li>
+                                </ul>
+                            </div>
+                            <div id="cashGuide" class="guideArea paymenttype_vank paymenttype" style="display: none;">
+                                <strong class="stit3">[현금 결제 안내]</strong>
+                                <ul class="blType1">
+                                    <li>천원, 오천원, 만원 가능</li>
+                                    <li><em class="color01">오만원 불가능</em></li>
+                                </ul>
+                            </div>
+                            <br><br>
+                            
+                            <div id="cashFields" style="display: none;">
+                                <ul class="blType1">
+                                    <h1>현금을 넣어주세요</h1><br>
+                                </ul>
+                                <div class="lineBox">
+                                    <label for="cash_input_1000">1000원</label>
+                                    <input type="number" id="cash_input_1000" name="quantity_1000" min="0">
+                                </div>
+                                <div class="lineBox">
+                                    <label for="cash_input_5000">5000원</label>
+                                    <input type="number" id="cash_input_5000" name="quantity_5000" min="0">
+                                </div>
+                                <div class="lineBox">
+                                    <label for="cash_input_10000">10000원</label>
+                                    <input type="number" id="cash_input_10000" name="quantity_10000" min="0">
+                                </div>
+                            </div>
+                            <div class="btnArea">
+                                <button type="submit" class="btnST btnL action" form="paymentForm">결제하기</button>
+                                <a href="{% url 'vending_app:view_cart' %}?clear_cart=true" class="btnST btnL other">장바구니로 가기</a>  
+                            </div>
+                        </form>
                         </div>
                     </div>
                     <div class="payTotal">
                         <h3 class="titDep1">결제 금액</h3>
                         <div class="totalBox">
                             <ul class="bInfo">
-                                <li><span class="head">총 주문 금액</span><span class="data"><b class="totalPayment">{{ cart_item.total_price|floatformat:"0" }}</b>원</span></li>
-                                <li><span class="head">쿠폰</span><span class="data"><b class="couponPoint">0</b>원</span></li>
-                                <li><span class="head">포인트</span><span class="data"><b class="finishPoint">0</b>원</span></li>
-                                <li><span class="head">배송비</span><span class="data"><b class="deliveryPayment">0</b>원</span></li>
-                                <li><span class="head">배송비 할인</span><span class="data"><b class="deliveryPaymentDc">0</b>원</span></li>
-                                <li><span class="head">포장비</span><span class="data"><b class="packingPayment">0</b>원</span></li>
+                                <li><span class="head">총 주문 금액</span><span class="data"><b class="totalPayment">{{ order_total_payment|floatformat:"0" }}</b>원</span></li>
                             </ul>
                             <div class="bTotal">
                                 <strong class="tit">최종 결제금액</strong>
-                                <span class="total"><b class="finishPayment">30,590</b>원</span>
+                                <span class="total"><b class="finishPayment">{{ order_total_payment|floatformat:"0" }}</b>원</span>
                             </div>	
                         </div>
                     </div>
-                </div><div class="btnArea">
-                    <button type="button" class="btnST btnL action" onclick="fnOrderSubmit();">결제하기</button>
-                        <a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other">장바구니로 가기</a>  
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 결제 수단 선택 시 이벤트 처리
+            var paymentRadioButtons = document.querySelectorAll('input[name="payment_type"]');
+            // 현금결제
+            var cashGuide = document.getElementById('cashGuide');
+            var cashFields = document.getElementById('cashFields');
+            // 카드결제
+            var cardGuide = document.getElementById('cardGuide');
+            paymentRadioButtons.forEach(function(radioButton) {
+                radioButton.addEventListener('change', function() {
+                    if (this.value === 'cash') {
+                        cashGuide.style.display = 'block';  // 현금 안내 표시
+                        cashFields.style.display = 'block'; // 현금 입력 폼 표시
+                        cardGuide.style.display = 'none';   // 카드 안내 숨김
+                    } else {
+                        cashGuide.style.display = 'none';   // 현금 안내 숨김
+                        cashFields.style.display = 'none';  // 현금 입력 폼 숨김
+                        cardGuide.style.display = 'block';  // 카드 안내 표시
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
