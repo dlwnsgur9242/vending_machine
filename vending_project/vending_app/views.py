@@ -334,19 +334,36 @@ def orderPayment(request):
 def process_payment(request):
     if request.method == 'POST':
         payment_type = request.POST.get('payment_type')
-        
+        receipt = Receipt.objects.all() # 모든 결제를 가져옵니다.
         orders = Order.objects.all()  # 모든 주문을 가져옵니다.
         
+        total_deposit_save = 0
+        total_deposit_100 = 0
+        total_deposit_500 = 0
+        total_deposit_1000 = 0
+
         order_total_payment = sum(order.order_total_price() for order in orders)
+        insufficient_deposit = False
+        insufficient_stock = False
+
+
         # 주문 객체들을 순회하면서 결제 처리를 진행합니다.
         for order in orders:
             print("Processing order:", order.order_id)
             print("Order quantity:", order.order_qty)
             print("Product stock before update:", order.product.product_stock)
-           
+            
+            # 재고가 부족한 경우 템플릿 렌더링
             if order.order_qty > order.product.product_stock:
-                return redirect('vending_app:PaymentFailed')
-                # ({'error': f" {order.product.product_name}의 재고가 주문보다 적습니다. 현재 재고: {order.product.product_stock}개"})
+                insufficient_stock = True
+
+                context = {
+                        'product_name': order.product.product_name,
+                        'product_stock': order.product.product_stock,
+                        'insufficient_stock': True,
+                        
+                }
+                return render(request, 'main/PaymentFailed.html', context)
             
             # 주문 수량 만큼 재고를 감소시킵니다.
             # order.product.product_stock -= order.order_qty
@@ -354,9 +371,9 @@ def process_payment(request):
             
             # 현금 결제일 경우
             if payment_type == 'cash':
-                quantity_1000 = int(request.POST.get('quantity_1000', 0))
-                quantity_5000 = int(request.POST.get('quantity_5000', 0))
-                quantity_10000 = int(request.POST.get('quantity_10000', 0))
+                quantity_1000 = int(request.POST.get('quantity_1000', 0) or '0')
+                quantity_5000 = int(request.POST.get('quantity_5000', 0) or '0')
+                quantity_10000 = int(request.POST.get('quantity_10000', 0) or '0')
 
                 # Receipt 생성
                 receipt = Receipt.objects.create(
@@ -370,6 +387,39 @@ def process_payment(request):
                 # 총 입금 금액을 계산합니다.
                 total_deposit = receipt.total_deposit()
                 order.product.product_stock -= order.order_qty
+                order_total_payment -= total_deposit
+                print(total_deposit)
+                # 결제 금액보다 입금 금액이 적은지 확인하는 코드
+                if order_total_payment > 0:
+                    insufficient_deposit = True
+                    # total_deposit 값 저장
+                    total_deposit_save = total_deposit
+                    
+                    # 1000원짜리 화폐 단위 계산
+                    total_deposit_1000 = total_deposit // 1000
+                    total_deposit = total_deposit % 1000
+
+                    # 500원짜리 화폐 단위 계산
+                    total_deposit_500 = total_deposit // 500
+                    total_deposit = total_deposit % 500
+
+                    # 100원짜리 화폐 단위 계산
+                    total_deposit_100 = total_deposit // 100
+                    total_deposit = total_deposit % 100
+                    
+                    # change 값 초기화
+                    total_deposit = total_deposit_save
+
+                    context = {
+                            'total_deposit': total_deposit,
+                            'insufficient_deposit': True,
+                            'total_deposit_1000':total_deposit_1000,
+                            'total_deposit_500':total_deposit_500,
+                            'total_deposit_100':total_deposit_100,
+                    }
+                    # 결제 금액이 0보다 적은 경우 결제 실패 페이지로 이동합니다.
+                    return render(request, 'main/PaymentFailed.html', context)
+                
                 order.product.save()
             
             # 카드 결제일 경우
@@ -462,9 +512,72 @@ def orderComplete(request):
     }
     return render(request, 'main/orderComplete.html', context)
 
-# PaymentFailed.html 결제 실패 페이지의 템플릿 파일
+# 결제 실패 페이지
 def PaymentFailed(request):
+    orders = Order.objects.all()
+
     return render(request, 'main/PaymentFailed.html')
 
+# 영수증 페이지
 def orderReceipt(request):
-    return render(request, 'main/orderReceipt.html')
+    receipt = Receipt.objects.first()
+    
+    orders = Order.objects.all()
+    order_total_payment = sum(order.order_total_price() for order in orders)
+    total_deposit = 0
+    # 거스룸돈은 100원, 500원, 1000원 가능
+    change = 0
+    change_save = 0
+    change_100 = 0
+    change_500 = 0
+    change_1000 = 0
+
+    if orders.exists():
+        last_order = orders.latest('order_datetime')
+        try:
+            receipt = Receipt.objects.filter(order=last_order).latest('receipt_datetime')
+            if receipt.payment_type == 'cash':
+                total_deposit = receipt.total_deposit()
+                change = total_deposit - order_total_payment
+                # change 값 저장
+                change_save = change
+                
+                # 1000원짜리 화폐 단위 계산
+                change_1000 = change // 1000
+                change = change % 1000
+
+                # 500원짜리 화폐 단위 계산
+                change_500 = change // 500
+                change = change % 500
+
+                # 100원짜리 화폐 단위 계산
+                change_100 = change // 100
+                change = change % 100
+                
+                # change 값 초기화
+                change = change_save
+ 
+        except Receipt.DoesNotExist:
+            receipt = None
+
+    order_receipts = {}
+    for order in orders:
+        try:
+            order_receipts[order.order_id] = Receipt.objects.filter(order=order).latest('receipt_datetime')
+        except Receipt.DoesNotExist:
+            order_receipts[order.order_id] = None
+
+    context = {
+        'receipt_datetime': receipt.receipt_datetime,
+        'payment_type': receipt.payment_type,
+        'orders': orders,
+        'order_receipts': order_receipts,
+        'order_total_payment': order_total_payment,
+        'total_deposit': total_deposit,
+        'change': change,
+        'change_1000': change_1000,
+        'change_500': change_500,
+        'change_100': change_100,
+    }
+
+    return render(request, 'main/orderReceipt.html', context)

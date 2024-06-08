@@ -16,7 +16,9 @@
             <nav class="Nav">
                 <div class="navbar_logo">
                     <i class="fa-solid fa-dog"></i>
-                    <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
+                    <a href="{% url 'vending_app:ProductList' %}">
+                        <img src="/static/img/Hanyang/Hanyang_main.png" alt="Hanyang Logo" style="width: 150px; height: auto; max-width: 100%; max-height: 100%; padding-left: 20px;">
+                    </a>  
                 </div>
                 <ul class="navbar_menu">
                     <li><a href=""></a></li>
@@ -36,18 +38,33 @@
     <div class="container">
         <div class="contents">
             <div class="cartArea">
-                <h1>주문 실패</h1>
-                <p>주문을 취소하고 금액을 돌려드립니다.</p>
-                {% if error %}
-                <p>{{ error }}</p>
-                {% endif %}
-                {% if order %}ㅉ
-                <p>{{ order.product.product_name }}의 재고가 주문보다 적습니다. 현재 재고: {{ order.product.product_stock }}개</p>
-                {% endif %}
-                <!-- css.에서 이미지 블러오도록 해보기 -->
-                <div class="Hanyang_4"> 
-                    <img src="{% static 'img/Hanyang/Hanyang_4.png' %}" alt="Hanyang Logo">
-                </div>
+                <table class="tblForm">
+                    <tr>
+                        <td> 
+                            {% if insufficient_deposit %}
+                                <div class="image-container">
+                                    <img src="{% static 'img/Hanyang/Hanyang_4.png' %}" alt="Hanyang Logo">
+                                    <p class="overlay-text1">입금한 금액이 결제 금액보다 적습니다.<br> 금액 {{ total_deposit|intcomma }}원을 반환합니다.<br>1000원: {{total_deposit_1000}}장<br>500원: {{total_deposit_500}}개<br>100원: {{total_deposit_100}}개</p>
+                                    
+                                </div>
+                            {% elif insufficient_stock %}
+                                <div class="image-container">
+                                    <img src="{% static 'img/Hanyang/Hanyang_4.png' %}" alt="Hanyang Logo">
+                                    <p class="overlay-text">{{ product_name }}의 재고가 주문보다 적습니다.<br> 현재 재고: {{ product_stock }}개</p>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="cartBtns">
+                        <span>
+                            <a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other">장바구니로 가기</a>
+                        </span>
+                        <div class="fleft"><a href="/" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

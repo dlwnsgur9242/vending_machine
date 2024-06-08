@@ -2,176 +2,75 @@
 {% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'css/p_common_2.css' %}" rel="stylesheet">
-    <link href="{% static 'css/TopNav.css' %}" rel="stylesheet">
-    <title>결제완료</title>
-    <style>
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/42764c1962.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-        }
+  <body>
+    <img class="receipt_top" src="./images/receipt.svg" alt="receipt image" />
+    <!-- Main Content -->
+    <section class="main">
+      <!-- Title -->
+      <div class="title">Shopping List</div>
+      <!-- Add Items -->
 
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+      <i class="add_button fas fa-plus-circle"></i>
+      <div class="add">
+        <input type="text" class="add_input input_name" placeholder="name" />
+        /
+        <input
+          type="number"
+          class="add_input input_price"
+          placeholder="expected price"
+        />
+      </div>
 
-        .modal-button {
-            padding: 10px 20px;
-            margin: 0 10px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
+      <!-- Item List -->
+      <ul class="item-list">
+        <!--
+          stop this because of unknown error
+        <button class="delete-checked-btn">Delete Checked</button>
+        -->
+      </ul>
 
-        .modal-button.cancel {
-            background-color: #f44336;
-        }
-    </style>
-    <script>
-        // 페이지 로드 시 layerPop 표시
-        window.onload = function() {
-            document.getElementById('L1').style.display = 'block';
-            
-            // 닫기 버튼 이벤트 리스너 추가
-            document.querySelector('.close').addEventListener('click', function() {
-                document.getElementById('L1').style.display = 'none';
-            });    
-        };
-
-        // 닫기 버튼 기능 추가
-        function closeLayerPop() {
-            document.getElementById('L1').style.display = 'none';
-        }
-    </script>
-</head>
-<body>
-    <div class="headerArea">
-        <div class="inner">
-            <nav class="Nav">
-                <div class="navbar_logo">
-                    <i class="fa-solid fa-dog"></i>
-                    <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
-                </div>
-                <ul class="navbar_menu">
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                </ul>
-                <ul class="navbar_usermenu"></ul>
-                <ul class="navbar_icons">
-                    <li><i class="fab fa-twitter-square"></i></li>
-                    <li><i class="fab fa-facebook-square"></i></li>
-                    <li><i class="fab fa-instagram"></i></li>
-                </ul>
-                <a href="#" class="navbar_toggleBtn"><i class="fas fa-bars"></i></a>
-            </nav>
+      <!-- Summary -->
+      <div class="horizontal-line"></div>
+      <div class="sum">
+        <div class="sum_item">
+          <div>Checked:</div>
+          <div class="sum_checked-price">0 $</div>
         </div>
-    </div>
-    <div id="L1" class="layerPop" style="display: block; top: 200px;">
-        <div class="layTop">
-            <h3 class="laytit">영수증</h3>
-            <button type="button" class="close">닫기</button>
+
+        <div class="sum_item">
+          <div>Unchecked:</div>
+          <div class="sum_unchecked-price">0 $</div>
         </div>
-        <div class="layCon">
-            <div class="txtAlert">
-                <p class="txt1">결제가 성공!</p>
-                <p class="txt2">영수증을 출력하시겠습니까?</p>
-            </div>
-            <div class="btnArea">
-                <a href="/mall/mypage/shoppingBasket.do" class="btnST btnM other">영수증 출력</a>
-                <a href="{% url 'vending_app:ProductList' %}" class="btnST btnM action">계속 쇼핑하기</a>
-            </div>
+
+        <div class="sum_item">
+          <div>Total:</div>
+          <div class="sum_total-price">0 $</div>
         </div>
-    </div>
-    <div class="container">
-        <div class="contents">
-            <div class="cartArea">
-                <h1>주문 완료</h1>
-                <p>결제 시간: {{ receipt_datetime }}</p>
-                <div class="cartBoard">
-                    <table class="tblForm">
-                        <thead>
-                            <tr>
-                                <th scope="col">결제방식</th>
-                                <th scope="col">결제상품</th>
-                                <th scope="col">가격</th>
-                                <th scope="col">수량</th>
-                                <th scope="col">총 가격</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for order in orders %}
-                            <tr>
-                                <td> 
-                                    {% if payment_type == 'cash' %}
-                                        현 금
-                                    {% elif payment_type == 'card' %}
-                                        카 드
-                                    {% else %}
-                                        결제정보없음
-                                    {% endif %}
-                                </td>
-                                <td class="itmTarget">
-                                    <a href="{% url 'vending_app:product_detail' order.product.product_id %}" class="iLink">
-                                        <div class="thum"><img src="{{ order.product.product_image.url }}" alt="{{ order.product.product_name }}" style="width: 100px; height: 100px;"></div>
-                                        <div class="cont"><strong class="tit">{{ order.product.product_name }}</strong></div>
-                                    </a>
-                                </td>
-                                <td>{{ order.product.product_price|intcomma }}원</td>
-                                <td>{{ order.order_qty }}</td>
-                                <td>{{ order.order_total_price|intcomma }}원</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <ul class="cartTotal">
-                    <li>
-                        <span class="txt">총 금액</span>
-                        <span class="cost"><b id="totalProductPayment">{{ order_total_payment|intcomma }}</b>원</span>
-                    </li>
-                    <li>
-                        <span class="txt">입금 금액</span>
-                        <span class="cost"><b id="totalDeposit">{{ total_deposit|intcomma }}</b>원</span>
-                    </li>
-                    <li>
-                        <span class="txt">거스름 돈</span>
-                        <span class="cost"><b id="change">{{ change|intcomma }}</b>원</span>
-                        <span class="cost">1000원 = <b id="change">{{ change_1000|intcomma }}</b>장</span>
-                        <span class="cost">500원 = <b id="change">{{ change_500|intcomma }}</b>개</span>
-                        <span class="cost">100원 = <b id="change">{{ change_100|intcomma }}</b>개</span>
-                    </li>
-                </ul>
-                <div class="cartBtns">
-                    <div class="fleft"><a href="{% url 'vending_app:ProductList' %}" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
-                    <button type="button" onclick="window.print()" class="btnST btnL other">영수증 출력</button>
-                    <!-- <button type="button" id="printReceiptBtn" class="btnST btnL other">영수증 출력</button> -->
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+      </div>
+    </section>
+    <img
+      class="receipt_bottom"
+      src="./images/receipt.svg"
+      alt="receipt image"
+    />
+  </body>
 </html>

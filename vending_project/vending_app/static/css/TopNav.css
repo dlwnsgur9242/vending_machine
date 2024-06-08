@@ -1,6 +1,6 @@
 :root {
     --text-color: white;
-    --backgrount-color: #263343;
+    --backgrount-color: #00E7BA;
     --accent-color: #d49466;
 }
 
@@ -20,6 +20,7 @@ a {
     align-items: center;
     background-color: var(--backgrount-color);
     padding: 8px 12px;
+    /* background:url(../img/Hanyang/Hanyang_main.png) 0 0 no-repeat */
 }
 
 .navbar_logo {
