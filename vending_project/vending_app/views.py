@@ -75,19 +75,17 @@ def add_to_detail(request, product_id):
     
 # 장바구니 view
 def view_cart(request):
+    print("준혁")
     cart_session_id = request.session.get('cart_session_id')
     cart_items, total_product_payment, total_payment = get_cart_items(cart_session_id)
-    carts = Cart.objects.filter(cart_session_id=cart_session_id)  # 현재 세션 아이디로 된 카트 아이템만 필터링
-    count = carts.count()  # 현재 세션 아이디로 된 카트 아이템의 개수 세기
-    # carts = Cart.objects.all()
-    # count = len(carts)
+    carts = Cart.objects.filter(cart_session_id=cart_session_id)
+    count = carts.count()
 
     if request.method == 'POST':
         action = request.POST.get('action')
         select_all = 'select_all' in request.POST
         selected_items = request.POST.getlist('cart_num')
 
-        # 디버깅용 출력
         print("Action:", action)
         print("Select all:", select_all)
         print("Selected items:", selected_items)
@@ -103,10 +101,9 @@ def view_cart(request):
         elif action == 'delete_all':
             return redirect('vending_app:view_cart')
         elif action == 'select_buy':
-                return redirect('vending_app:orderPayment')
+            return redirect('vending_app:orderPayment')
         elif action == 'all_buy':
             return redirect('vending_app:orderPayment')
-
 
     context = {
         'cart_items': cart_items,
@@ -225,6 +222,7 @@ def add_to_cart(request):
 
 # 장바구니 상품 업데이트
 def update_cart(request, product_id, change):
+    cart_session_id = request.session.get('cart_session_id')
     try:
         change = int(change)
     except ValueError:
@@ -242,6 +240,7 @@ def update_cart(request, product_id, change):
     else:
         cart_item.save()
 
+    print(f"update_cart called with product_id: {product_id}, change: {change}")
     return redirect('vending_app:view_cart')
 
 
