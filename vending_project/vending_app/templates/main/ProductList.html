@@ -10,33 +10,34 @@
     <title>Vending Product List</title>
 </head>
 <body>
-    <nav class="Nav">
-        <div class="navbar_logo">
-          <i class="fa-solid fa-dog"></i>
-          <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
-        </div>
+    <div class="headerArea">
+        <div class="inner">
+        <nav class="Nav">
+            <div class="navbar_logo">
+            <i class="fa-solid fa-dog"></i>
+            <a href="{% url 'vending_app:ProductList' %}"><font size="5">Vending</font><font size="2">machine</font></a>
+            </div>
+            <ul class="navbar_menu">
+            <li><a href="">전체 카테고리</a></li>
+            <li><a href="">할랄</a></li>
+            <li><a href="">글루텐</a></li>
+            </ul>
 
-        <ul class="navbar_menu">
-          <li><a href="">전체 카테고리</a></li>
-          <li><a href="">할랄</a></li>
-          <li><a href="">글루텐</a></li>
-        </ul>
+            <ul class="navbar_usermenu">
+                <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button">상품관리</a></li>
+                <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button">상품등록</a></li>
+            </ul>
 
-        <ul class="navbar_usermenu">
-            <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button">상품관리</a></li>
-            <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button">상품등록</a></li>
-        </ul>
+            <ul class="navbar_icons">
+                <li><i class="fab fa-twitter-square"></i></li>
+                <li><i class="fab fa-facebook-square"></i></li>
+                <li><i class="fab fa-instagram"></i></li>
+            </ul>
 
-        <ul class="navbar_icons">
-            <li><i class="fab fa-twitter-square"></i></li>
-            <li><i class="fab fa-facebook-square"></i></li>
-            <li><i class="fab fa-instagram"></i></li>
-        </ul>
-
-        <a href="#" class="navbar_toggleBtn">   
-            <i class="fas fa-bars"></i>
-        </a>
-    </nav>   
+            <a href="#" class="navbar_toggleBtn">   
+                <i class="fas fa-bars"></i>
+            </a>
+        </nav>   
     
     <script>
         const toggleBtn = document.querySelector('.navbar_toggleBtn');
@@ -70,7 +71,7 @@
                                         <strong class="product_name">{{ product.product_name }}</strong>
                                         <p class="txt">{{ product.description }}</p>
                                         <div class="txtPrice">
-                                            <del class="cost1" title="판매가"><b>{{ product.product_price|floatformat:"0" }}</b>원</del>
+                                            <del class="cost1" title="판매가"><b>{{ product.product_price|intcomma }}</b>원</del>
                                         </div>
                                     </div>
                                 </a>

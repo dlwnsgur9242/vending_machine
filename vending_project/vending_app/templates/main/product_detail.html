@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,11 +47,11 @@
                 <div class="prImage">
                     <div class="photo">
                         <div class="cloud-zoom-wrap">
-                            <a href="{{ product.product_image.url }}" class="cloud-zoom" style="position: relative; display: block;">
-                                <img id="mainGoodsImg" src="{{ product.product_image.url }}" alt="대표이미지" style="display: block;">
+                            <a href="{{ product.product_image.url }}" class="cloud-zoom">
+                                <img id="mainGoodsImg" src="{{ product.product_image.url }}" alt="대표이미지">
                             </a>
-                            <div class="mousetrap" style="background-image: url(''); z-index: 999; position: absolute; width: 580px; height: 580px; left: 0px; top: 0px; cursor: crosshair;"></div>
-                        </div>                            
+                            <div class="mousetrap"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="prInfor">
@@ -63,13 +64,7 @@
                         </div>
 
                         <div class="txtPrice detailPrice main">
-                                <span class="cost1" title="판매가"><b>{{ product.product_price|floatformat:"0" }}</b>원</span>
-                        </div>
-
-                        <div class="tool">
-                            <button type="button" onclick="fnGoodsAddLike('{{ product.id }}');" class="cart">쇼핑찜</button>
-                            <button type="button" onclick="fnGoodsAddCompare('{{ product.id }}');" class="compare">상품비교</button>
-                            <button type="button" onclick="javascript:pc_share();" class="share">공유하기</button>
+                                <span class="cost1" title="판매가"><b>{{ product.product_price|intcomma }}</b>원</span>
                         </div>
                     </div>
                     <div class="pOption">
@@ -87,11 +82,19 @@
                                         <strong class="name">{{ product.product_name }}</strong>
                                         <div class="amount">
                                             <span class="frmAmount">
-                                                <button type="button" class="minus" onclick="fnOptionQty(this)">수량 감소</button>
-                                                <input type="text" name="inpGoodCnt" value="1" title="수량 직접입력" data-key="0" onchange="fnOptionInput(this)">
-                                                <button type="button" class="plus" onclick="fnOptionQty(this)">수량 증가</button>
+                                                <form id="update-qty-form" action="{% url 'vending_app:add_to_detail' product.product_id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="qty" id="qty-input" value="{{ order_qty }}">
+                                                    <button type="button" class="minus" onclick="updateQty(-1)">수량 감소</button>
+                                                    <input type="text" title="수량 직접입력" id="display-qty" value="1" class="numeric" maxlength="5" readonly>
+                                                    <button type="button" class="plus" onclick="updateQty(1)">수량 증가</button>
+                                                </form>
                                             </span>
+                                            <span class="stock" style="margin-left: 10px;">남은 수량 : {{ product.product_stock }} 개</span>
                                         </div>
+                                        <div class="txtPrice">
+                                            <span class="cost1" title="할인가"><b>{{ product.product_price|intcomma }}원</b></span>
+                                        </div>                                     
                                     </div>                                            
                                 </div>
                             </li>
@@ -99,21 +102,57 @@
                         <div class="itmTotal">
                             <div class="txtPrice">
                                 <span class="total">총</span>
-                                <span class="cost1" id="spanTotalPrice"><b>{{ product.discounted_price|default:product.product_price|floatformat:"0" }}</b>원</span>
+                                <span class="cost1" id="spanTotalPrice"><b>{{ product.discounted_price|default:product.product_price|intcomma }}</b>원</span>
                             </div>
                         </div>
                     </div>
                     <div class="pBtns">
                         <span>
-                            <button type="button" onclick="fnDetailGoodsAddCart();" class="btnST btnL other" id="addCart">장바구니</button>
+                            <form action="{% url 'vending_app:add_to_cart' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                <button type="submit" class="btnST btnL other">장바구니</button>
+                            </form>
                         </span>
                         <span>
-                            <button type="button" onclick="fnDetailBuyGoods('N','N', '');" class="btnST btnL action" id="buyButton">바로구매</button>
+                            <form action="{% url 'vending_app:add_to_detail' product.product_id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                <input type="hidden" name="qty" id="order-qty-input" value="{{ order_qty }}">
+                                <button type="submit" class="btnST btnL action">바로구매</button>
+                            </form>
                         </span>
+                        <div calss="Hanyang_3">
+                            <img src="{% static 'img/Hanyang/Hanyang_3.png' %}" alt="Hanyang Logo">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function updateQty(change) {
+            var qtyInput = document.getElementById('qty-input');
+            var displayQty = document.getElementById('display-qty');
+            var orderQtyInput = document.getElementById('order-qty-input');
+            var newQty = parseInt(qtyInput.value) + change;
+    
+            // 입력값이 숫자인지 확인
+            if (!isNaN(newQty)) {
+                if (newQty < 1) {
+                    newQty = 1; // Ensure quantity does not go below 1
+                }
+    
+                qtyInput.value = newQty;
+                displayQty.value = newQty;
+                orderQtyInput.value = newQty;
+    
+                // 수정된 수량을 서버로 전송
+                document.getElementById('update-qty-form').submit();
+            } else {
+                alert("유효하지 않은 수량입니다.");
+            }
+        }
+    </script>
 </body>
 </html>

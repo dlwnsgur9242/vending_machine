@@ -1,41 +1,988 @@
-    <!-- 모달 창
-    <div id="confirmationModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>결제 확인</h2>
-            <p>총 주문 금액: {{ order_total_payment }}원</p>
-            <p>총 입금 금액: {{ total_deposit }}원</p>
-            <p>결제하시겠습니까?</p>
-            <form method="post" action="{% url 'vending_app:ProductList' %}">
-                {% csrf_token %}
-                <button type="submit">결제하기</button>
-            </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">:root, :host {
+    --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Solid";
+    --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Regular";
+    --fa-font-light: normal 300 1em/1 "Font Awesome 6 Light";
+    --fa-font-thin: normal 100 1em/1 "Font Awesome 6 Thin";
+    --fa-font-duotone: normal 900 1em/1 "Font Awesome 6 Duotone";
+    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+    }
+    
+    svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
+    overflow: visible;
+    box-sizing: content-box;
+    }
+    
+    .svg-inline--fa {
+    display: var(--fa-display, inline-block);
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+    }
+    .svg-inline--fa.fa-2xs {
+    vertical-align: 0.1em;
+    }
+    .svg-inline--fa.fa-xs {
+    vertical-align: 0em;
+    }
+    .svg-inline--fa.fa-sm {
+    vertical-align: -0.0714285705em;
+    }
+    .svg-inline--fa.fa-lg {
+    vertical-align: -0.2em;
+    }
+    .svg-inline--fa.fa-xl {
+    vertical-align: -0.25em;
+    }
+    .svg-inline--fa.fa-2xl {
+    vertical-align: -0.3125em;
+    }
+    .svg-inline--fa.fa-pull-left {
+    margin-right: var(--fa-pull-margin, 0.3em);
+    width: auto;
+    }
+    .svg-inline--fa.fa-pull-right {
+    margin-left: var(--fa-pull-margin, 0.3em);
+    width: auto;
+    }
+    .svg-inline--fa.fa-li {
+    width: var(--fa-li-width, 2em);
+    top: 0.25em;
+    }
+    .svg-inline--fa.fa-fw {
+    width: var(--fa-fw-width, 1.25em);
+    }
+    
+    .fa-layers svg.svg-inline--fa {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    }
+    
+    .fa-layers-counter, .fa-layers-text {
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+    }
+    
+    .fa-layers {
+    display: inline-block;
+    height: 1em;
+    position: relative;
+    text-align: center;
+    vertical-align: -0.125em;
+    width: 1em;
+    }
+    .fa-layers svg.svg-inline--fa {
+    -webkit-transform-origin: center center;
+            transform-origin: center center;
+    }
+    
+    .fa-layers-text {
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    -webkit-transform-origin: center center;
+            transform-origin: center center;
+    }
+    
+    .fa-layers-counter {
+    background-color: var(--fa-counter-background-color, #ff253a);
+    border-radius: var(--fa-counter-border-radius, 1em);
+    box-sizing: border-box;
+    color: var(--fa-inverse, #fff);
+    line-height: var(--fa-counter-line-height, 1);
+    max-width: var(--fa-counter-max-width, 5em);
+    min-width: var(--fa-counter-min-width, 1.5em);
+    overflow: hidden;
+    padding: var(--fa-counter-padding, 0.25em 0.5em);
+    right: var(--fa-right, 0);
+    text-overflow: ellipsis;
+    top: var(--fa-top, 0);
+    -webkit-transform: scale(var(--fa-counter-scale, 0.25));
+            transform: scale(var(--fa-counter-scale, 0.25));
+    -webkit-transform-origin: top right;
+            transform-origin: top right;
+    }
+    
+    .fa-layers-bottom-right {
+    bottom: var(--fa-bottom, 0);
+    right: var(--fa-right, 0);
+    top: auto;
+    -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+    -webkit-transform-origin: bottom right;
+            transform-origin: bottom right;
+    }
+    
+    .fa-layers-bottom-left {
+    bottom: var(--fa-bottom, 0);
+    left: var(--fa-left, 0);
+    right: auto;
+    top: auto;
+    -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+    -webkit-transform-origin: bottom left;
+            transform-origin: bottom left;
+    }
+    
+    .fa-layers-top-right {
+    top: var(--fa-top, 0);
+    right: var(--fa-right, 0);
+    -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+    -webkit-transform-origin: top right;
+            transform-origin: top right;
+    }
+    
+    .fa-layers-top-left {
+    left: var(--fa-left, 0);
+    right: auto;
+    top: var(--fa-top, 0);
+    -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+    -webkit-transform-origin: top left;
+            transform-origin: top left;
+    }
+    
+    .fa-1x {
+    font-size: 1em;
+    }
+    
+    .fa-2x {
+    font-size: 2em;
+    }
+    
+    .fa-3x {
+    font-size: 3em;
+    }
+    
+    .fa-4x {
+    font-size: 4em;
+    }
+    
+    .fa-5x {
+    font-size: 5em;
+    }
+    
+    .fa-6x {
+    font-size: 6em;
+    }
+    
+    .fa-7x {
+    font-size: 7em;
+    }
+    
+    .fa-8x {
+    font-size: 8em;
+    }
+    
+    .fa-9x {
+    font-size: 9em;
+    }
+    
+    .fa-10x {
+    font-size: 10em;
+    }
+    
+    .fa-2xs {
+    font-size: 0.625em;
+    line-height: 0.1em;
+    vertical-align: 0.225em;
+    }
+    
+    .fa-xs {
+    font-size: 0.75em;
+    line-height: 0.0833333337em;
+    vertical-align: 0.125em;
+    }
+    
+    .fa-sm {
+    font-size: 0.875em;
+    line-height: 0.0714285718em;
+    vertical-align: 0.0535714295em;
+    }
+    
+    .fa-lg {
+    font-size: 1.25em;
+    line-height: 0.05em;
+    vertical-align: -0.075em;
+    }
+    
+    .fa-xl {
+    font-size: 1.5em;
+    line-height: 0.0416666682em;
+    vertical-align: -0.125em;
+    }
+    
+    .fa-2xl {
+    font-size: 2em;
+    line-height: 0.03125em;
+    vertical-align: -0.1875em;
+    }
+    
+    .fa-fw {
+    text-align: center;
+    width: 1.25em;
+    }
+    
+    .fa-ul {
+    list-style-type: none;
+    margin-left: var(--fa-li-margin, 2.5em);
+    padding-left: 0;
+    }
+    .fa-ul > li {
+    position: relative;
+    }
+    
+    .fa-li {
+    left: calc(var(--fa-li-width, 2em) * -1);
+    position: absolute;
+    text-align: center;
+    width: var(--fa-li-width, 2em);
+    line-height: inherit;
+    }
+    
+    .fa-border {
+    border-color: var(--fa-border-color, #eee);
+    border-radius: var(--fa-border-radius, 0.1em);
+    border-style: var(--fa-border-style, solid);
+    border-width: var(--fa-border-width, 0.08em);
+    padding: var(--fa-border-padding, 0.2em 0.25em 0.15em);
+    }
+    
+    .fa-pull-left {
+    float: left;
+    margin-right: var(--fa-pull-margin, 0.3em);
+    }
+    
+    .fa-pull-right {
+    float: right;
+    margin-left: var(--fa-pull-margin, 0.3em);
+    }
+    
+    .fa-beat {
+    -webkit-animation-name: fa-beat;
+            animation-name: fa-beat;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out);
+    }
+    
+    .fa-bounce {
+    -webkit-animation-name: fa-bounce;
+            animation-name: fa-bounce;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+    }
+    
+    .fa-fade {
+    -webkit-animation-name: fa-fade;
+            animation-name: fa-fade;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+    }
+    
+    .fa-beat-fade {
+    -webkit-animation-name: fa-beat-fade;
+            animation-name: fa-beat-fade;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+    }
+    
+    .fa-flip {
+    -webkit-animation-name: fa-flip;
+            animation-name: fa-flip;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out);
+    }
+    
+    .fa-shake {
+    -webkit-animation-name: fa-shake;
+            animation-name: fa-shake;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear);
+    }
+    
+    .fa-spin {
+    -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+    -webkit-animation-delay: var(--fa-animation-delay, 0);
+            animation-delay: var(--fa-animation-delay, 0);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 2s);
+            animation-duration: var(--fa-animation-duration, 2s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear);
+    }
+    
+    .fa-spin-reverse {
+    --fa-animation-direction: reverse;
+    }
+    
+    .fa-pulse,
+    .fa-spin-pulse {
+    -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));
+            animation-timing-function: var(--fa-animation-timing, steps(8));
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+    .fa-beat,
+    .fa-bounce,
+    .fa-fade,
+    .fa-beat-fade,
+    .fa-flip,
+    .fa-pulse,
+    .fa-shake,
+    .fa-spin,
+    .fa-spin-pulse {
+        -webkit-animation-delay: -1ms;
+                animation-delay: -1ms;
+        -webkit-animation-duration: 1ms;
+                animation-duration: 1ms;
+        -webkit-animation-iteration-count: 1;
+                animation-iteration-count: 1;
+        transition-delay: 0s;
+        transition-duration: 0s;
+    }
+    }
+    @-webkit-keyframes fa-beat {
+    0%, 90% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+    45% {
+        -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+                transform: scale(var(--fa-beat-scale, 1.25));
+    }
+    }
+    @keyframes fa-beat {
+    0%, 90% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+    45% {
+        -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+                transform: scale(var(--fa-beat-scale, 1.25));
+    }
+    }
+    @-webkit-keyframes fa-bounce {
+    0% {
+        -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+    }
+    10% {
+        -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+                transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+    }
+    30% {
+        -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+                transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+    }
+    50% {
+        -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+                transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+    }
+    57% {
+        -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+                transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+    }
+    64% {
+        -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+    }
+    100% {
+        -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+    }
+    }
+    @keyframes fa-bounce {
+    0% {
+        -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+    }
+    10% {
+        -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+                transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+    }
+    30% {
+        -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+                transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+    }
+    50% {
+        -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+                transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+    }
+    57% {
+        -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+                transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+    }
+    64% {
+        -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+    }
+    100% {
+        -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+    }
+    }
+    @-webkit-keyframes fa-fade {
+    50% {
+        opacity: var(--fa-fade-opacity, 0.4);
+    }
+    }
+    @keyframes fa-fade {
+    50% {
+        opacity: var(--fa-fade-opacity, 0.4);
+    }
+    }
+    @-webkit-keyframes fa-beat-fade {
+    0%, 100% {
+        opacity: var(--fa-beat-fade-opacity, 0.4);
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+                transform: scale(var(--fa-beat-fade-scale, 1.125));
+    }
+    }
+    @keyframes fa-beat-fade {
+    0%, 100% {
+        opacity: var(--fa-beat-fade-opacity, 0.4);
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+                transform: scale(var(--fa-beat-fade-scale, 1.125));
+    }
+    }
+    @-webkit-keyframes fa-flip {
+    50% {
+        -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+                transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+    }
+    }
+    @keyframes fa-flip {
+    50% {
+        -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+                transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+    }
+    }
+    @-webkit-keyframes fa-shake {
+    0% {
+        -webkit-transform: rotate(-15deg);
+                transform: rotate(-15deg);
+    }
+    4% {
+        -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+    }
+    8%, 24% {
+        -webkit-transform: rotate(-18deg);
+                transform: rotate(-18deg);
+    }
+    12%, 28% {
+        -webkit-transform: rotate(18deg);
+                transform: rotate(18deg);
+    }
+    16% {
+        -webkit-transform: rotate(-22deg);
+                transform: rotate(-22deg);
+    }
+    20% {
+        -webkit-transform: rotate(22deg);
+                transform: rotate(22deg);
+    }
+    32% {
+        -webkit-transform: rotate(-12deg);
+                transform: rotate(-12deg);
+    }
+    36% {
+        -webkit-transform: rotate(12deg);
+                transform: rotate(12deg);
+    }
+    40%, 100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    }
+    @keyframes fa-shake {
+    0% {
+        -webkit-transform: rotate(-15deg);
+                transform: rotate(-15deg);
+    }
+    4% {
+        -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+    }
+    8%, 24% {
+        -webkit-transform: rotate(-18deg);
+                transform: rotate(-18deg);
+    }
+    12%, 28% {
+        -webkit-transform: rotate(18deg);
+                transform: rotate(18deg);
+    }
+    16% {
+        -webkit-transform: rotate(-22deg);
+                transform: rotate(-22deg);
+    }
+    20% {
+        -webkit-transform: rotate(22deg);
+                transform: rotate(22deg);
+    }
+    32% {
+        -webkit-transform: rotate(-12deg);
+                transform: rotate(-12deg);
+    }
+    36% {
+        -webkit-transform: rotate(12deg);
+                transform: rotate(12deg);
+    }
+    40%, 100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    }
+    @-webkit-keyframes fa-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+    }
+    }
+    @keyframes fa-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+    }
+    }
+    .fa-rotate-90 {
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+    }
+    
+    .fa-rotate-180 {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+    }
+    
+    .fa-rotate-270 {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+    }
+    
+    .fa-flip-horizontal {
+    -webkit-transform: scale(-1, 1);
+            transform: scale(-1, 1);
+    }
+    
+    .fa-flip-vertical {
+    -webkit-transform: scale(1, -1);
+            transform: scale(1, -1);
+    }
+    
+    .fa-flip-both,
+    .fa-flip-horizontal.fa-flip-vertical {
+    -webkit-transform: scale(-1, -1);
+            transform: scale(-1, -1);
+    }
+    
+    .fa-rotate-by {
+    -webkit-transform: rotate(var(--fa-rotate-angle, none));
+            transform: rotate(var(--fa-rotate-angle, none));
+    }
+    
+    .fa-stack {
+    display: inline-block;
+    vertical-align: middle;
+    height: 2em;
+    position: relative;
+    width: 2.5em;
+    }
+    
+    .fa-stack-1x,
+    .fa-stack-2x {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: var(--fa-stack-z-index, auto);
+    }
+    
+    .svg-inline--fa.fa-stack-1x {
+    height: 1em;
+    width: 1.25em;
+    }
+    .svg-inline--fa.fa-stack-2x {
+    height: 2em;
+    width: 2.5em;
+    }
+    
+    .fa-inverse {
+    color: var(--fa-inverse, #fff);
+    }
+    
+    .sr-only,
+    .fa-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+    }
+    
+    .sr-only-focusable:not(:focus),
+    .fa-sr-only-focusable:not(:focus) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+    }
+    
+    .svg-inline--fa .fa-primary {
+    fill: var(--fa-primary-color, currentColor);
+    opacity: var(--fa-primary-opacity, 1);
+    }
+    
+    .svg-inline--fa .fa-secondary {
+    fill: var(--fa-secondary-color, currentColor);
+    opacity: var(--fa-secondary-opacity, 0.4);
+    }
+    
+    .svg-inline--fa.fa-swap-opacity .fa-primary {
+    opacity: var(--fa-secondary-opacity, 0.4);
+    }
+    
+    .svg-inline--fa.fa-swap-opacity .fa-secondary {
+    opacity: var(--fa-primary-opacity, 1);
+    }
+    
+    .svg-inline--fa mask .fa-primary,
+    .svg-inline--fa mask .fa-secondary {
+    fill: black;
+    }
+    
+    .fad.fa-inverse,
+    .fa-duotone.fa-inverse {
+    color: var(--fa-inverse, #fff);
+    }</style>
+    <link rel="icon" href="/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#191919">
+    <meta name="description" content="DailyReceipt - service is a web application that allows users to create 'Todo receipt' and send them to their friends.(or SNS)">
+    <meta name="title" property="og:title" content="Daily Receipt - 하루 영수증">
+    <meta name="description" property="og:description" content="오늘을 열심히 살아낸 당신을 위해 하루를 담은 영수증을 출력해드려요.🧾
+        할 일을 기록하고 포모도로 타이머로 집중력을 높여보세요.⏲️
+        영수증을 저장해서 보관하거나 SNS로 친구들에게 당신의 열정을 공유할 수도 있습니다.💪">
+        <meta name="image" property="og:image" content="/og_image.png">
+        <meta name="url" property="og:url" content="www.daily-receipt.com">
+        <link rel="apple-touch-icon" href="/icon_256.png">
+        <link rel="manifest" href="/manifest.json">
+        <title>Daily Receipt - 하루 영수증</title>
+        <script defer="defer" src="/static/js/main.aad94b97.js"></script>
+        <link href="/static/css/main.e665df8f.css" rel="stylesheet">
+        <style data-styled="active" data-styled-version="5.3.5"></style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="overflow: unset;">
+    <div id="root">
+        <div class="container">
+            <div class="back-button">
+                <svg width="33" height="28" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30.7093 15.5019C31.5378 15.5007 32.2083 14.8281 32.2071 13.9997C32.2059 13.1713 31.5333 12.5007 30.7049 12.5019L30.7093 15.5019ZM3.70495 12.5416C2.87652 12.5428 2.20594 13.2154 2.20715 14.0438C2.20837 14.8723 2.88093 15.5428 3.70936 15.5416L3.70495 12.5416ZM30.7049 12.5019L3.70495 12.5416L3.70936 15.5416L30.7093 15.5019L30.7049 12.5019Z" fill="#ffffff"></path>
+                    <path d="M14.0208 26.0416L2 14.0208L14.0208 2" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <div class="scale-container">
+                <div id="receipt" class="receipt">
+                    <div class="receipt-content">
+                        <div class="header">
+                            <div class="dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="title-section">
+                            <h1 class="title">RECEIPT</h1>
+                            <div class="date">June 8, 2024 09:26:53</div>
+                        </div>
+                        <div class="separator">-----------------------------------</div>
+                        <div class="items">
+                            <div class="item">
+                                <div class="item-left"></div>
+                                <div class="item-right">
+                                    <div class="item-name">123</div>
+                                    <div class="item-time">0:00</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="item-left"></div>
+                                <div class="item-right">
+                                    <div class="item-name">123</div>
+                                    <div class="item-time">0:00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator">-----------------------------------</div>
+                        <div class="summary">
+                            <div class="summary-item"><span>ITEM COUNT :</span><span>2</span></div>
+                            <div class="summary-item"><span>TOTAL :</span><span>0:00</span></div>
+                        </div>
+                        <div class="separator">-----------------------------------</div>
+                        <div class="quote">Big things have small beginnings.</div>
+                        <div class="separator">-----------------------------------</div>
+                        <div class="footer">
+                            <div class="footer-left">
+                                <svg width="173" height="38" viewBox="0 0 173 38" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <rect width="173" height="38" fill="url(#pattern0)"></rect>
+                                    <defs>
+                                        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                            <use xlink:href="#image0_38_1430" transform="translate(0 -0.00290698) scale(0.00387597 0.0176459)"></use>
+                                        </pattern>
+                                        <image id="image0_38_1430" width="258" height="57" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQIAAAA5CAYAAADdhSWKAAAAAXNSR0IArs4c6QAABX1JREFUeF7tncuW2kAMRJn//+jkOGAjq6skGRgWOTebkDFpe2RZqocafm6325/b88/P4+X2s/31flT9zB3b18xrbO9363TnrNacXON+7u3veF35vCoe+f921+Jiqs4dwv/vZbwH+7EujvF8eY1uvcnvos6vYu7WijGexDfHpMqbeB0xXupa8nWoHHf3o8qxHP8rOZbf+26eqni0ObEFgkKwFgb1AMbEmjw8eQ2XmBSCewQmMe0KEoXgmU2XmgOFYEUok441SVoKwTkpv4FMKAQUgqOrTLoG1GBNGBe3ihJmyA41eMZ1mmNQg4SJ0QjuAek6p+Kql2Cg0EhUMlacON46xf8rfWmCuDJdygXHHQcRgAhABOHpUKLvbz6AuXhRCOaCNIgARHASap2m4Lq1U+IzqugQxkTv6OgWhWDFKFCDRgHGPvTwDWqw2tZXKArUAGoANYAaHBGIbpjrzE6Tyr19Mk/DHMEjam4opxuEcaJTJYhNYWolKE1hW37f3rEncNpBfbVmvNYOylexUefs1pv8LtOY4xo87+Q0x9AI0AjQCEIOfKIgQQ2gBlADqAHUQBTWEUpkspDJwk90YlwDXAPZiavkwjXANchdavv3JwoS1ABqADWAGkANoAb3CEzm4rNK6xwP9T5cgxUCM2J83sHr0E7lFimL8tU83c9/aewcjQCN4BOQHI0AjQCNYM0B+xkPDmXEJTrfP1Z89d54DjeG7OYjxK8yQlkUAgoBhYBCsOyYZNMRm46OwpC7n+pk8RliG/I9GiAChUvm+k+l42SE5Li5QmhV/jJi/IgOI8bn5FVbfhUXrxLIbRuGGvhCEYU6F2+1RdsJbKqZvbJHoRK..."></image>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="footer-right">https://www.daily-receipt.com</div>
+                        </div>
+                        <div class="separator">-----------------------------------</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <div class="action-button">
+                <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="2" width="22" height="18" transform="rotate(90 20 2)" stroke="#FEFEFE" stroke-width="3" stroke-linejoin="round"></rect>
+                    <path d="M25 11H29V22V33H11V29" stroke="#FEFEFE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M15 24V13" stroke="#FEFEFE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M21 19L15 13L9 19" stroke="#FEFEFE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <div class="action-button">
+                <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="13.5" cy="13.5" r="12" stroke="#FEFEFE" stroke-width="3"></circle>
+                    <circle cx="13.5" cy="13.5" r="4.5" stroke="#FEFEFE" stroke-width="3"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+</body>
+<div scale="0.5455831643002029" class="sc-yeoIj eocckV">
+        <div id="receipt" class="sc-gicCDI dDFBdU">
+                <div>
+                        <div y="6px" class="sc-ezWOiH ehFWGI">
+                                <div class="sc-jSMfEi VgrmR">
+                                        <div class="sc-gKXOVf dQVDIs">
+
+                                        </div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                        <div class="sc-gKXOVf dQVDIs"></div>
+                                </div>
+                        </div>
+                        <div class="sc-bZkfAO sc-kLLXSd fytYtC cAbBqb">
+                                <h1 class="sc-ikZpkk cifvKr">RECEIPT</h1>
+                                <div class="sc-iBkjds cJEhdP">
+                                        <div>June 8, 2024 10:09:36</div>
+                                </div>
+                                <div>-----------------------------------</div>
+                                <div class="sc-bZkfAO sc-jIZahH fytYtC bWDkZu">
+                                        <div class="sc-gXmSlM ucwAq">
+                                                <div class="sc-cCsOjp piYDj"></div>
+                                                <div class="sc-ciZhAO ajEhN">
+                                                        <div class="sc-jdAMXn cSrwpN">123</div>
+                                                        <div class="sc-bZnhIo iVFQcR">0:00</div>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div>-----------------------------------</div>
+                                <div class="sc-himrzO eibiGr">
+                                        <div>
+                                                <span>ITEM COUNT :</span>
+                                                <span>1</span>
+                                        </div>
+                                        <div>
+                                                <span>TOTAL :</span>
+                                                <span>0:00</span>
+                                        </div>
+                                </div>
+                                <div>-----------------------------------</div>
+                                <div class="sc-kDDrLX jUkAyz">Never write in an email to someone, something which you wouldn't say to that person's face.</div><div>-----------------------------------</div>
+                                <div class="sc-ftvSup kmXtKt"><div class="sc-papXJ VOFKc">
+                                        <svg width="173" height="38" viewBox="0 0 173 38" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect width="173" height="38" fill="url(#pattern0)"></rect><defs><pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1"><use xlink:href="#image0_38_1430" transform="translate(0 -0.00290698) scale(0.00387597 0.0176459)"></use></pattern><image id="image0_38_1430" width="258" height="57" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQIAAAA5CAYAAADdhSWKAAAAAXNSR0IArs4c6QAABX1JREFUeF7tncuW2kAMRJn//+jkOGAjq6skGRgWOTebkDFpe2RZqocafm6325/b88/P4+X2s/31flT9zB3b18xrbO9363TnrNacXON+7u3veF35vCoe+f921+Jiqs4dwv/vZbwH+7EujvF8eY1uvcnvos6vYu7WijGexDfHpMqbeB0xXupa8nWoHHf3o8qxHP8rOZbf+26eqni0ObEFgkKwFgb1AMbEmjw8eQ2XmBSCewQmMe0KEoXgmU2XmgOFYEUok441SVoKwTkpv4FMKAQUgqOrTLoG1GBNGBe3ihJmyA41eMZ1mmNQg4SJ0QjuAek6p+Kql2Cg0EhUMlacON46xf8rfWmCuDJdygXHHQcRgAhABOHpUKLvbz6AuXhRCOaCNIgARHASap2m4Lq1U+IzqugQxkTv6OgWhWDFKFCDRgHGPvTwDWqw2tZXKArUAGoANYAaHBGIbpjrzE6Tyr19Mk/DHMEjam4opxuEcaJTJYhNYWolKE1hW37f3rEncNpBfbVmvNYOylexUefs1pv8LtOY4xo87+Q0x9AI0AjQCEIOfKIgQQ2gBlADqAHUQBTWEUpkspDJwk90YlwDXAPZiavkwjXANchdavv3JwoS1ABqADWAGkANoAb3CEzm4rNK6xwP9T5cgxUCM2J83sHr0E7lFimL8tU83c9/aewcjQCN4BOQHI0AjQCNYM0B+xkPDmXEJTrfP1Z89d54DjeG7OYjxK8yQlkUAgoBhYBCsOyYZNMRm46OwpC7n+pk8RliG/I9GiAChUvm+k+l42SE5Li5QmhV/jJi/IgOI8bn5FVbfhUXrxLIbRuGGvhCEYU6F2+1RdsJbKqZvbJHoRKk3TkQC8N9nijSHarIx18NcEysicAWk3J7TSG4R8QVuElMuz0PFIJntuMa6IZhKQv24ZmS5PBNLFnEwjXp2HTE5xHgGqTn4lvuBYgARHB0/Al8nFZrtiHPRDoQAYhAPoDsNXgmRvWQIBauHcwV8glFARGACEAEoSkpZfw3RToQAYgARCDESezDc1DQCPy3aWUXq3KY3H4FhaJwDXANTkNJ3YDSJ2w7EAGIAEQAImDEWOTAVJAGERQW036IgSLv8Tu4HRPrW5AcRAAiABGACEAEIIJ7BNhrsIpj0cqqBKCcQx2nr9CSOme3HhqBt9wcbL+6WYm9BqZbOpVzsn21Gxjqjueby4ixpx+qyOdbOqFv36IosRCy6eh8p0pLeTvorK7qoaySwXU/1cniOm5XV8c/uzXycQqBtrLeGeTp7hGFAPtwwQRuQoxCcO7MbgAIaiBgpmhoIAIQgc6UYivwZFAjJtaEV6MRnLn3N7QKqIHXO6AGoSx0XSLSGkUh9p9RCOqHfKL1VPFVlZy9Bp5eMFmYMmaaLNNhD3YfsvtwopVVm8eU4OrGfyPte1XLymsoZLqgM8RCPs58gm46JwaxcMUw02aTH3gntk/dLQoBX3ByZGPJB8MHpLqku+rEUAgoBP8iwEDRORHYfbjGA7GwF/KgBqabT4ZVrnavV7kXroGS8M5NwNEM5giYI1iyhzkC3xlikWKOwKMK5ypEYaxziNzcSl4bsfCCIg81gBpUegOIAEQAInhEwHUo14FABCCCqfPAHMEF1PKuLYNGgEaghPGYVzFC04c4a1bv5mkWHCNdytd/NBvmCJgjYI5gptnEB4xtyLopYB8KZKIqsXIsoAb3CHyiICEW+qLGXoPwpHVKcoZ5jBgzYoxrcIF/4xrgGuAanHMAjYDvPuS7D4sm4twQqMEK66fFBNfgAmp5V43FNcA1wDVoNvRADaAGUAOoAa4BrkGp/DNZyGThgifZazDzrZksXFFW97kI2IfYh0dHmiTLKyIMGgEawX+rEfwFdzg+lyRxDq4AAAAASUVORK5CYII="></image></defs></svg></div><div class="sc-jqUVSM jVFdLq">https://www.daily-receipt.com</div></div><div>-----------------------------------</div></div><div y="-7px" class="sc-ezWOiH bonIZY"><div class="sc-jSMfEi VgrmR"><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div><div class="sc-gKXOVf dQVDIs"></div>
+<div class="sc-gKXOVf dQVDIs"></div></div></div></div></div></div>
+</html>
+
+
+<!-- <div id="L1" class="layerPop" style="display: block; top: 595px;">
+        <div class="layTop">
+            <h3 class="laytit">장바구니</h3>
+            <button type="button" class="close">닫기</button>
+        </div>
+        <div class="layCon">
+            <div class="txtAlert">
+                <p class="txt1">선택한 상품이 장바구니에 담겼습니다.</p>
+                <p class="txt2">장바구니로 이동 하겠습니까?</p>
+            </div>
+            <div class="btnArea">
+                <a href="/mall/mypage/shoppingBasket.do" class="btnST btnM other">장바구니 확인하기</a>
+                <a href="javascript:commonJs.popHide($('#L1'));" class="btnST btnM action">계속 쇼핑하기</a>
+            </div>
         </div>
     </div> -->
 
 
-    <div class="lineBox">
-        <span class="checkMulti">                        
-            <span class="frmCheck"><input type="radio" id="card" name="payment_type" value="card" checked="checked"><label for="card">카드</label></span>
-            <span class="frmCheck"><input type="radio" id="cash" name="payment_type" value="cash"><label for="cash">현금</label></span>
-        </span>
-    </div>
-    <form id="paymentForm" method="post" action="{% url 'vending_app:process_payment' %}">
-        {% csrf_token %}
-        <div class="lineBox">
-            <label for="cash_input_1000">1000원</label>
-            <input type="number" id="cash_input_1000" name="cash_input_1000" min="0">
-        </div>
-        <div class="lineBox">
-            <label for="cash_input_5000">5000원</label>
-            <input type="number" id="cash_input_5000" name="cash_input_5000" min="0">
-        </div>
-        <div class="lineBox">
-            <label for="cash_input_10000">10000원</label>
-            <input type="number" id="cash_input_10000" name="cash_input_10000" min="0">
-        </div>
-        <div class="btnArea">
-            <button type="submit" class="btnST btnL action">결제하기</button>
-            <a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other">장바구니로 가기</a>  
-        </div>
-    </form>
+
+<div class="data itmOption">                          
+        <div class="optionBox" id="S000000010466">
+            <strong class="name">생쫄면 (2인분)</strong>
+            <div class="amount">
+                <span class="frmAmount">
+                    <button type="button" class="minus" onclick="fnOptionQty(this)">수량 감소</button>
+                    <input type="text" name="inpGoodCnt" value="1" title="수량 직접입력" data-key="982" onchange="fnOptionInput(this)">
+                    <button type="button" class="plus" onclick="fnOptionQty(this)">수량 증가</button>
+                </span>
+                <span class="stock">남은 수량 982개</span>
+            </div>
+            <div class="txtPrice">
+                <span class="cost1" title="할인가" data-key="3990"><b>3,990</b>원</span>
+            </div>
+        </div>                                            
+</div>

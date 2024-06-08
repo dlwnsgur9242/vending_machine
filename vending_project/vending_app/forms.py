@@ -10,7 +10,7 @@ class ProductRegisterForm(forms.ModelForm):
 
     product_flag = forms.ChoiceField(choices=FLAG_CHOICES, label='상품 종류')
     product_image = forms.ImageField(label='이미지')
-    product_price = forms.DecimalField(label='가격', decimal_places=0)
+    product_price = forms.IntegerField(label='가격')
     
     class Meta:
         model = Product
@@ -28,6 +28,10 @@ class ProductRegisterForm(forms.ModelForm):
         if not product_image:
             raise forms.ValidationError("이미지를 업로드해야 합니다.")
         return product_image
-
+    
+    def clean_product_price(self):
+        product_price = self.cleaned_data.get('product_price')
+        # 입력값을 정수로 변환하여 소수점 이하 값을 제거함
+        return int(product_price)
 class AddToCartForm(forms.Form):
     product_id = forms.CharField(widget=forms.HiddenInput)

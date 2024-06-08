@@ -359,7 +359,7 @@ span.caution{display:inline-block;margin:-5px 0 -5px 26px;vertical-align:middle}
 .layerPop{display:none;position:fixed;top:50%;left:50%;width:500px;margin-left:-250px;padding:30px;background:#fff;z-index:99}
 .layerPop .layTop{position:relative;padding-bottom:18px;margin-bottom:30px;border-bottom:1px solid #000}
 .layerPop .layTop .laytit{font-size:18px}
-.layerPop .layTop .close{position:absolute;top:-6px;right:-6px;width:30px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../images/pc/ico_close.png) 50% 50% no-repeat}
+.layerPop .layTop .close{position:absolute;top:-6px;right:-6px;width:30px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../icon/ico_close.png) 50% 50% no-repeat}
 .layerPop .singlePhotoReviewLayer{display:block;}
 .layerPop .fullPhotoReviewLayer{display:none;}
 .layerPop .fullPhotoReviewLayer .laysubtit{font-family:"Noto Sans KR";font-weight:700; font-size:18px;line-height:26px;color:#666666;}
@@ -533,7 +533,7 @@ ol.itemList .frmCheck{top:53px}
 .headerArea .inner{position:relative;padding:40px 0 20px}
 .headerArea h1{display:inline-block;margin-top:-3px;vertical-align:middle}
 /* .headerArea h1 .logo{display: block;width: 194px;height: 44px;overflow: hidden;text-indent: -9999px;background: url(../images/logo_ourhome_2022.gif) 0 0 no-repeat;background-size: auto 100%;}[2022-01-10] 수정 */
-.headerArea h1 .logo{display:block;width:194px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../images/logo_ourhome.png) 0 0 no-repeat;background-size:auto 100%;} /* [2024-01-26 / 2024-02-13] png -> gif -> png 추석 bl 수정 */
+.headerArea h1 .logo{display:block;width:194px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../img/Hanyang/Hanyang_1.png) 0 0 no-repeat;background-size:auto 100%;} /* [2024-01-26 / 2024-02-13] png -> gif -> png 추석 bl 수정 */
 /* .headerArea h1 .logo{display:block;width:208px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../images/logo_ourhome_20230908.png) 0 0 no-repeat;background-size:auto 100%;} *//* [2022-09-08] 추석 bl 수정 */
 /* .headerArea h1 .logo{display:block;width:208px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../images/logo_ourhome_20220823.png) 0 0 no-repeat;background-size:auto 100%;} *//* [2022-08-23] 추석 bl 수정 */
 /* .headerArea h1 .logo{display:block;width:210px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../images/logo_ourhome_20220825.png) 0 0 no-repeat;background-size:auto 100%;} *//* [2022-08-25] 추석 bl 수정 */
@@ -987,9 +987,20 @@ td.noData{margin:0;background:none}
 .prodSpot:after{content:'';display:block;clear:both}
 .prImage{float:left;width:580px;}
 .prImage .photo{position:relative;height:580px}
-.prImage .photo img{width:100%}
+.prImage .photo img{width:100%;height:100%;object-fit:cover;}
 .prImage .photo .soldout-wrapper {position:absolute;top:50%;left:50%;text-align:center;border-radius:100%;background:rgba(0,0,0,.35);z-index:2;display:flex;justify-content:center;align-items:center;transform:translate(-50%,-50%);} /* 2024-05-29 수정 */
 .prImage .photo .soldout{font-size:25px;} /* 2023-10-30 수정*/
+/* mousetrap 스타일 추가 */
+.mousetrap {
+    background-image: url('');
+    z-index: 999;
+    position: absolute;
+    width: 580px;
+    height: 580px;
+    left: 0px;
+    top: 0px;
+    cursor: crosshair;
+}
 .prImage .thumb{margin-top:20px;text-align:center}
 .prImage .thumb>li{display:inline-block;width:80px;height:80px;margin:0 8px;border:1px solid #eee}
 .prImage .thumb>li a{display:block;height:100%}
@@ -1240,7 +1251,7 @@ td.noData{margin:0;background:none}
 }
 .layerReview .layReviewTop .showAllPhotoReviews{color:#868686;padding:7px 14px; border-radius:12px;border:1px solid #868686;font-family:"Noto Sans KR";font-size:18px;font-weight:700;line-height:26px;height: 36px;display: flex;align-items: center;justify-content: center;}
 .layerReview .layReviewTop button:disabled,button[disabled]{color:#D7D7D7;border:1px solid #D7D7D7;background-color:white}
-.layerReview .layReviewTop .close{width:26px;height:26px;overflow:hidden;text-indent:-9999px;background:url(../images/pc/ico_close.png) 50% 50% no-repeat}
+.layerReview .layReviewTop .close{width:26px;height:26px;overflow:hidden;text-indent:-9999px;background:url(../icon/ico_close.png) 50% 50% no-repeat}
 #layerReviewFull{display:none;z-index:100}
 .photoReview:after{content:'';display:block;clear:both}
 .photoReview .photoSwiper{float:left;width:400px}

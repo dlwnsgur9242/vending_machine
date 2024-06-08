@@ -180,4 +180,15 @@ class Order(models.Model):
 #결제하기를 누르면 결제 완료 
 
 ## 결제한 상품 목록을 저장해 놓아야한다.
-## 테이블을 하나 만들어서 보관(비휘발성) or order table 출력(휘발성) 
+## 테이블을 하나 만들어서 보관(비휘발성) or order table 출력(휘발성)
+
+
+# 주문 완료 페이지
+# {{ order.receipt.payment_type }} 연결 필요.
+# views.py의 def orderComplete(request): 수정
+# orderComplete 부분 수정 필요
+
+
+#구현의 어려움
+#상세페이지 
+#수량 증가 및 바로구매로직

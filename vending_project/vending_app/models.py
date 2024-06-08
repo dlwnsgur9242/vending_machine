@@ -18,7 +18,7 @@ class Product(models.Model):
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     product_name = models.CharField(max_length=20)
     product_stock = models.IntegerField()
-    product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    product_price = models.IntegerField()
     product_flag = models.CharField(max_length=10)
     product_image = models.ImageField(upload_to='vending_app/static/img/', null=True, blank=True)
 
@@ -61,9 +61,11 @@ class Receipt(models.Model):
         ('cash', '현금'),
     ]
     receipt_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    # Order와의 관계 설정
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='receipts')
     payment_type = models.CharField(max_length=10, choices=PAYMENT_TYPES)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    
     #총 결제할 금액
     receipt_amount = models.DecimalField(max_digits=10, decimal_places=2)
     receipt_datetime = models.DateTimeField(auto_now_add=True)
@@ -82,3 +84,6 @@ class Receipt(models.Model):
 
     def __str__(self):
         return str(self.receipt_id)
+    
+    class Meta:
+        get_latest_by = 'receipt_datetime'

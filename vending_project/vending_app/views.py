@@ -5,6 +5,10 @@ from django.http import JsonResponse, HttpResponse
 from .forms import ProductRegisterForm, AddToCartForm
 from .forms import AddToCartForm
 from django.utils.crypto import get_random_string
+from django.views.decorators.http import require_POST
+
+def index(request):
+    return render(request, 'main/index.html')
 
 
 #상품 리스트
@@ -28,26 +32,55 @@ def productmanage(request):
 
 # 상품 상세페이지
 def product_detail(request, product_id):
-    # 상품 정보 조회
     product = get_object_or_404(Product, product_id=product_id)
 
     if request.method == 'POST':
-        # POST 요청일 경우, 장바구니에 상품 추가 폼을 처리
         form = AddToCartForm(request.POST)
         if form.is_valid():
-            # 폼이 유효한 경우, 상품을 장바구니에 추가하고 장바구니 페이지로 이동
-            return redirect('vending_app:add_to_cart')
+            cart_qty = form.cleaned_data['cart_qty']
+            # 주문 생성
+            order = Order.objects.create(
+                product=product,
+                order_qty=cart_qty,
+                order_amount=product.product_price * cart_qty
+            )
+            # 주문 생성 후 주문 결제 페이지로 이동
+            return redirect('vending_app:order_payment', order_id=order.pk)
     else:
-        # POST 요청이 아닐 경우, 장바구니에 상품 추가 폼을 생성
         form = AddToCartForm()
 
-    # 상품 상세 정보 페이지를 렌더링하여 반환
+    cart_qty = request.session.get('cart', {}).get(product_id, 1)
+    product.cart_qty = cart_qty
+
     return render(request, 'main/product_detail.html', {'product': product, 'form': form})
 
+def add_to_detail(request, product_id):
+    if request.method == 'POST':
+        # POST 요청일 때, 상품 수량을 받아서 주문 생성
+        product = get_object_or_404(Product, product_id=product_id)
+        qty = int(request.POST.get('qty', 1))  # 클라이언트에서 전송된 수량 값 가져오기
+
+        # 주문 생성
+        order = Order.objects.create(
+            product=product,
+            order_qty=qty,
+            order_amount=product.product_price * qty
+        )
+
+        # 주문 생성 후 주문 결제 페이지로 이동
+        return redirect('vending_app:order_payment', order_id=order.pk)
+    else:
+        # POST 요청이 아닌 경우, 상품 상세 페이지로 리다이렉트
+        return redirect('vending_app:product_detail', product_id=product_id)
+    
 # 장바구니 view
 def view_cart(request):
     cart_session_id = request.session.get('cart_session_id')
-    cart_items, total_product_payment, delivery_fee, total_payment = get_cart_items(cart_session_id)
+    cart_items, total_product_payment, total_payment = get_cart_items(cart_session_id)
+    carts = Cart.objects.filter(cart_session_id=cart_session_id)  # 현재 세션 아이디로 된 카트 아이템만 필터링
+    count = carts.count()  # 현재 세션 아이디로 된 카트 아이템의 개수 세기
+    # carts = Cart.objects.all()
+    # count = len(carts)
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -69,28 +102,31 @@ def view_cart(request):
             return redirect('vending_app:view_cart')   
         elif action == 'delete_all':
             return redirect('vending_app:view_cart')
-        return redirect('vending_app:orderPayment')
+        elif action == 'select_buy':
+                return redirect('vending_app:orderPayment')
+        elif action == 'all_buy':
+            return redirect('vending_app:orderPayment')
+
 
     context = {
         'cart_items': cart_items,
         'total_product_payment': total_product_payment,
-        'delivery_fee': delivery_fee,
         'total_payment': total_payment,
+        'count': count,
     }
     return render(request, 'main/view_cart.html', context)
+
 
 # 장바구니 항목 가져오기 및 계산
 def get_cart_items(cart_session_id):
     cart_items = Cart.objects.filter(cart_session_id=cart_session_id, user=None)
     total_product_payment = sum(item.total_price() for item in cart_items)
-    delivery_fee = 3000  # 배송비
-    total_payment = total_product_payment + delivery_fee
-
+    total_payment = total_product_payment
     #total_price를 계산하는 로직
     for cart_item in cart_items:
         cart_item.total_price = cart_item.cart_qty * cart_item.product.product_price
 
-    return cart_items, total_product_payment, delivery_fee, total_payment
+    return cart_items, total_product_payment, total_payment
 
 # 장바구니 POST 요청 처리
 def handle_cart_post_action(action, request, selected_items):
@@ -101,16 +137,14 @@ def handle_cart_post_action(action, request, selected_items):
         elif action == 'delete_all':
             Cart.objects.all().delete()
         elif action == 'select_buy':
-            # 선택 상품 구매 처리 로직 (구현 필요)
+            # 선택 상품 구매 처리 로직
             handle_select_buy(request, selected_items)
-            # 주문 처리가 완료되면 주문 완료 페이지로 리디렉션합니다.
-            print("2")
-            return redirect('vending_app:orderPayment')
+        elif action == 'all_buy':
+            # 전체 상품 구매 처리 로직
+            handle_all_buy(request)
     elif action == 'all_buy': # 선택된 항목이 비어 있어도 실행
-        # 전체 상품 구매 처리 로직 (구현 필요)
-        handle_all_buy(request)
-        # 주문 처리가 완료되면 주문 완료 페이지로 리디렉션합니다.
-        return redirect('vending_app:orderPayment')
+            # 전체 상품 구매 처리 로직
+            handle_all_buy(request)
 
 # 선택한 상품 구매 처리
 def handle_select_buy(request, selected_items):
@@ -224,28 +258,77 @@ def delete_cart_item(request, product_id):
     return redirect('vending_app:view_cart')
 
 
-# 주문 결제
-def orderPayment(request):
-    #order 초기화
-    if request.method == 'GET':
-        # Order.objects.all().delete()
-        # clear_cart 매개변수가 있는지 확인
-        if 'clear_cart' in request.GET and request.GET['clear_cart'] == 'true':
-            # 주문 테이블을 비웁니다.
-            Order.objects.all().delete()
-        else:
-            # 주문 결제 페이지를 보여줍니다.
-            orders = Order.objects.all() # 모든 주문 가져옴
-            count = len(orders)  # 주문의 개수 계산
+# # 주문 결제
+# def orderPayment(request):
+#     #order 초기화
+#     if request.method == 'GET':
+#         # Order.objects.all().delete()
+#         # clear_cart 매개변수가 있는지 확인
+#         if 'clear_cart' in request.GET and request.GET['clear_cart'] == 'true':
+#             # 주문 테이블을 비웁니다.
+#             Order.objects.all().delete()
+#         else:
+#             # 주문 결제 페이지를 보여줍니다.
+#             orders = Order.objects.all() # 모든 주문 가져옴
+#             count = len(orders)  # 주문의 개수 계산
 
         
+#     order_total_payment = sum(order.order_total_price() for order in orders)
+
+#     # 주문의 총 가격을 계산합니다.
+#     for order in orders:
+#         order.order_total_price = order.order_qty * order.product.product_price
+    
+#     return render(request, 'main/orderPayment.html', {'orders': orders, 'count': count, 'order_total_payment': order_total_payment})
+# # 주문 결제
+# def orderPayment(request):
+#     # GET 요청일 때의 처리
+#     if request.method == 'GET':
+#         # 주문 정보를 조회하고 주문 총 가격을 계산합니다.
+#         orders = Order.objects.all()  # 모든 주문 가져오기
+#         count = len(orders)  # 주문 개수 계산
+#         order_total_payment = sum(order.order_total_price() for order in orders)  # 주문 총 가격 계산
+
+#         # 주문의 총 가격을 계산합니다.
+#         for order in orders:
+#             order.order_total_price = order.order_qty * order.product.product_price
+
+#     # POST 요청 처리
+#     elif request.method == 'POST':
+#         # GET 요청과 동일한 로직을 수행합니다.
+#         if 'clear_cart' in request.POST and request.POST['clear_cart'] == 'true':
+#             Order.objects.all().delete()
+#         else:
+#             orders = Order.objects.all() 
+#             count = len(orders)  
+#             order_total_payment = sum(order.order_total_price() for order in orders)  
+
+#         for order in orders:
+#             order.order_total_price = order.order_qty * order.product.product_price
+
+#         return render(request, 'main/orderPayment.html', {'orders': orders, 'count': count, 'order_total_payment': order_total_payment})
+    
+#     # 주문 결제 페이지를 보여줍니다.
+#     return render(request, 'main/orderPayment.html', {'orders': orders, 'count': count, 'order_total_payment': order_total_payment})
+
+# 주문 결제
+def orderPayment(request):
+    if request.method == 'GET':
+        orders = Order.objects.all()
+        count = len(orders)
+    elif request.method == 'POST':
+        orders = Order.objects.all()
+        count = len(orders)
+
+        return redirect('vending_app:orderPayment')
+
     order_total_payment = sum(order.order_total_price() for order in orders)
 
-    # 주문의 총 가격을 계산합니다.
     for order in orders:
         order.order_total_price = order.order_qty * order.product.product_price
-    
+
     return render(request, 'main/orderPayment.html', {'orders': orders, 'count': count, 'order_total_payment': order_total_payment})
+
 
 # 주문 결제 / 결제 방식
 def process_payment(request):
@@ -262,7 +345,8 @@ def process_payment(request):
             print("Product stock before update:", order.product.product_stock)
            
             if order.order_qty > order.product.product_stock:
-                return JsonResponse({'error': f" {order.product.product_name}의 재고가 주문보다 적습니다. 현재 재고: {order.product.product_stock}개"})
+                return redirect('vending_app:PaymentFailed')
+                # ({'error': f" {order.product.product_name}의 재고가 주문보다 적습니다. 현재 재고: {order.product.product_stock}개"})
             
             # 주문 수량 만큼 재고를 감소시킵니다.
             # order.product.product_stock -= order.order_qty
@@ -302,7 +386,8 @@ def process_payment(request):
                 order.product.save()
 
             print("Product stock after update:", order.product.product_stock)
-        return JsonResponse({'message': 'Payment processed successfully!'})
+        # 결제 완료 후 orderComplete 페이지로 이동합니다.
+        return redirect('vending_app:orderComplete')
     
     return redirect('vending_app:view_cart')
 
@@ -313,3 +398,73 @@ def process_order_reset(request):
         Order.objects.all().delete()
         # 뷰나 템플릿에서 적절한 리디렉션을 수행하거나, 응답을 반환합니다.
         return redirect('vending_app:orderPayment')
+
+#주문완료
+def orderComplete(request):
+    receipt = Receipt.objects.first()
+    
+    orders = Order.objects.all()
+    order_total_payment = sum(order.order_total_price() for order in orders)
+    total_deposit = 0
+    # 거스룸돈은 100원, 500원, 1000원 가능
+    change = 0
+    change_save = 0
+    change_100 = 0
+    change_500 = 0
+    change_1000 = 0
+
+    if orders.exists():
+        last_order = orders.latest('order_datetime')
+        try:
+            receipt = Receipt.objects.filter(order=last_order).latest('receipt_datetime')
+            if receipt.payment_type == 'cash':
+                total_deposit = receipt.total_deposit()
+                change = total_deposit - order_total_payment
+                # change 값 저장
+                change_save = change
+                
+                # 1000원짜리 화폐 단위 계산
+                change_1000 = change // 1000
+                change = change % 1000
+
+                # 500원짜리 화폐 단위 계산
+                change_500 = change // 500
+                change = change % 500
+
+                # 100원짜리 화폐 단위 계산
+                change_100 = change // 100
+                change = change % 100
+                
+                # change 값 초기화
+                change = change_save
+ 
+        except Receipt.DoesNotExist:
+            receipt = None
+
+    order_receipts = {}
+    for order in orders:
+        try:
+            order_receipts[order.order_id] = Receipt.objects.filter(order=order).latest('receipt_datetime')
+        except Receipt.DoesNotExist:
+            order_receipts[order.order_id] = None
+
+    context = {
+        'receipt_datetime': receipt.receipt_datetime,
+        'payment_type': receipt.payment_type,
+        'orders': orders,
+        'order_receipts': order_receipts,
+        'order_total_payment': order_total_payment,
+        'total_deposit': total_deposit,
+        'change': change,
+        'change_1000': change_1000,
+        'change_500': change_500,
+        'change_100': change_100,
+    }
+    return render(request, 'main/orderComplete.html', context)
+
+# PaymentFailed.html 결제 실패 페이지의 템플릿 파일
+def PaymentFailed(request):
+    return render(request, 'main/PaymentFailed.html')
+
+def orderReceipt(request):
+    return render(request, 'main/orderReceipt.html')
