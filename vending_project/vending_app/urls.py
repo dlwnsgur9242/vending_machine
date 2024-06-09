@@ -15,7 +15,9 @@ urlpatterns = [
     path('product_detail/<uuid:product_id>/', views.product_detail, name='product_detail'),
     #상품 상세 페이지 주문으로 추가
     path('add_to_detail/<uuid:product_id>/', views.add_to_detail, name='add_to_detail'),
-    
+    #상품 상세 페이지 상품 정보저장
+    path('update_detail_qty/', views.update_detail_qty, name='update_detail_qty'),
+
     #장바구니
     path('view_cart', views.view_cart, name="view_cart"),
     #장바구니 상품 추가

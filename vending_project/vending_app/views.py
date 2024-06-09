@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Cart, User, Order, Receipt
+from .models import Product, Cart, User, Order, Receipt, Detail
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from .forms import ProductRegisterForm, AddToCartForm
@@ -38,6 +38,11 @@ def product_detail(request, product_id):
         form = AddToCartForm(request.POST)
         if form.is_valid():
             cart_qty = form.cleaned_data['cart_qty']
+            # Detail 테이블에 해당 상품 정보 추가
+            detail = Detail.objects.create(
+                product=product,
+                detail_qty=cart_qty
+            )
             # 주문 생성
             order = Order.objects.create(
                 product=product,
@@ -72,7 +77,27 @@ def add_to_detail(request, product_id):
     else:
         # POST 요청이 아닌 경우, 상품 상세 페이지로 리다이렉트
         return redirect('vending_app:product_detail', product_id=product_id)
-    
+
+def update_detail_qty(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        new_qty = request.POST.get('new_qty')
+
+        # 상품을 가져옵니다.
+        product = get_object_or_404(Product, product_id=product_id)
+
+        # 상품의 수량을 업데이트합니다.
+        product.product_stock = new_qty
+        product.save()
+
+        # 성공적으로 업데이트되었음을 클라이언트에게 알립니다.
+        data = {'message': '상품 수량이 업데이트되었습니다.'}
+        return JsonResponse(data)
+    else:
+        # POST 요청이 아닌 경우 에러 메시지를 반환합니다.
+        data = {'error': 'POST 요청이 필요합니다.'}
+        return JsonResponse(data, status=400)
+
 # 장바구니 view
 def view_cart(request):
     print("준혁")

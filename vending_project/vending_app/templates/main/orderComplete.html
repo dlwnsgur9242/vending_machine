@@ -68,6 +68,22 @@
     </script>
 </head>
 <body>
+    <div id="L1" class="layerPop" style="display: block; top: 200px;">
+        <div class="layTop">
+            <h3 class="laytit">영수증</h3>
+            <button type="button" class="close">닫기</button>
+        </div>
+        <div class="layCon">
+            <div class="txtAlert">
+                <p class="txt1">결제가 성공!</p>
+                <p class="txt2">영수증을 출력하시겠습니까?</p>
+            </div>
+            <div class="btnArea">
+                <a href="{% url 'vending_app:orderReceipt' %}" class="btnST btnM other">영수증 출력</a>
+                <a href="{% url 'vending_app:ProductList' %}" class="btnST btnM action">계속 쇼핑하기</a>
+            </div>
+        </div>
+    </div>
     <div class="headerArea">
         <div class="inner">
             <nav class="Nav">
@@ -90,22 +106,6 @@
                 </ul>
                 <a href="#" class="navbar_toggleBtn"><i class="fas fa-bars"></i></a>
             </nav>
-        </div>
-    </div>
-    <div id="L1" class="layerPop" style="display: block; top: 200px;">
-        <div class="layTop">
-            <h3 class="laytit">영수증</h3>
-            <button type="button" class="close">닫기</button>
-        </div>
-        <div class="layCon">
-            <div class="txtAlert">
-                <p class="txt1">결제가 성공!</p>
-                <p class="txt2">영수증을 출력하시겠습니까?</p>
-            </div>
-            <div class="btnArea">
-                <a href="{% url 'vending_app:orderReceipt' %}" class="btnST btnM other">영수증 출력</a>
-                <a href="{% url 'vending_app:ProductList' %}" class="btnST btnM action">계속 쇼핑하기</a>
-            </div>
         </div>
     </div>
     <div class="container">
@@ -157,14 +157,22 @@
                     </li>
                     <li>
                         <span class="txt">입금 금액</span>
-                        <span class="cost"><b id="totalDeposit">{{ total_deposit|intcomma }}</b>원</span>
+                        {% if payment_type == 'card' %}
+                            카 드
+                        {% else %}
+                            <span class="cost"><b id="totalDeposit">{{ total_deposit|intcomma }}</b>원</span>
+                        {% endif %}
                     </li>
                     <li>
                         <span class="txt">거스름 돈</span>
+                        {% if payment_type == 'card' %}
                         <span class="cost"><b id="change">{{ change|intcomma }}</b>원</span>
-                        <span class="cost">1000원 = <b id="change">{{ change_1000|intcomma }}</b>장</span>
-                        <span class="cost">500원 = <b id="change">{{ change_500|intcomma }}</b>개</span>
-                        <span class="cost">100원 = <b id="change">{{ change_100|intcomma }}</b>개</span>
+                        {% else %}
+                            <span class="cost"><b id="change">{{ change|intcomma }}</b>원</span>
+                            <span class="cost">1000원 = <b id="change">{{ change_1000|intcomma }}</b>장</span>
+                            <span class="cost">500원 = <b id="change">{{ change_500|intcomma }}</b>개</span>
+                            <span class="cost">100원 = <b id="change">{{ change_100|intcomma }}</b>개</span>
+                        {% endif %}
                     </li>
                 </ul>
                 <div class="cartBtns">

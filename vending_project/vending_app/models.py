@@ -22,6 +22,10 @@ class Product(models.Model):
     product_flag = models.CharField(max_length=10)
     product_image = models.ImageField(upload_to='vending_app/static/img/', null=True, blank=True)
 
+class Detail(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    detail_qty = models.PositiveIntegerField(default=1)
+
 class Cart(models.Model):
     cart_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

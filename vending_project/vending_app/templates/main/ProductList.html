@@ -7,42 +7,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'css/TopNav.css' %}" rel="stylesheet">
-    <title>상품리스트</title>
-</head>
-<body>
-    <div class="headerArea">
-        <div class="inner">
-        <nav class="Nav">
-            <div class="navbar_logo">
-                <i class="fa-solid fa-dog"></i>
-                <a href="{% url 'vending_app:ProductList' %}">
-                    <img src="/static/img/Hanyang/Hanyang_main.png" alt="Hanyang Logo" style="width: 150px; height: auto; max-width: 100%; max-height: 100%; padding-left: 20px;">
-                </a>
-            </div>
-            <ul class="navbar_menu">
-                <li><a href="">전체 카테고리</a></li>
-                <li><a href="">할랄</a></li>
-                <li><a href="">글루텐</a></li>
-            </ul>
-
-            <ul class="navbar_usermenu">
-                <li><a href="{% url 'vending_app:view_cart' %}" class="btnST btnL other"><font size="5">장바구니</font></a></li>
-                <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button"><font size="5">상품관리</font></a></li>
-                <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button"><font size="5">상품등록</font></a></li>
-            </ul>
-
-            <ul class="navbar_icons">
-                <li><i class="fab fa-twitter-square"></i></li>
-                <li><i class="fab fa-facebook-square"></i></li>
-                <li><i class="fab fa-instagram"></i></li>
-            </ul>
-
-            <a href="#" class="navbar_toggleBtn">   
-                <i class="fas fa-bars"></i>
-            </a>
-        </nav>   
     
+    <style>
+        .layerPop {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
+
+        .layTop {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .laytit {
+            margin: 0;
+        }
+
+        .close {
+            background-color: #ccc;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .layCon {
+            text-align: center;
+        }
+
+        .txt1, .txt2 {
+            margin: 10px 0;
+        }
+
+        .btnArea {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btnST {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .btnM {
+            font-size: 16px;
+        }
+
+        .other {
+            background-color: #28a745;
+        }
+
+        .action {
+            background-color: #dc3545;
+        }
+    </style>
+    <title>상품리스트</title>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // 문서가 로드될 때 실행되는 스크립트
+
+        // 상품을 장바구니에 추가하는 함수
+        function addToCart(productId) {
+            // 장바구니에 상품을 추가하는 코드 작성
+
+            // 상품을 성공적으로 추가한 후에만 레이어 팝업을 표시
+            document.getElementById('addToCartDialog').style.display = 'block';
+            
+            // 장바구니로 이동하는 버튼에 productId 추가
+            document.getElementById('confirmToCart').href = "{% url 'vending_app:add_to_cart' %}?product_id=" + productId;
+        }
+
+        // "장바구니 확인하기" 버튼 클릭 시
+        document.getElementById('confirmToCart').addEventListener('click', function() {
+            // 실제로 장바구니로 이동하는 코드는 필요 없음
+        });
+
+        // "계속 쇼핑하기" 버튼 클릭 시
+        document.getElementById('continueShopping').addEventListener('click', function() {
+            document.getElementById('addToCartDialog').style.display = 'none';
+        });
+    });
+            
+
         const toggleBtn = document.querySelector('.navbar_toggleBtn');
         const menu = document.querySelector('.navbar_menu');
         const icons = document.querySelector('.navbar_icons');
@@ -52,6 +113,58 @@
             icons.classList.toggle('active');
         });
     </script>
+</head>
+<body>
+    <!-- <div id="L1" class="layerPop" style="display: block; top: 200px;">
+        <div class="layTop">
+            <h3 class="laytit">장바구니</h3>
+            <button type="button" class="close">닫기</button>
+        </div>
+        <div class="layCon">
+            <div class="txtAlert">
+                <p class="txt1">선택한 상품이 장바구니에 담겼습니다.</p>
+                <p class="txt2">장바구니로 이동 하겠습니까?</p>
+            </div>
+            <div class="btnArea">
+                <a href="{% url 'vending_app:view_cart' %}" class="btnST btnM other">장바구니 확인하기</a>
+                <a href="{% url 'vending_app:ProductList' %}" class="btnST btnM action">계속 쇼핑하기</a>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="headerArea">
+        <div class="inner">
+            <nav class="Nav">
+                <div class="navbar_logo">
+                    <i class="fa-solid fa-dog"></i>
+                    <a href="{% url 'vending_app:ProductList' %}">
+                        <img src="/static/img/Hanyang/Hanyang_main.png" alt="Hanyang Logo" style="width: 150px; height: auto; max-width: 100%; max-height: 100%; padding-left: 20px;">
+                    </a>
+                </div>
+                <ul class="navbar_menu">
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
+
+                <ul class="navbar_usermenu">
+                    <li><a href="{% url 'vending_app:view_cart' %}" class="ghost-button"><font size="5">장바구니</font></a></li>
+                    <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button"><font size="5">상품관리</font></a></li>
+                    <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button"><font size="5">상품등록</font></a></li>
+                </ul>
+
+                <ul class="navbar_icons">
+                    <li><i class="fab fa-twitter-square"></i></li>
+                    <li><i class="fab fa-facebook-square"></i></li>
+                    <li><i class="fab fa-instagram"></i></li>
+                </ul>
+
+                <a href="#" class="navbar_toggleBtn">   
+                    <i class="fas fa-bars"></i>
+                </a>
+            </nav>   
+        </div>
+    </div>
 
     <div class="wrap">
         <div class="container">

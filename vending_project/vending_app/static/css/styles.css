@@ -219,10 +219,10 @@ button {
 .itemList li:hover .iHover {
     display: block;
     position: absolute;
-    top: 50%; /* 부모 요소의 50% 위치에서 시작 */
+    top: 45%; /* 부모 요소의 50% 위치에서 시작 */
     left: 50%; /*부모 요소의 50% 위치에서 시작 */
     transform: translate(-50%, -50%); /* 중앙으로 이동 */
-    background-color: rgba(215, 212, 39, 0.9);
+    background-color: rgba(255, 255, 255, 0.384);
     text-align: center;
     padding: 0px; /* 필요한 경우 패딩 추가 */
 }
@@ -311,7 +311,7 @@ button {
     margin-top: 38px;
     background: url(../img/Hanyang/Hanyang_receipt.png);
 }
-
+.layerPop .layTop .close{position:absolute;top:-6px;right:-6px;width:30px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../icon/ico_close.png) 50% 50% no-repeat}
 
 
 @media screen and (max-width:768px) {
