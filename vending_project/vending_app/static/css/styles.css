@@ -300,6 +300,20 @@ button {
     /* 텍스트 크기 조절 */
     font-size: 43px; /* 예시로 20px로 설정 */
 }
+.Hanyang_receipt{
+    position: absolute;
+    /* width: 420px; */
+    width: 100%;
+    height: 420px;
+    left: 571px;
+    top: 955px;
+    display: table;
+    margin-top: 38px;
+    background: url(../img/Hanyang/Hanyang_receipt.png);
+}
+
+
+
 @media screen and (max-width:768px) {
     .container {
         padding: 10px;

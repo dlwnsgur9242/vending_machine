@@ -135,6 +135,11 @@
     margin-bottom: 5px;
   }
   
+  .PaymentTime {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
   /* Receipt Layout */
   .receipt_bottom {
     display: block;

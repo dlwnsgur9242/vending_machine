@@ -104,7 +104,7 @@ def view_cart(request):
             return redirect('vending_app:orderPayment')
         elif action == 'all_buy':
             return redirect('vending_app:orderPayment')
-
+        print("다미")
     context = {
         'cart_items': cart_items,
         'total_product_payment': total_product_payment,
@@ -130,10 +130,10 @@ def handle_cart_post_action(action, request, selected_items):
     if selected_items and all(selected_items):  # 선택된 항목이 비어있지 않은지 확인
         if action == 'delete_selected':
             Cart.objects.filter(cart_id__in=selected_items).delete()
-            return redirect('vending_app:view_cart')
         elif action == 'delete_all':
             Cart.objects.all().delete()
         elif action == 'select_buy':
+            print("뭉치")
             # 선택 상품 구매 처리 로직
             handle_select_buy(request, selected_items)
         elif action == 'all_buy':
@@ -142,6 +142,8 @@ def handle_cart_post_action(action, request, selected_items):
     elif action == 'all_buy': # 선택된 항목이 비어 있어도 실행
             # 전체 상품 구매 처리 로직
             handle_all_buy(request)
+    elif action == 'delete_all':
+            Cart.objects.all().delete()
 
 # 선택한 상품 구매 처리
 def handle_select_buy(request, selected_items):

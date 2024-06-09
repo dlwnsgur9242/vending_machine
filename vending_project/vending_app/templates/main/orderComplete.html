@@ -103,7 +103,7 @@
                 <p class="txt2">영수증을 출력하시겠습니까?</p>
             </div>
             <div class="btnArea">
-                <a href="/mall/mypage/shoppingBasket.do" class="btnST btnM other">영수증 출력</a>
+                <a href="{% url 'vending_app:orderReceipt' %}" class="btnST btnM other">영수증 출력</a>
                 <a href="{% url 'vending_app:ProductList' %}" class="btnST btnM action">계속 쇼핑하기</a>
             </div>
         </div>
@@ -169,8 +169,8 @@
                 </ul>
                 <div class="cartBtns">
                     <div class="fleft"><a href="{% url 'vending_app:ProductList' %}" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
-                    <button type="button" onclick="window.print()" class="btnST btnL other">영수증 출력</button>
-                    <!-- <button type="button" id="printReceiptBtn" class="btnST btnL other">영수증 출력</button> -->
+                    <!-- <button type="button" onclick="window.print()" class="btnST btnL other">영수증 출력</button> -->
+                    <a href="{% url 'vending_app:orderReceipt' %}" class="btnST btnL other">영수증 출력</a>
                 </div>
             </div>
         </div>

@@ -32,7 +32,6 @@
                         <button type="submit" class="btnST btnT delete" name="action" value="delete_selected">선택 삭제</button>
                         <button type="submit" class="btnST btnT delete" name="action" value="delete_all">전체 삭제</button>
                     </div>
-                </form>
                     <!-- 장바구니 상품 목록 -->
                     <div class="cartBoard">
                         <table class="tblForm">
@@ -102,14 +101,12 @@
                             <span class="cost"><b id="totalPayment">{{ total_payment|intcomma }}</b>원</span>
                         </li>
                     </ul>
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="cartBtns">
-                            <div class="fleft"><a href="{% url 'vending_app:ProductList' %}" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
-                            <button type="submit" name="action" value="select_buy" id="btnSelectItemBuy" role="button" class="btnST btnL other">선택상품 구매</button>
-                            <button type="submit" name="action" value="all_buy" id="btnAllBuy" role="button" class="btnST btnL action">전체상품 구매</button>
-                        </div>
-                    </form>
+                    <div class="cartBtns">
+                        <div class="fleft"><a href="{% url 'vending_app:ProductList' %}" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
+                        <button type="submit" name="action" value="select_buy" id="btnSelectItemBuy" role="button" class="btnST btnL other">선택상품 구매</button>
+                        <button type="submit" name="action" value="all_buy" id="btnAllBuy" role="button" class="btnST btnL action">전체상품 구매</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
