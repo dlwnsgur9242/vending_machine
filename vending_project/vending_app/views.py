@@ -78,6 +78,7 @@ def view_cart(request):
     print("준혁")
     cart_session_id = request.session.get('cart_session_id')
     cart_items, total_product_payment, total_payment = get_cart_items(cart_session_id)
+
     carts = Cart.objects.filter(cart_session_id=cart_session_id)
     count = carts.count()
 
@@ -85,14 +86,14 @@ def view_cart(request):
         action = request.POST.get('action')
         select_all = 'select_all' in request.POST
         selected_items = request.POST.getlist('cart_num')
-
+        
         print("Action:", action)
         print("Select all:", select_all)
         print("Selected items:", selected_items)
         
         if select_all:
             selected_items = [str(item.cart_id) for item in cart_items]
-
+        
         handle_cart_post_action(action, request, selected_items)
         print("설마 여기?")
         print(action)
@@ -224,6 +225,7 @@ def add_to_cart(request):
 
 # 장바구니 상품 업데이트
 def update_cart(request, product_id, change):
+    print("제발")
     cart_session_id = request.session.get('cart_session_id')
     try:
         change = int(change)

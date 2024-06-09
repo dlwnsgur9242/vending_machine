@@ -69,6 +69,11 @@
                                                 <input type="hidden" name="cart_qty" value="-1">
                                                 <button type="submit" class="minus">수량 감소</button>
                                             </form>
+                                            <form action="{% url 'vending_app:update_cart' cart_item.product.product_id -1 %}" method="post" style="display:inline;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="cart_qty" value="-1">
+                                                <button type="submit" class="minus">수량 감소</button>
+                                            </form>
                                             <input type="text" title="수량 직접입력" name="qty" value="{{ cart_item.cart_qty }}" class="numeric" maxlength="5" readonly>
                                             <form action="{% url 'vending_app:update_cart' cart_item.product.product_id 1 %}" method="post" style="display:inline;">
                                                 {% csrf_token %}
@@ -101,11 +106,11 @@
                             <span class="cost"><b id="totalPayment">{{ total_payment|intcomma }}</b>원</span>
                         </li>
                     </ul>
-                    <div class="cartBtns">
-                        <div class="fleft"><a href="{% url 'vending_app:ProductList' %}" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
-                        <button type="submit" name="action" value="select_buy" id="btnSelectItemBuy" role="button" class="btnST btnL other">선택상품 구매</button>
-                        <button type="submit" name="action" value="all_buy" id="btnAllBuy" role="button" class="btnST btnL action">전체상품 구매</button>
-                    </div>
+                        <div class="cartBtns">
+                            <div class="fleft"><a href="{% url 'vending_app:ProductList' %}" role="button" class="btnST btnL color">계속 쇼핑하기</a></div>
+                            <button type="submit" name="action" value="select_buy" id="btnSelectItemBuy" role="button" class="btnST btnL other">선택상품 구매</button>
+                            <button type="submit" name="action" value="all_buy" id="btnAllBuy" role="button" class="btnST btnL action">전체상품 구매</button>
+                        </div>
                 </form>
             </div>
         </div>
