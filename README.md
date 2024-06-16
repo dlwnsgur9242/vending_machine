@@ -1,5 +1,3 @@
-
-https://github.com/dlwnsgur9242/vending_machine/assets/90494150/e8af632a-33b9-4b6c-98b0-4c5c6d5e8473
 # Vending Machine
   Customer-specific vending machine project.
 <br>
