@@ -311,8 +311,23 @@ button {
     margin-top: 38px;
     background: url(../img/Hanyang/Hanyang_receipt.png);
 }
-.layerPop .layTop .close{position:absolute;top:-6px;right:-6px;width:30px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../icon/ico_close.png) 50% 50% no-repeat}
 
+.dimmed{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:.5;z-index:98}
+.layerPop{display:none;position:fixed;top:50%;left:50%;width:500px;margin-left:-250px;padding:30px;background:#fff;z-index:99}
+.layerPop .layTop{position:relative;padding-bottom:18px;margin-bottom:30px;border-bottom:1px solid #000}
+.layerPop .layTop .laytit{font-size:18px}
+.layerPop .layTop .close{position:absolute;top:-6px;right:-6px;width:30px;height:30px;overflow:hidden;text-indent:-9999px;background:url(../icon/ico_close.png) 50% 50% no-repeat}
+.layerPop .singlePhotoReviewLayer{display:block;}
+.layerPop .fullPhotoReviewLayer{display:none;}
+.layerPop .fullPhotoReviewLayer .laysubtit{font-family:"Noto Sans KR";font-weight:700; font-size:18px;line-height:26px;color:#666666;}
+.layerPop .layCon{position:relative}
+.layerPop .txtAlert{display:table-cell;width:1%;height:60px;text-align:center;vertical-align:middle}
+
+.btnArea{margin-top:30px;text-align:center}
+.btnST.other{color:#fff;border-color:#aaa;background-color:#aaa}
+.btnM{min-width:156px;height:48px;padding:0 28px;font-size:16px;line-height:47px}
+.btnST{display:inline-block;position:relative;text-align:center;color:#000;vertical-align:middle;border:1px solid #aaa;background-color:#fff}
+.btnST.action{color:#fff;border-color:#ff6500;background-color:#ff6500}
 
 @media screen and (max-width:768px) {
     .container {

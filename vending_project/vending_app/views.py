@@ -227,26 +227,27 @@ def handle_all_buy(request):
 
 # 장바구니 상품 추가
 def add_to_cart(request):
-    product_id = request.POST.get('product_id')
-    product = get_object_or_404(Product, product_id=product_id)
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, product_id=product_id)
 
-    # 세션에서 cart_session_id 가져오기 또는 생성
-    cart_session_id = request.session.get('cart_session_id')
-    if not cart_session_id:
-        cart_session_id = get_random_string(32)
-        request.session['cart_session_id'] = cart_session_id
+        # 세션에서 cart_session_id 가져오기 또는 생성
+        cart_session_id = request.session.get('cart_session_id')
+        if not cart_session_id:
+            cart_session_id = get_random_string(32)
+            request.session['cart_session_id'] = cart_session_id
 
-    # Cart 아이템 가져오기 또는 생성
-    cart_item, created = Cart.objects.get_or_create(
-        cart_session_id=cart_session_id,
-        product=product,
-        defaults={'cart_qty': 1}
-    )
-    if not created:
-        cart_item.cart_qty += 1
-        cart_item.save()
-    print("view_cart 이동")
-    return redirect('vending_app:view_cart')
+        # Cart 아이템 가져오기 또는 생성
+        cart_item, created = Cart.objects.get_or_create(
+            cart_session_id=cart_session_id,
+            product=product,
+            defaults={'cart_qty': 1}
+        )
+        if not created:
+            cart_item.cart_qty += 1
+            cart_item.save()
+        return JsonResponse({'status': 'success', 'message': 'Item added to cart'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
 # 장바구니 상품 업데이트
 def update_cart(request, product_id, change):

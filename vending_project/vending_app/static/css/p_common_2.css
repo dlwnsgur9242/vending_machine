@@ -495,10 +495,10 @@ em.soldout.specialSoldout{transform:translateY(-50%);}
 .itemList.type2 .iHover {padding:calc(100% + 34px) 0 21px 0;}
 .itemList .frmCheck{position:absolute;top:11px;left:11px;z-index:2}
 .itemList>li:hover .iHover button, .itemList>li.on .iHover button{opacity:1}
-ol.itemList{counter-reset:itemNum}
+/* ol.itemList{counter-reset:itemNum}
 ol.itemList>li:before{content:counter(itemNum, decimal-leading-zero);counter-increment:itemNum;display:block;margin-bottom:10px;color:#000;font-size:32px;font-weight:600;line-height:1}
 ol.itemList .iHover{top:42px}
-ol.itemList .frmCheck{top:53px}
+ol.itemList .frmCheck{top:53px} */
 
 .itemList.type2 {display:block; margin:0; font-size:0;}
 .itemList.type2 li {width:390px; margin:0 0 45px; float:none; display:inline-block; vertical-align:top;}
