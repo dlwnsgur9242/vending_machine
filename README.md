@@ -23,9 +23,9 @@ https://youtu.be/YxDUGy-v1QQ
 https://youtu.be/d61-tC57ksc
 
 ### 상품 리스트(메인화면)
-![상품리스트1](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/20e768a8-0c3f-476e-b69e-c28b15562e26)
+![상품리스트1](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/d0c93ca0-02f3-4da4-8758-8b2913b47b8d)
 
-![상품리스트2](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/141e2634-4234-4e6b-a9df-d9553aa8794b)
+![상품리스트2](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/9535d3e6-7fee-4d2c-97e9-7550395214e9)
 
 ![상품리스트3](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/0ce8e84f-99d0-4e4d-bf0c-e6bcdf118ded)
 <br>
