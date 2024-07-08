@@ -2,8 +2,7 @@
   Customer-specific vending machine project.
 <br>
 <br>
-<br>
-## Django의MTV(Model-Template-View)구조로WebApp개발을하였습니다.
+Django의 MTV(Model-Template-View)구조로 WebApp개발을 하였습니다.
 <br>
 <br>
 
