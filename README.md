@@ -3,7 +3,18 @@
 <br>
 <br>
 <br>
-
+### Django의MTV(Model-Template-View)구조로WebApp개발을하였습니다.
+<br>
+<br>
+# <제한조건>
+1.현금안될경우신용카드통해받을수있도록조정
+2.천원,오천원,만원가능,오만원불가
+3.거스룸돈은100원,500원,1000원가능
+4.영수증필요한경우금액적힌영수증출력
+<br>
+<br>
+<br>
+<br>
 # Tech Stack
 <pre>
   Visual Studio Code 1.82.2
