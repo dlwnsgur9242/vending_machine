@@ -75,8 +75,8 @@
 
                 <ul class="navbar_usermenu">
                     <li><a href="{% url 'vending_app:view_cart' %}" class="ghost-button"><font size="5">장바구니</font></a></li>
-                    <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button"><font size="5">상품관리</font></a></li>
-                    <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button"><font size="5">상품등록</font></a></li>
+                    <li><a href="{% url 'vending_app:Product_manage' %}" class="ghost-button"><font size="5">상품관리</font></a></li>
+                    <li><a href="{% url 'vending_app:Product_registration' %}" class="ghost-button"><font size="5">상품등록</font></a></li>
                 </ul>
 
                 <ul class="navbar_icons">
@@ -99,7 +99,7 @@
                     <ol id="itemList" class="itemList">
                         {% for product in products %}
                             <li>
-                                <a href="{% url 'vending_app:product_detail' product.product_id %}" class="iLink">
+                                <a href="{% url 'vending_app:Product_detail' product.product_id %}" class="iLink">
                                     <span class="item-number">{{ forloop.counter|stringformat:"02d" }}</span>
                                     <div class="thum">
                                         <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">

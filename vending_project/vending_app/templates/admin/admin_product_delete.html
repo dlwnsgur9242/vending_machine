@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유저 정보 삭제</title>
+</head>
+<body>
+    <h1>유저 정보 삭제</h1>
+    <form method="post" action="{% url 'vending_app:admin_product_delete' product.id %}">
+        {% csrf_token %}
+        <input type="submit" value="삭제">
+    </form>
+    <br>
+    <a href="{% url 'vending_app:Product_manage' %}">뒤로 가기</a>
+</body>
+</html>

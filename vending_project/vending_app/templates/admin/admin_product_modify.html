@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원수정</title>
+</head>
+<body>
+    <!-- 수정 중 -->
+<h1>회원정보수정</h1> 
+    <form action="" method="post">
+        {% csrf_token %}  <!-- CSRF 토큰 추가 -->
+        <input type="text" name="id" value="{{ user.id }}" readonly><br>
+        이 름  변경 <input type="text" name="username" value="{{ user.username }}"><br>
+        <!-- 유형 변경 -->
+        <label for="type">유형 변경:</label>
+        <select id="type" name="type">
+            <option value="halal" {% if user.type == 'halal' %}selected{% endif %}>할랄</option>
+            <option value="gluten" {% if user.type == 'gluten' %}selected{% endif %}>글루텐</option>
+            <option value="regular" {% if user.type == 'regular' %}selected{% endif %}>일반</option>
+        </select><br> 
+        수량 변경
+        가격 변경
+        <input type="submit" value="수정">
+    </form>
+</body>
+</html>

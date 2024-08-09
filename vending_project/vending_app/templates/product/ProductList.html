@@ -1,0 +1,138 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'css/TopNav.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'css/p_common_2.css' %}" rel="stylesheet"> -->
+    <title>상품리스트</title>
+    <script>
+        function addToCart(productId) {
+            var form = document.getElementById('addToCartForm');
+            var formData = new FormData(form);
+            formData.set('product_id', productId); // 상품 ID 설정
+    
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('L1').style.display = 'block'; // 성공 시 layerPop을 보여줍니다.
+                    document.getElementById('dimmed').style.display = 'block'; // 배경을 블라인드 처리
+                } else {
+                    console.error('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    
+        function closePopup() {
+            document.getElementById('L1').style.display = 'none'; // 팝업 닫기
+            document.getElementById('dimmed').style.display = 'none'; // 배경 숨기기
+        }
+    </script>
+</head>
+<body>
+    <div class="dimmed" id="dimmed"></div>
+    <div id="L1" class="layerPop" style="display: none; top: 200px;">
+        <div class="layTop">
+            <h3 class="laytit">장바구니</h3>
+            <button type="button" class="close" onclick="closePopup()">닫기</button>
+        </div>
+        <div class="layCon">
+            <div class="txtAlert">
+                <p class="txt1">선택한 상품이 장바구니에 담겼습니다.</p>
+                <p class="txt2">장바구니로 이동 하겠습니까?</p>
+            </div>
+            <div class="btnArea">
+                <a href="{% url 'vending_app:view_cart' %}" class="btnST btnM other">장바구니 확인하기</a>
+                <a href="{% url 'vending_app:ProductList' %}" class="btnST btnM action">계속 쇼핑하기</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="headerArea">
+        <div class="inner">
+            <nav class="Nav">
+                <div class="navbar_logo">
+                    <i class="fa-solid fa-dog"></i>
+                    <a href="{% url 'vending_app:ProductList' %}">
+                        <img src="/static/img/Hanyang/Hanyang_main.png" alt="Hanyang Logo" style="width: 150px; height: auto; max-width: 100%; max-height: 100%; padding-left: 20px;">
+                    </a>
+                </div>
+                <ul class="navbar_menu">
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
+
+                <ul class="navbar_usermenu">
+                    <li><a href="{% url 'vending_app:view_cart' %}" class="ghost-button"><font size="5">장바구니</font></a></li>
+                    <!-- <li><a href="{% url 'vending_app:ProductList' %}" class="ghost-button"><font size="5">상품관리</font></a></li>
+                    <li><a href="{% url 'vending_app:productmanage' %}" class="ghost-button"><font size="5">상품등록</font></a></li> -->
+                </ul>
+
+                <ul class="navbar_icons">
+                    <li><i class="fab fa-twitter-square"></i></li>
+                    <li><i class="fab fa-facebook-square"></i></li>
+                    <li><i class="fab fa-instagram"></i></li>
+                </ul>
+
+                <a href="#" class="navbar_toggleBtn">   
+                    <i class="fas fa-bars"></i>
+                </a>
+            </nav>   
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="container">
+            <div class="contents_product_list" >
+                <div class="prodArea">
+                    <ol id="itemList" class="itemList">
+                        {% for product in products %}
+                            <li>
+                                <a href="{% url 'vending_app:product_detail' product.product_id %}" class="iLink">
+                                    <span class="item-number">{{ forloop.counter|stringformat:"02d" }}</span>
+                                    <div class="thum">
+                                        <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
+                                    </div>
+                                    <div class="cont">
+                                        <div class="txtFlag">
+                                            {% if product.product_flag and product.product_flag != "일반" %}
+                                                <span class="flag {{ product.product_flag }}">{{ product.product_flag }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <strong class="product_name">{{ product.product_name }}</strong>
+                                        <p class="txt">{{ product.description }}</p>
+                                        <div class="txtPrice">
+                                            <del class="cost1" title="판매가"><b>{{ product.product_price|intcomma }}</b>원</del>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="iHover">
+                                    <form id="addToCartForm" action="{% url 'vending_app:add_to_cart' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                        <button type="button" onclick="addToCart('{{ product.product_id }}')"></button>
+                                    </form>
+                                </div>
+                            </li>
+                            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                                </ol><ol id="itemList" class="itemList">
+                            {% endif %}          
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

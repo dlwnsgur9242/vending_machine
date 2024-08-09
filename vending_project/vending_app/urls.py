@@ -6,13 +6,25 @@ app_name = 'vending_app'
 urlpatterns = [
     #테스트 페이지
     path('index',views.index, name="index"),
+
     #상품 리스트
     path('', views.ProductList, name="ProductList"),
 
+    #상품 리스트 관리 페이지
+    path('admin', views.admin_ProductList, name='admin'),
+
+    #상품 관리 페이지
+    path("Product_manage", views.Product_manage, name="Product_manage"),
+    #상품 관리/삭제
+    path("admin_product_delete/<uuid:product_id>/",views.admin_product_delete, name="admin_product_delete"),
+    #상품 관리/수정
+    path("admin_product_modify/<uuid:product_id>/",views.admin_product_modify, name="admin_product_modify"),
+
     #상품 등록
-    path('productmanage', views.productmanage, name='productmanage'),
+    path('Product_registration', views.Product_registration, name='Product_registration'),
+
     #상품 상세 정보 페이지
-    path('product_detail/<uuid:product_id>/', views.product_detail, name='product_detail'),
+    path('Product_detail/<uuid:product_id>/', views.Product_detail, name='Product_detail'),
     #상품 상세 페이지 주문으로 추가
     path('add_to_detail/<uuid:product_id>/', views.add_to_detail, name='add_to_detail'),
     #상품 상세 페이지 상품 정보저장

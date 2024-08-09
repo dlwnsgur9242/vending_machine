@@ -11,13 +11,69 @@ def index(request):
     return render(request, 'main/index.html')
 
 
-#상품 리스트
+# 상품 리스트
 def ProductList(request):
     products = Product.objects.all()
     return render(request, 'main/ProductList.html', {'products': products})
 
+# 상품 리스트 관리 페이지
+def admin_ProductList(request):
+    products = Product.objects.all()
+    return render(request, 'admin/admin_ProductList.html', {'products': products})
+
+def admin_user_modify(request, user_id):
+    if request.method == 'POST':
+        try:
+            # POST 요청을 받으면 폼에서 입력한 회원 정보를 저장합니다.
+            user = User.objects.get(pk=user_id)
+            user.set_password(request.POST['password'])  # 비밀번호 변경
+            user.username = request.POST['username']      # 이름 변경
+            # 다른 필드도 유사하게 처리하실 수 있습니다.
+            user.save()
+            return redirect('dangun_app:admin_user_list')  # 수정 후 유저 목록 페이지로 리디렉션
+        except User.DoesNotExist:
+            # 해당 ID의 회원이 존재하지 않을 경우 예외 처리
+            pass
+
+    return render(request, 'dangun_app/admin_user_modify.html', {'user': User.objects.get(pk=user_id)})
+
+# 상품 관리 페이지
+def Product_manage(request):
+    products = Product.objects.all()
+    return render(request, 'product/Product_manage.html', {'products': products})
+
+# 상품 관리/삭제
+def admin_product_delete(request, product_id):
+    products = get_object_or_404(Product, pk=product_id)
+    
+    if request.method == 'POST':
+        products.delete()
+        return redirect('vending_app:Product_manage')
+    
+    # GET 요청에 대한 처리 (페이지를 보여줄 때)
+    return render(request, 'product/admin_product_delete.html', {'products': products})
+
+# 상품 관리/수정
+def admin_product_modify(request, product_id):
+    if request.method == 'POST':
+        try:
+            # POST 요청을 받으면 폼에서 입력한 상품 정보를 저장합니다.
+            products = Product.objects.get(pk=product_id)
+            products.set_password(request.POST['password'])  # 비밀번호 변경
+            products.username = request.POST['username']      # 이름 변경
+            # 다른 필드도 유사하게 처리하실 수 있습니다.
+            products.save()
+            return redirect('vending_app:Product_manage')  # 수정 후 상품 목록 페이지로 리디렉션
+        except Product.DoesNotExist:
+            # 해당 ID의 상품이 존재하지 않을 경우 예외 처리
+            pass
+
+    return render(request, 'product/admin_product_modify.html', {'products': products.objects.get(pk=product_id)})
+
+
+
 # 상품 등록
-def productmanage(request):
+def Product_registration(request):
     if request.method == 'POST':
         #POST 요청이면, 사용자가 제출한 데이터로 폼을 초기화
         #POST 요청이 아닌 경우, 즉 초기 상태에서는 빈 폼을 생성
@@ -28,10 +84,10 @@ def productmanage(request):
     else:
         form = ProductRegisterForm()
 
-    return render(request, 'main/productmanage.html', {'form': form})
+    return render(request, 'product/Product_registration.html', {'form': form})
 
 # 상품 상세페이지
-def product_detail(request, product_id):
+def Product_detail(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
 
     if request.method == 'POST':
@@ -57,7 +113,7 @@ def product_detail(request, product_id):
     cart_qty = request.session.get('cart', {}).get(product_id, 1)
     product.cart_qty = cart_qty
 
-    return render(request, 'main/product_detail.html', {'product': product, 'form': form})
+    return render(request, 'product/Product_detail.html', {'product': product, 'form': form})
 
 def add_to_detail(request, product_id):
     if request.method == 'POST':
