@@ -7,20 +7,26 @@
 </head>
 <body>
     <!-- 수정 중 -->
-<h1>회원정보수정</h1> 
+    <h1>상품 정보 수정</h1>
     <form action="" method="post">
         {% csrf_token %}  <!-- CSRF 토큰 추가 -->
-        <input type="text" name="id" value="{{ user.id }}" readonly><br>
-        이 름  변경 <input type="text" name="username" value="{{ user.username }}"><br>
-        <!-- 유형 변경 -->
-        <label for="type">유형 변경:</label>
-        <select id="type" name="type">
-            <option value="halal" {% if user.type == 'halal' %}selected{% endif %}>할랄</option>
-            <option value="gluten" {% if user.type == 'gluten' %}selected{% endif %}>글루텐</option>
-            <option value="regular" {% if user.type == 'regular' %}selected{% endif %}>일반</option>
-        </select><br> 
-        수량 변경
-        가격 변경
+    
+        <label for="product_name">이름 변경:</label>
+        <input type="text" id="product_name" name="product_name" value="{{ products.product_name }}"><br><br>
+    
+        <label for="product_flag">유형 변경:</label>
+        <select id="product_flag" name="products.product_flag">
+            <option value="할랄" {% if products.product_flag == '할랄' %}selected{% endif %}>할랄</option>
+            <option value="글루텐" {% if products.product_flag == '글루텐' %}selected{% endif %}>글루텐</option>
+            <option value="일반" {% if products.product_flag == '일반' %}selected{% endif %}>일반</option>
+        </select><br><br> 
+    
+        <label for="product_stock">수량 변경:</label>
+        <input type="number" id="product_stock" name="product_stock" value="{{ products.product_stock }}"><br><br>
+    
+        <label for="product_price">가격 변경:</label>
+        <input type="number" id="product_price" name="product_price" value="{{ products.product_price }}"><br><br>
+
         <input type="submit" value="수정">
     </form>
 </body>

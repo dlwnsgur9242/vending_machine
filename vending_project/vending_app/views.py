@@ -14,7 +14,7 @@ def index(request):
 # 상품 리스트
 def ProductList(request):
     products = Product.objects.all()
-    return render(request, 'main/ProductList.html', {'products': products})
+    return render(request, 'product/ProductList.html', {'products': products})
 
 # 상품 리스트 관리 페이지
 def admin_ProductList(request):
@@ -55,20 +55,20 @@ def admin_product_delete(request, product_id):
 
 # 상품 관리/수정
 def admin_product_modify(request, product_id):
+    # 수정할 상품을 먼저 가져옵니다. 존재하지 않으면 404 에러를 발생시킵니다.
+    products = get_object_or_404(Product, pk=product_id)
+    
     if request.method == 'POST':
-        try:
-            # POST 요청을 받으면 폼에서 입력한 상품 정보를 저장합니다.
-            products = Product.objects.get(pk=product_id)
-            products.set_password(request.POST['password'])  # 비밀번호 변경
-            products.username = request.POST['username']      # 이름 변경
-            # 다른 필드도 유사하게 처리하실 수 있습니다.
-            products.save()
-            return redirect('vending_app:Product_manage')  # 수정 후 상품 목록 페이지로 리디렉션
-        except Product.DoesNotExist:
-            # 해당 ID의 상품이 존재하지 않을 경우 예외 처리
-            pass
+        # POST 요청을 받으면 폼에서 입력한 상품 정보를 저장합니다.
+        products.product_name = request.POST.get('product_name', products.product_name)  # 이름 변경
+        products.product_flag= request.POST.get('product_flag', products.product_flag)  # 유형 변경
+        products.product_stock = request.POST.get('product_stock', products.product_stock)  # 수량 변경
+        products.product_price = request.POST.get('product_price', products.product_price)  # 가격 변경
+        # 다른 필드도 유사하게 처리하실 수 있습니다.
+        products.save()
+        return redirect('vending_app:Product_manage')  # 수정 후 상품 목록 페이지로 리디렉션
 
-    return render(request, 'product/admin_product_modify.html', {'products': products.objects.get(pk=product_id)})
+    return render(request, 'admin/admin_product_modify.html', {'products': products})
 
 
 
