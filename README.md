@@ -4,7 +4,16 @@ Customer-specific vending machine project.
 Django의 MTV(Model-Template-View)디자인 패턴을 사용하여 WebApp개발을 하였습니다.
 <br><br><br>
 
-# <제한조건><br>✅
+# Tech Stack 🛠️
+<pre>
+  Visual Studio Code 1.82.2
+  Django 23.2.1
+  Python 3.10.9
+  MariaDB 10.11
+</pre>
+<br><br><br>
+
+# <제한조건>✅
 <pre>
   1.현금 안될 경우 신용카드 통해 받을 수 있도록 조정<br>
   2.천원, 오천원, 만원가능, 오만원 불가<br>
@@ -13,12 +22,48 @@ Django의 MTV(Model-Template-View)디자인 패턴을 사용하여 WebApp개발�
 </pre>
 <br><br><br>
 
-# Tech Stack 🛠️
+# <추가한 기능>☑️
 <pre>
-  Visual Studio Code 1.82.2
-  Django 23.2.1
-  Python 3.10.9
-  MariaDB 10.11
+  1. 상품 리스트 페이지(ProductList.html)
+   - 선택한 상품 장바구니 추가
+   - 상품 장바구니 추가 시 팝업 창 출력
+   - DB product table 연결
+  <br>
+  2. 상품 상세 페이지(Product_detail.hmtl)
+   - 상품 재고, 가격 확인 가능
+   - 장바구니 상품 추가
+  <br>
+  3. 장바구니 페이지(view_cart.hmtl)
+   - 선택삭제, 전체삭제
+   - 선택 구매, 전체 구매
+   - DB cart table 연결
+  <br>
+  4. 주문결제 페이지(orderPayment.html)
+   - 결제 시 재고 소모
+   - 상품 초기화
+   - DB order table 연결
+   - DB receipt table 연결
+  <br>
+  5. 결제완료 페이지(orderComplete.html)
+   - 결제 완료 시 영수증 출력 선택 팝업 창 출력
+   - 주문 시간, 결제 방식, 상품 별 총 가격, 결제 총금액, 거스름돈 출력
+   - def process_payment로 주문 결제 / 결제 방식 처리
+   - def process_payment 재고 부족, 금액 부족, 카드 or 현금 결제 처리
+  <br>
+  6. 영수증 페이지(orderReceipt.html)
+   - 카테고리, 상품명, 구매가, 수량, 금액, 합계, 결제 방식, 거스름 돈, 거래 일시 출력
+  <br>
+  7. 관리자 페이지(admin_ProductList.html)
+   - 상품 관리, 상품 등록 가능
+  <br>
+  8. 상품 관리 페이지(Product_manage.hmtl)
+   - 상품 목록 표시
+   - 상품 수정, 삭제 가능
+   - DB product table 연결
+  <br>
+  9. 상품 등록 페이지(Product_registration.html)
+   - 상품 등록 가능
+   - DB product table 연결
 </pre>
 <br><br><br>
 
