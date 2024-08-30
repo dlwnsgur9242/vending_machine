@@ -21,7 +21,7 @@ Django의 MTV(Model-Template-View)구조로 WebApp개발을 하였습니다.
   Python 3.10.9
   MariaDB 10.11
 </pre>
-</br><br></br>
+<br><br><br>
 
 # 시연 영상
 <br>
@@ -118,27 +118,29 @@ https://youtu.be/d61-tC57ksc
 ![관리자 페이지_상품등록 시연3](https://github.com/user-attachments/assets/9739bb46-68c7-41f7-b8a8-1c2bbdb36a7b)
 <br><br><br><br>
 ## 상품 관리
+<br><br>
 
 ### 상품 관리 페이지 이동 버튼
 ![관리자 페이지 상품관리 이동 버튼](https://github.com/user-attachments/assets/68975689-8fe8-4f35-8b9d-f757fcc134ea)
-
+<br>
 ### 상품 관리 페이지(메인화면)
 ![관리자 페이지 상품 관리 페이지](https://github.com/user-attachments/assets/951a6731-0d9f-42c5-a80d-06be8611f66e)
+<br><br>
 
-### 상품 관리 페이지 - 수정
+## 상품 관리 페이지 - 수정
 ![관리자 페이지 상품관리-수정](https://github.com/user-attachments/assets/0782f826-7ab8-497e-a28b-fc4305ad7324)
-
+<br>
 ### 상품 관리 페이지 - 수정 [ 동작 ]
 ![관리자 페이지 상품 관리 페이지-수정 전](https://github.com/user-attachments/assets/a32c6cee-b1d5-4f40-a6ca-c85c754bc79c)
-
-
+<br>
 ### 상품 관리 페이지 - 수정 [ 동작 - 입력 값 변경 ]
 ![관리자 페이지 상품 관리 페이지-수정 후](https://github.com/user-attachments/assets/78af0ecc-0b23-4108-b096-841814f6175f)
-
+<br>
 ### 상품 관리 페이지 - 수정 [ 적용 ]
 ![관리자 페이지 상품 관리 페이지-수정 후 적용](https://github.com/user-attachments/assets/ebc637b9-f71e-4952-95bb-fe6a3261e087)
-
-### 상품 관리 페이지 - 삭제
+<br><br>
+## 상품 관리 페이지 - 삭제
 ![관리자 페이지 상품 관리 페이지-삭제](https://github.com/user-attachments/assets/29329419-98cb-442a-8d9b-35142002cd3f)
+<br>
 ### 상품 관리 페이지 - 삭제 [ 동작 ]
 ![관리자 페이지 상품 관리 페이지-삭제 후](https://github.com/user-attachments/assets/74f20258-83eb-4c74-a85f-b50893d3958e)
