@@ -109,3 +109,18 @@ https://youtu.be/d61-tC57ksc
 
 ### 장바구니 상품 전체 상품 구매 버튼 [동작]
 ![장바구니 상품 전체상품 구매 버튼 동작 후](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/56699baa-5812-4c18-974f-3a6bac1221a6)
+
+
+# 관리자 페이지
+### 관리자 페이지(메인화면)
+![관리자 페이지_메인](https://github.com/user-attachments/assets/e8e19894-86e2-4e27-b52f-e27504447f81)
+
+## 상품 등록
+![관리자 페이지_상품등록](https://github.com/user-attachments/assets/1331b07f-2e13-4104-b186-217db47d9739)
+![관리자 페이지_상품등록 시연1](https://github.com/user-attachments/assets/57901f1d-51ae-48e0-91bf-321db3b95bb0)
+![관리자 페이지_상품등록 시연2](https://github.com/user-attachments/assets/b50bc1e9-1315-4958-a97d-747ae53dde34)
+![관리자 페이지_상품등록 시연3](https://github.com/user-attachments/assets/9739bb46-68c7-41f7-b8a8-1c2bbdb36a7b)
+
+
+## 상품 관리
+
