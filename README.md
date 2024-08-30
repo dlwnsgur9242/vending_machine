@@ -79,11 +79,12 @@ https://youtu.be/d61-tC57ksc
 <br><br><br><br>
 
 # 상품 리스트 🧸🛍️
-<br>
 ![상품리스트1](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/d0c93ca0-02f3-4da4-8758-8b2913b47b8d)
 <br>
+
 ![상품리스트2](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/9535d3e6-7fee-4d2c-97e9-7550395214e9)
 <br>
+
 ![상품리스트3](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/0ce8e84f-99d0-4e4d-bf0c-e6bcdf118ded)
 <br><br><br>
 
