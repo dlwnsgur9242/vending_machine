@@ -137,7 +137,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="itmTarget">
-                                    <a href="{% url 'vending_app:product_detail' order.product.product_id %}" class="iLink">
+                                    <a href="{% url 'vending_app:Product_detail' order.product.product_id %}" class="iLink">
                                         <div class="thum"><img src="{{ order.product.product_image.url }}" alt="{{ order.product.product_name }}" style="width: 100px; height: 100px;"></div>
                                         <div class="cont"><strong class="tit">{{ order.product.product_name }}</strong></div>
                                     </a>

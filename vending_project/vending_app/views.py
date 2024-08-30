@@ -10,7 +10,6 @@ from django.views.decorators.http import require_POST
 def index(request):
     return render(request, 'main/index.html')
 
-
 # 상품 리스트
 def ProductList(request):
     products = Product.objects.all()
@@ -70,8 +69,6 @@ def admin_product_modify(request, product_id):
 
     return render(request, 'admin/admin_product_modify.html', {'products': products})
 
-
-
 # 상품 등록
 def Product_registration(request):
     if request.method == 'POST':
@@ -115,12 +112,14 @@ def Product_detail(request, product_id):
 
     return render(request, 'product/Product_detail.html', {'product': product, 'form': form})
 
+# 상품 상세페이지/수량 조절
 def add_to_detail(request, product_id):
     if request.method == 'POST':
         # POST 요청일 때, 상품 수량을 받아서 주문 생성
         product = get_object_or_404(Product, product_id=product_id)
         qty = int(request.POST.get('qty', 1))  # 클라이언트에서 전송된 수량 값 가져오기
-
+        
+        print("장바구니 추가")
         # 주문 생성
         order = Order.objects.create(
             product=product,
@@ -281,12 +280,12 @@ def handle_all_buy(request):
             )
             order.save()
 
-# 장바구니 상품 추가
+# 장바구니 상품 추가/상품리스트
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
         product = get_object_or_404(Product, product_id=product_id)
-
+        print("상품리스트/장바구니 추가")
         # 세션에서 cart_session_id 가져오기 또는 생성
         cart_session_id = request.session.get('cart_session_id')
         if not cart_session_id:
@@ -303,6 +302,31 @@ def add_to_cart(request):
             cart_item.cart_qty += 1
             cart_item.save()
         return JsonResponse({'status': 'success', 'message': 'Item added to cart'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+# 장바구니 상품 추가/상품상세페이지
+def add_to_detail_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, product_id=product_id)
+        print("상품 상세페이지/장바구니 추가")
+        # 세션에서 cart_session_id 가져오기 또는 생성
+        cart_session_id = request.session.get('cart_session_id')
+        if not cart_session_id:
+            cart_session_id = get_random_string(32)
+            request.session['cart_session_id'] = cart_session_id
+
+        # Cart 아이템 가져오기 또는 생성
+        cart_item, created = Cart.objects.get_or_create(
+            cart_session_id=cart_session_id,
+            product=product,
+            defaults={'cart_qty': 1}
+        )
+        if not created:
+            cart_item.cart_qty += 1
+            cart_item.save()
+        return redirect('vending_app:view_cart')
+    
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
 # 장바구니 상품 업데이트

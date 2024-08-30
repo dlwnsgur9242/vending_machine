@@ -109,7 +109,7 @@
                     </div>
                     <div class="pBtns">
                         <span>
-                            <form action="{% url 'vending_app:add_to_cart' %}" method="post">
+                            <form action="{% url 'vending_app:add_to_detail_cart' %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.product_id }}">
                                 <button type="submit" class="btnST btnL other">장바구니</button>

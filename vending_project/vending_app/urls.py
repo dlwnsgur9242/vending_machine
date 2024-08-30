@@ -32,8 +32,10 @@ urlpatterns = [
 
     #장바구니
     path('view_cart', views.view_cart, name="view_cart"),
-    #장바구니 상품 추가
+    #장바구니 상품 추가/상품리스트
     path('add_to_cart', views.add_to_cart, name='add_to_cart'),
+    #장바구니 상품 추가/상세페이지
+    path('add_to_detail_cart', views.add_to_detail_cart, name='add_to_detail_cart'),
 
     path('update_cart/<uuid:product_id>/<str:change>/', views.update_cart, name='update_cart'),
     path('delete_cart_item/<uuid:product_id>/', views.delete_cart_item, name='delete_cart_item'),
