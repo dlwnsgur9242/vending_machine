@@ -29,22 +29,26 @@ Django의 MTV(Model-Template-View)구조로 WebApp개발을 하였습니다.
 <br>
 
 # 시연 영상
+<br>
+
 ### 현금 결제
 https://youtu.be/YxDUGy-v1QQ
 <br>
 <br>
-
 ### 입금한 금액이 적은 경우
 https://youtu.be/d61-tC57ksc
 <br>
 <br>
 <br>
 
-# 상품 리스트(메인화면)
+# 상품 리스트
+<br>
+
+### 상품 리스트 페이지(메인화면)
 ![상품리스트1](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/d0c93ca0-02f3-4da4-8758-8b2913b47b8d)
-
+<br>
 ![상품리스트2](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/9535d3e6-7fee-4d2c-97e9-7550395214e9)
-
+<br>
 ![상품리스트3](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/0ce8e84f-99d0-4e4d-bf0c-e6bcdf118ded)
 <br>
 <br>
@@ -62,61 +66,51 @@ https://youtu.be/d61-tC57ksc
 <br>
 <br>
 <br>
-
 # 장바구니
 ![장바구니 화면](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/a8a26756-76a0-489a-995f-34bf0b3668e3)
 <br>
-<br>
-
 ### 장바구니 결제 금액 계산
 ![장바구니 화면 결제 금액 계산](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/665fe94a-fc06-45e3-9521-16b5f1d3584a)
 <br>
-<br>
-
 ### 장바구니 수량 변경
 ![장바구니 수량 변경](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/6565b468-c667-49f9-a1d1-0559a4211783)
-
+<br>
 ### 장바구니 상품 삭제 버튼
 ![장바구니 상품 삭제 버튼](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/5518293f-be33-448f-8d3c-1e4991f7f8cc)
 <br>
-
 ### 장바구니 상품 삭제 버튼 [ 동작 ]
 ![장바구니 상품 삭제 버튼 동작 후](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/3a313e61-e64a-404e-8fb7-078d9a7ae1dd)
 <br>
-<br>
-
 ### 장바구니 상품 체크 선택 삭제
 ![장바구니 상품 체크 선택 삭제](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/5bc32664-2629-47f8-ac46-fe5e02ba5e50)
 <br>
-
 ### 장바구니 상품 체크 선택 삭제 [ 동작 ]
 ![장바구니 상품 체크 선택 삭제 동작 후](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/840000cd-bea3-4af5-b87f-9fdad9b82714)
 <br>
-<br>
-
 ### 장바구니 상품 선택상품 체크 구매 버튼
 ![장바구니 상품 체크 선택상품 구매 버튼](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/f907b1b7-d274-4063-9a84-c2c92f3076d7)
 <br>
-
 ### 장바구니 상품 선택상품 체크 구매 버튼 [ 동작 ]
 ![장바구니 상품 체크 선택상품 구매 버튼 동작 후](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/483ff8dd-bca2-4486-b2c0-feb15503e71b)
 <br>
-<br>
-
 ### 장바구니 상품 전체 상품 구매 버튼
 ![장바구니 상품 전체상품 구매 버튼](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/a7fa2c0d-845d-472b-8095-cc7f501a9621)
 <br>
-
 ### 장바구니 상품 전체 상품 구매 버튼 [ 동작 ]
 ![장바구니 상품 전체상품 구매 버튼 동작 후](https://github.com/dlwnsgur9242/vending_machine/assets/90494150/56699baa-5812-4c18-974f-3a6bac1221a6)
+<br>
+<br>
+<br>
 
-
-# 관리자 페이지 🐱
+# 관리자 페이지 🐱💻
+<br>
 
 ### 관리자 페이지(메인화면)
 ![관리자 페이지_메인](https://github.com/user-attachments/assets/e8e19894-86e2-4e27-b52f-e27504447f81)
-
+<br>
 ## 상품 등록
+![관리자 페이지 상품 관리 페이지-수정 전](https://github.com/user-attachments/assets/ff81c978-4a87-46bd-9821-d63960e66de8)
+
 
 ### 상품 등록 페이지 (메인화면)
 ![관리자 페이지_상품등록](https://github.com/user-attachments/assets/1331b07f-2e13-4104-b186-217db47d9739)
@@ -140,7 +134,8 @@ https://youtu.be/d61-tC57ksc
 ![관리자 페이지 상품관리-수정](https://github.com/user-attachments/assets/0782f826-7ab8-497e-a28b-fc4305ad7324)
 
 ### 상품 관리 페이지 - 수정 [ 동작 ]
-![관리자 페이지 상품 관리 페이지-수정 전](https://github.com/user-attachments/assets/0d7966ff-8d26-47e0-ab81-c7ab864400ac)
+![관리자 페이지 상품 관리 페이지-수정 전](https://github.com/user-attachments/assets/a32c6cee-b1d5-4f40-a6ca-c85c754bc79c)
+
 
 ### 상품 관리 페이지 - 수정 [ 동작 - 입력 값 변경 ]
 ![관리자 페이지 상품 관리 페이지-수정 후](https://github.com/user-attachments/assets/78af0ecc-0b23-4108-b096-841814f6175f)
