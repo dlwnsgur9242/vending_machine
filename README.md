@@ -123,4 +123,13 @@ https://youtu.be/d61-tC57ksc
 
 
 ## 상품 관리
+![관리자 페이지 상품 관리 페이지](https://github.com/user-attachments/assets/951a6731-0d9f-42c5-a80d-06be8611f66e)
+![관리자 페이지 상품관리 이동 버튼](https://github.com/user-attachments/assets/68975689-8fe8-4f35-8b9d-f757fcc134ea)
 
+![관리자 페이지 상품관리-수정](https://github.com/user-attachments/assets/0782f826-7ab8-497e-a28b-fc4305ad7324)
+![관리자 페이지 상품 관리 페이지-수정 전](https://github.com/user-attachments/assets/0d7966ff-8d26-47e0-ab81-c7ab864400ac)
+![관리자 페이지 상품 관리 페이지-수정 후](https://github.com/user-attachments/assets/78af0ecc-0b23-4108-b096-841814f6175f)
+![관리자 페이지 상품 관리 페이지-수정 후 적용](https://github.com/user-attachments/assets/ebc637b9-f71e-4952-95bb-fe6a3261e087)
+
+![관리자 페이지 상품 관리 페이지-삭제](https://github.com/user-attachments/assets/29329419-98cb-442a-8d9b-35142002cd3f)
+![관리자 페이지 상품 관리 페이지-삭제 후](https://github.com/user-attachments/assets/74f20258-83eb-4c74-a85f-b50893d3958e)
