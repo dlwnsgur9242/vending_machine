@@ -7,7 +7,7 @@ Django의 MTV(Model-Template-View)디자인 패턴을 사용하여 WebApp개발�
 # Tech Stack 🛠️
 <pre>
   Visual Studio Code 1.82.2
-  Django 23.2.1
+  Django 4.2.1
   Python 3.10.9
   MariaDB 10.11
 </pre>
